@@ -68,6 +68,15 @@
         <mxCell id="NlCQKjgv_-PUSfm08U4q-10" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.calendar;" parent="1" vertex="1">
           <mxGeometry x="310" y="392" width="20" height="20" as="geometry" />
         </mxCell>
+        <mxCell id="Ip_tYvVmvSh2V3OITDLg-1" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=-180;strokeColor=light-dark(#000000,#7D7D7D);" vertex="1" parent="1">
+          <mxGeometry x="220" y="110" width="40" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Ip_tYvVmvSh2V3OITDLg-2" value="Hidden if no Manufactorer selected" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=light-dark(#000000,#7D7D7D);" vertex="1" parent="1">
+          <mxGeometry x="260" y="140" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Ip_tYvVmvSh2V3OITDLg-3" value="Defaults to Today" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=light-dark(#000000,#7D7D7D);" vertex="1" parent="1">
+          <mxGeometry x="350" y="388.5" width="210" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
