@@ -13,11 +13,11 @@
         <mxCell id="zX-MKMj06BqSPDNbv460-1" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;companyitassets/assets/hardware/assignemployee/25&lt;/font&gt;" style="html=1;strokeWidth=1;shadow=0;dashed=0;shape=mxgraph.ios7ui.url;fillColor=#e0e0e0;strokeColor=#c0c0c0;buttonText=;strokeColor2=#222222;fontColor=#222222;fontSize=8;spacingTop=2;align=center;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="20" width="1050" height="32.5" as="geometry" />
         </mxCell>
-        <mxCell id="qXXK7IakLX90gNUS_IdI-1" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Assign&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
-          <mxGeometry x="40" y="50" width="150" height="40" as="geometry" />
+        <mxCell id="qXXK7IakLX90gNUS_IdI-1" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Assign to Employee&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
+          <mxGeometry x="40" y="50" width="220" height="40" as="geometry" />
         </mxCell>
         <mxCell id="qXXK7IakLX90gNUS_IdI-18" value="Go Back" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=none;fontColor=#0085FC;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=0;fontStyle=0;fontSize=16;spacing=5;" parent="1" vertex="1">
-          <mxGeometry x="180" y="50" width="70" height="40" as="geometry" />
+          <mxGeometry x="940" y="50" width="70" height="40" as="geometry" />
         </mxCell>
         <mxCell id="6DgqTnudn0VtPVxvnlF_-14" value="Search" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.forms.searchBox;strokeColor=#999999;mainText=;strokeColor2=#008cff;fontColor=#666666;fontSize=17;align=left;spacingLeft=3;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="450" y="111.5" width="150" height="30" as="geometry" />
