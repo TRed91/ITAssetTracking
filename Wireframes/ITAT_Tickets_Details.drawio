@@ -220,12 +220,12 @@
         </mxCell>
         <UserObject label="&amp;nbsp;Issue Description:" placeholders="1" name="Variable" id="ELZsl5hJJOaM7VQSEPj--60">
           <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;overflow=hidden;" parent="1" vertex="1">
-            <mxGeometry x="56" y="385" width="114" height="20" as="geometry" />
+            <mxGeometry x="50" y="385" width="114" height="20" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="&lt;span style=&quot;font-size: 14px;&quot;&gt;Monitor doesn&#39;t turn on anymore after Employee violently punched it with their fist because &quot;I deleted a comment and suddenly the code wouldn&#39;t compile anymore&quot;.&lt;/span&gt;" placeholders="1" name="Variable" id="ELZsl5hJJOaM7VQSEPj--61">
           <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;overflow=hidden;" parent="1" vertex="1">
-            <mxGeometry x="56" y="405" width="974" height="65" as="geometry" />
+            <mxGeometry x="51" y="405" width="974" height="65" as="geometry" />
           </mxCell>
         </UserObject>
         <mxCell id="OAiZcJJfhNWTlkDqbusg-1" value="Re/Assign" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=none;fontColor=#0085FC;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=0;fontStyle=0;fontSize=16;spacing=5;" vertex="1" parent="1">
