@@ -36,7 +36,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="ywKk5z_2qfM9JBNrJSl7-8" value="Apply" style="rounded=1;fillColor=#0057D8;strokeColor=none;html=1;whiteSpace=wrap;fontColor=#ffffff;align=center;verticalAlign=middle;fontStyle=0;fontSize=12;sketch=0;" parent="1" vertex="1">
-          <mxGeometry x="507" y="64.5" width="86" height="33" as="geometry" />
+          <mxGeometry x="780" y="60.5" width="86" height="33" as="geometry" />
         </mxCell>
         <mxCell id="ywKk5z_2qfM9JBNrJSl7-9" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;fontSize=16;" parent="1" vertex="1">
           <mxGeometry x="30" y="175" width="1030" height="525" as="geometry" />
@@ -292,7 +292,18 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="ywKk5z_2qfM9JBNrJSl7-84" value="&lt;i&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(125, 125, 125));&quot;&gt;The default date values are from: today minus 3 months, to: today&amp;nbsp;&lt;/font&gt;&lt;/i&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="620" y="63.5" width="410" height="30" as="geometry" />
+          <mxGeometry x="70" y="90" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="kN1QSdd2fQI7dB_9zHgf-1" value="Order" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="470" y="62" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="kN1QSdd2fQI7dB_9zHgf-2" value="Asset Type" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=#6C767D;fontColor=#ffffff;whiteSpace=wrap;align=right;verticalAlign=middle;fontStyle=0;fontSize=14;spacingRight=20;" vertex="1" parent="1">
+          <mxGeometry x="530" y="63.5" width="140" height="26.5" as="geometry" />
+        </mxCell>
+        <mxCell id="kN1QSdd2fQI7dB_9zHgf-3" value="" style="shape=triangle;direction=south;fillColor=#ffffff;strokeColor=none;perimeter=none;" vertex="1" parent="kN1QSdd2fQI7dB_9zHgf-2">
+          <mxGeometry x="1" y="0.5" width="10" height="5" relative="1" as="geometry">
+            <mxPoint x="-17" y="-2.5" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
