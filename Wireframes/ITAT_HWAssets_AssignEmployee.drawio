@@ -10,7 +10,7 @@
         <mxCell id="677b7b8949515195-1" value="" style="whiteSpace=wrap;html=1;rounded=0;shadow=0;labelBackgroundColor=none;strokeColor=#000000;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12;fontColor=#000000;align=center;comic=1;" parent="1" vertex="1">
           <mxGeometry x="20" y="40" width="1060" height="540" as="geometry" />
         </mxCell>
-        <mxCell id="zX-MKMj06BqSPDNbv460-1" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;companyitassets/assets/hardware/assignemployee/25&lt;/font&gt;" style="html=1;strokeWidth=1;shadow=0;dashed=0;shape=mxgraph.ios7ui.url;fillColor=#e0e0e0;strokeColor=#c0c0c0;buttonText=;strokeColor2=#222222;fontColor=#222222;fontSize=8;spacingTop=2;align=center;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="zX-MKMj06BqSPDNbv460-1" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;companyitassets/assets/assignemployee/25&lt;/font&gt;" style="html=1;strokeWidth=1;shadow=0;dashed=0;shape=mxgraph.ios7ui.url;fillColor=#e0e0e0;strokeColor=#c0c0c0;buttonText=;strokeColor2=#222222;fontColor=#222222;fontSize=8;spacingTop=2;align=center;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="20" width="1050" height="32.5" as="geometry" />
         </mxCell>
         <mxCell id="qXXK7IakLX90gNUS_IdI-1" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Assign to Employee&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
