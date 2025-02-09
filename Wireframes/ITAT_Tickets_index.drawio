@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="26.0.10">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="26.0.11">
   <diagram name="Page-1" id="03018318-947c-dd8e-b7a3-06fadd420f32">
     <mxGraphModel dx="3354" dy="1258" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
       <root>
@@ -52,7 +52,7 @@
         <mxCell id="q4BZEvWAXVgxHDnkbYNj-9" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="q4BZEvWAXVgxHDnkbYNj-4" vertex="1">
           <mxGeometry y="30" width="820" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="q4BZEvWAXVgxHDnkbYNj-27" value="DM-3B-01" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="q4BZEvWAXVgxHDnkbYNj-9" vertex="1">
+        <mxCell id="q4BZEvWAXVgxHDnkbYNj-27" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 102, 102));&quot;&gt;DM-3B-01&lt;/font&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="q4BZEvWAXVgxHDnkbYNj-9" vertex="1">
           <mxGeometry width="137" height="40" as="geometry">
             <mxRectangle width="137" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -151,7 +151,7 @@
         <mxCell id="q4BZEvWAXVgxHDnkbYNj-40" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="q4BZEvWAXVgxHDnkbYNj-4" vertex="1">
           <mxGeometry y="150" width="820" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="q4BZEvWAXVgxHDnkbYNj-41" value="KB-3B-01" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="q4BZEvWAXVgxHDnkbYNj-40" vertex="1">
+        <mxCell id="q4BZEvWAXVgxHDnkbYNj-41" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 102, 102));&quot;&gt;KB-3B-01&lt;/font&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="q4BZEvWAXVgxHDnkbYNj-40" vertex="1">
           <mxGeometry width="137" height="40" as="geometry">
             <mxRectangle width="137" height="40" as="alternateBounds" />
           </mxGeometry>
