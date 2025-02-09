@@ -26,10 +26,10 @@
           <mxGeometry x="70" y="170" width="240" height="20" as="geometry" />
         </mxCell>
         <mxCell id="hB9AYZY-XfLOqYExoFzZ-6" value="Role" style="fillColor=none;strokeColor=none;html=1;fontSize=11;fontStyle=0;align=left;fontColor=#596780;fontStyle=1;fontSize=11" parent="1" vertex="1">
-          <mxGeometry x="70" y="340" width="240" height="20" as="geometry" />
+          <mxGeometry x="70" y="410" width="240" height="20" as="geometry" />
         </mxCell>
         <mxCell id="hB9AYZY-XfLOqYExoFzZ-9" value="- SELECT -" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=#6C767D;fontColor=#ffffff;whiteSpace=wrap;align=right;verticalAlign=middle;fontStyle=0;fontSize=14;spacingRight=20;" parent="1" vertex="1">
-          <mxGeometry x="70" y="360" width="290" height="30" as="geometry" />
+          <mxGeometry x="70" y="430" width="290" height="30" as="geometry" />
         </mxCell>
         <mxCell id="hB9AYZY-XfLOqYExoFzZ-10" value="" style="shape=triangle;direction=south;fillColor=#ffffff;strokeColor=none;perimeter=none;" parent="hB9AYZY-XfLOqYExoFzZ-9" vertex="1">
           <mxGeometry x="1" y="0.5" width="10" height="5" relative="1" as="geometry">
@@ -37,13 +37,24 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="hB9AYZY-XfLOqYExoFzZ-11" value="Save" style="rounded=1;fillColor=#0057D8;strokeColor=none;html=1;whiteSpace=wrap;fontColor=#ffffff;align=center;verticalAlign=middle;fontStyle=0;fontSize=12;sketch=0;" parent="1" vertex="1">
-          <mxGeometry x="70" y="460" width="86" height="33" as="geometry" />
+          <mxGeometry x="70" y="510" width="86" height="33" as="geometry" />
         </mxCell>
         <mxCell id="hB9AYZY-XfLOqYExoFzZ-12" value="Go Back" style="fillColor=none;strokeColor=none;html=1;fontColor=#0057D8;align=center;verticalAlign=middle;fontStyle=0;fontSize=12" parent="1" vertex="1">
-          <mxGeometry x="172" y="460" width="86" height="33" as="geometry" />
+          <mxGeometry x="172" y="510" width="86" height="33" as="geometry" />
         </mxCell>
         <mxCell id="hB9AYZY-XfLOqYExoFzZ-13" value="Only Admins can add or update users.&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Usernames are generated as a combination of Last Name + First Name without whitespace, all lower case&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Passwords are generated after the following pattern:&lt;/div&gt;&lt;div&gt;! + (Lastname) + (4 random numbers)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Example: User with first name &quot;John&quot; and last name &quot;Doe&quot;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Username: &quot;doejohn&quot;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Password: !Doe5931&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontColor=light-dark(#000000,#7D7D7D);fontSize=24;" parent="1" vertex="1">
           <mxGeometry x="460" y="150" width="530" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="MhtOrNq5LNHC4wdC84GW-1" value="Unassigned" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=#6C767D;fontColor=#ffffff;whiteSpace=wrap;align=right;verticalAlign=middle;fontStyle=0;fontSize=14;spacingRight=20;" vertex="1" parent="1">
+          <mxGeometry x="70" y="350" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MhtOrNq5LNHC4wdC84GW-2" value="" style="shape=triangle;direction=south;fillColor=#ffffff;strokeColor=none;perimeter=none;" vertex="1" parent="MhtOrNq5LNHC4wdC84GW-1">
+          <mxGeometry x="1" y="0.5" width="10" height="5" relative="1" as="geometry">
+            <mxPoint x="-17" y="-2.5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MhtOrNq5LNHC4wdC84GW-3" value="Department" style="fillColor=none;strokeColor=none;html=1;fontSize=11;fontStyle=0;align=left;fontColor=#596780;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="70" y="330" width="240" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
