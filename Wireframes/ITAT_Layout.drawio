@@ -58,8 +58,11 @@
         <mxCell id="0eSPpPdMF_spcNKqKybd-8" value="" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;strokeWidth=1;shape=mxgraph.mockup.graphics.simpleIcon;strokeColor=#999999;" parent="1" vertex="1">
           <mxGeometry x="40" y="170" width="1020" height="500" as="geometry" />
         </mxCell>
-        <mxCell id="xIYmmhUCQgaQPohyik-l-1" value="Requests &lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 15, 15));&quot;&gt;(3)&lt;/font&gt;" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
+        <mxCell id="xIYmmhUCQgaQPohyik-l-1" value="Requests &lt;font style=&quot;color: light-dark(rgb(255, 15, 15), rgb(255, 15, 15));&quot;&gt;(3)&lt;/font&gt;" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
           <mxGeometry x="750" y="40" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="L9BOtva_BqEtC3Qi71vC-2" value="Rergister Employee" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" vertex="1" parent="1">
+          <mxGeometry x="910" y="80" width="60" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
