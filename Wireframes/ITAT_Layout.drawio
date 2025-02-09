@@ -11,13 +11,13 @@
           <mxGeometry x="50" y="70" width="280" height="50" as="geometry" />
         </mxCell>
         <mxCell id="677b7b8949515195-4" value="&lt;u&gt;Assets&lt;/u&gt;" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
-          <mxGeometry x="680" y="40" width="60" height="20" as="geometry" />
+          <mxGeometry x="570" y="40" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="677b7b8949515195-5" value="Tickets" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
-          <mxGeometry x="860" y="40" width="60" height="20" as="geometry" />
+          <mxGeometry x="750" y="40" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="677b7b8949515195-6" value="Reports" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
-          <mxGeometry x="930" y="40" width="60" height="20" as="geometry" />
+          <mxGeometry x="830" y="40" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="677b7b8949515195-7" value="Logout" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
           <mxGeometry x="1000" y="40" width="60" height="20" as="geometry" />
@@ -59,10 +59,10 @@
           <mxGeometry x="40" y="170" width="1020" height="500" as="geometry" />
         </mxCell>
         <mxCell id="xIYmmhUCQgaQPohyik-l-1" value="Requests &lt;font style=&quot;color: light-dark(rgb(255, 15, 15), rgb(255, 15, 15));&quot;&gt;(3)&lt;/font&gt;" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
-          <mxGeometry x="750" y="40" width="70" height="20" as="geometry" />
+          <mxGeometry x="640" y="40" width="70" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="L9BOtva_BqEtC3Qi71vC-2" value="Rergister Employee" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" vertex="1" parent="1">
-          <mxGeometry x="910" y="80" width="60" height="20" as="geometry" />
+        <mxCell id="L9BOtva_BqEtC3Qi71vC-2" value="Employees" style="text;html=1;points=[];align=left;verticalAlign=top;spacingTop=-4;fontSize=14;fontFamily=Verdana" parent="1" vertex="1">
+          <mxGeometry x="905" y="40" width="60" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
