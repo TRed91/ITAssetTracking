@@ -236,7 +236,7 @@
             <mxRectangle width="769" height="40" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="y86xiS6CzLBwcgfLMdS_-28" value="&lt;b&gt;Lincences in use&lt;/b&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#6c8ebf;overflow=hidden;fillColor=#dae8fc;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;align=left;" parent="y86xiS6CzLBwcgfLMdS_-25" vertex="1">
+        <mxCell id="y86xiS6CzLBwcgfLMdS_-28" value="&lt;b&gt;Licenses in use&lt;/b&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#6c8ebf;overflow=hidden;fillColor=#dae8fc;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;align=left;" parent="y86xiS6CzLBwcgfLMdS_-25" vertex="1">
           <mxGeometry x="769" width="231" height="40" as="geometry">
             <mxRectangle width="231" height="40" as="alternateBounds" />
           </mxGeometry>
