@@ -13,4 +13,15 @@ public class Asset
     public string SerialNumber { get; set; }
     public DateTime PurchaseDate { get; set; }
     public decimal PurchasePrice { get; set; }
+    
+    AssetType AssetType { get; set; }
+    Manufacturer Manufacturer { get; set; }
+    Model Model { get; set; }
+    AssetStatus AssetStatus { get; set; }
+    Location Location { get; set; }
+    
+    List<AssetAssignment> AssetAssignments { get; set; }
+    List<SoftwareAssetAssignment> SoftwareAssetAssignments { get; set; }
+    List<AssetRequest> AssetRequests { get; set; }
+    List<SoftwareAssetRequest> SoftwareAssetRequests { get; set; }
 }

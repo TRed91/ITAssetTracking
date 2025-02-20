@@ -12,4 +12,11 @@ public class SoftwareAsset
     public int NumberOfLicenses { get; set; }
     public string Version { get; set; }
     public DateTime ExpirationDate { get; set; }
+    
+    Manufacturer Manufacturer { get; set; }
+    LicenseType LicenseType { get; set; }
+    AssetStatus AssetStatus { get; set; }
+    
+    List<SoftwareAssetRequest> SoftwareAssetRequests { get; set; }
+    List<SoftwareAssetAssignment> SoftwareAssetAssignments { get; set; }
 }

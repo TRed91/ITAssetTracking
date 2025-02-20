@@ -10,4 +10,8 @@ public class SoftwareAssetAssignment
     
     public DateTime AssignmentDate { get; set; }
     public DateTime ReturnDate { get; set; }
+    
+    SoftwareAsset SoftwareAsset { get; set; }
+    Employee Employee { get; set; }
+    Asset Asset { get; set; }
 }

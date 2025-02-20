@@ -11,4 +11,9 @@ public class AssetRequest
     
     public DateTime RequestDate { get; set; }
     public string RequestNote { get; set; }
+    
+    Asset Asset { get; set; }
+    Employee Employee { get; set; }
+    Department Department { get; set; }
+    RequestResult RequestResult { get; set; }
 }
