@@ -6,9 +6,9 @@ public interface ISoftwareAssetRepository
 {
     SoftwareAsset? GetSoftwareAsset(int softwareAssetId);
     
-    List<SoftwareAsset> GetSoftwareAssets();
-    List<SoftwareAsset> GetSoftwareAssetsByManufacturer(int manufacturerId);
-    List<SoftwareAsset> GetSoftwareAssetsByType(int licenseTypeId);
+    List<SoftwareAsset> GetSoftwareAssets(bool includeExpired);
+    List<SoftwareAsset> GetSoftwareAssetsByManufacturer(int manufacturerId, bool includeExpired);
+    List<SoftwareAsset> GetSoftwareAssetsByType(int licenseTypeId, bool includeExpired);
     List<SoftwareAsset> GetSoftwareAssetsByStatus(int assetStatusId);
     
     void AddSoftwareAsset(SoftwareAsset softwareAsset);

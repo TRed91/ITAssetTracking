@@ -8,9 +8,9 @@ public interface ISoftwareAssetRequestRepository
     
     List<SoftwareAssetRequest> GetSoftwareAssetRequests();
     List<SoftwareAssetRequest> GetOpenSoftwareAssetRequests();
-    List<SoftwareAssetRequest> GetRequestsByEmployeeId(int employeeId);
-    List<SoftwareAssetRequest> GetRequestsBySoftwareId(int softwareAssetId);
-    List<SoftwareAssetRequest> GetRequestsByAssetId(int assetId);
+    List<SoftwareAssetRequest> GetRequestsByEmployeeId(int employeeId, bool includeClosed);
+    List<SoftwareAssetRequest> GetRequestsBySoftwareId(int softwareAssetId, bool includeClosed);
+    List<SoftwareAssetRequest> GetRequestsByAssetId(int assetId, bool includeClosed);
     List<SoftwareAssetRequest> GetRequestsByResultId(int requestResultId);
     List<SoftwareAssetRequest> GetRequestsInDateRange(DateTime startDate, DateTime endDate);
     

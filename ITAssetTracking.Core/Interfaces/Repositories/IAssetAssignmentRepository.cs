@@ -6,10 +6,10 @@ public interface IAssetAssignmentRepository
 {
     AssetAssignment? GetAssetAssignmentById(int assetAssignmentId);
     
-    List<AssetAssignment> GetAllAssetAssignments();
-    List<AssetAssignment> GetAssetAssignmentsByAssetId(int assetId);
-    List<AssetAssignment> GetAssetAssignmentsByDepartmentId(int departmentId);
-    List<AssetAssignment> GetAssetAssignmentsByEmployeeId(int employeeId);
+    List<AssetAssignment> GetAllAssetAssignments(bool includeReturned);
+    List<AssetAssignment> GetAssetAssignmentsByAssetId(int assetId, bool includeReturned);
+    List<AssetAssignment> GetAssetAssignmentsByDepartmentId(int departmentId, bool includeReturned);
+    List<AssetAssignment> GetAssetAssignmentsByEmployeeId(int employeeId, bool includeReturned);
     List<AssetAssignment> GetAssetAssignmentsInDateRange(DateTime startDate, DateTime endDate);
     
     void AddAssetAssignment(AssetAssignment assetAssignment);
