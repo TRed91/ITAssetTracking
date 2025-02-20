@@ -1,0 +1,20 @@
+﻿using ITAssetTracking.Core.Entities;
+
+namespace ITAssetTracking.Core.Interfaces.Repositories;
+
+public interface ISoftwareAssetRequestRepository
+{
+    SoftwareAssetRequest? GetSoftwareAssetRequestById(int softwareAssetRequestId);
+    
+    List<SoftwareAssetRequest> GetSoftwareAssetRequests();
+    List<SoftwareAssetRequest> GetOpenSoftwareAssetRequests();
+    List<SoftwareAssetRequest> GetRequestsByEmployeeId(int employeeId);
+    List<SoftwareAssetRequest> GetRequestsBySoftwareId(int softwareAssetId);
+    List<SoftwareAssetRequest> GetRequestsByAssetId(int assetId);
+    List<SoftwareAssetRequest> GetRequestsByResultId(int requestResultId);
+    List<SoftwareAssetRequest> GetRequestsInDateRange(DateTime startDate, DateTime endDate);
+    
+    void AddRequest(SoftwareAssetRequest softwareAssetRequest);
+    void UpdateRequest(SoftwareAssetRequest softwareAssetRequest);
+    void DeleteRequest(SoftwareAssetRequest softwareAssetRequest);
+}
