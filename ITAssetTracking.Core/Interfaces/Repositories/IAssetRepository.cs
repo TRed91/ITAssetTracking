@@ -17,4 +17,11 @@ public interface IAssetRepository
     void AddAsset(Asset asset);
     void UpdateAsset(Asset asset);
     void DeleteAsset(Asset asset);
+    
+    List<Manufacturer> GetManufacturers();
+    List<Model> GetModels();
+    List<Model> GetModelsByManufacturer(int manufacturerId);
+    List<AssetType> GetAssetTypes();
+    List<Location> GetLocations();
+    List<AssetStatus> GetAssetStatuses();
 }

@@ -23,4 +23,9 @@ public interface ITicketRepository
     void AddTicketNote(TicketNotes ticketNote);
     void UpdateTicketNote(TicketNotes ticketNote);
     void DeleteTicketNote(TicketNotes ticketNote);
+    
+    List<TicketStatus> GetTicketStatuses();
+    List<TicketPriority> GetTicketPriorities();
+    List<TicketResolution> GetTicketResolutions();
+    List<TicketType> GetTicketTypes();
 }

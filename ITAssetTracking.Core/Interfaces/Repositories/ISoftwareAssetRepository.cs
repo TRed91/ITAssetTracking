@@ -14,4 +14,7 @@ public interface ISoftwareAssetRepository
     void AddSoftwareAsset(SoftwareAsset softwareAsset);
     void UpdateSoftwareAsset(SoftwareAsset softwareAsset);
     void DeleteSoftwareAsset(SoftwareAsset softwareAsset);
+    
+    List<LicenseType> GetLicenseTypes();
+    List<LicenseType> GetLicenseTypesByManufacturer(int manufacturerId);
 }
