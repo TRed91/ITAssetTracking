@@ -1,4 +1,6 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class Ticket
 {
@@ -8,7 +10,9 @@ public class Ticket
     public byte TicketTypeID { get; set; }
     public byte TicketPriorityID { get; set; }
     public byte TicketResolutionID { get; set; }
+    [ForeignKey("Employee")]
     public int ReportedByEmployeeID { get; set; }
+    [ForeignKey("Employee")]
     public int AssignedToEmployeeID { get; set; }
     public long AssetID { get; set; }
     
