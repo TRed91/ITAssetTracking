@@ -4,7 +4,7 @@ namespace ITAssetTracking.Core.Interfaces.Repositories;
 
 public interface IAssetRequestRepository
 {
-    AssetRequest? GetAssetRequestById(string assetRequestId);
+    AssetRequest? GetAssetRequestById(int assetRequestId);
     
     List<AssetRequest> GetAssetRequests();
     List<AssetRequest> GetOpenAssetRequests();

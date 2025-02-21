@@ -6,11 +6,11 @@ public class SoftwareAssetRequest
     
     public int SoftwareAssetID { get; set; }
     public int EmployeeID { get; set; }
-    public long AssetID { get; set; }
-    public byte RequestResultID { get; set; }
+    public long? AssetID { get; set; }
+    public byte? RequestResultID { get; set; }
     
     public DateTime RequestDate { get; set; }
-    public string RequestNote { get; set; }
+    public string? RequestNote { get; set; }
     
     SoftwareAsset SoftwareAsset { get; set; }
     Employee Employee { get; set; }

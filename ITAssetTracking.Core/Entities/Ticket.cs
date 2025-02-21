@@ -9,15 +9,15 @@ public class Ticket
     public byte TicketStatusID { get; set; }
     public byte TicketTypeID { get; set; }
     public byte TicketPriorityID { get; set; }
-    public byte TicketResolutionID { get; set; }
+    public byte? TicketResolutionID { get; set; }
     [ForeignKey("Employee")]
     public int ReportedByEmployeeID { get; set; }
     [ForeignKey("Employee")]
-    public int AssignedToEmployeeID { get; set; }
+    public int? AssignedToEmployeeID { get; set; }
     public long AssetID { get; set; }
     
     public DateTime DateReported { get; set; }
-    public DateTime DateClosed { get; set; }
+    public DateTime? DateClosed { get; set; }
     public string IssueDescription { get; set; }
     
     TicketStatus TicketStatus { get; set; }

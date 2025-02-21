@@ -9,7 +9,7 @@ public class AssetAssignment
     public int EmployeeID { get; set; }
     
     public DateTime AssignmentDate { get; set; }
-    public DateTime ReturnDate { get; set; }
+    public DateTime? ReturnDate { get; set; }
     
     Asset Asset { get; set; }
     Department Department { get; set; }

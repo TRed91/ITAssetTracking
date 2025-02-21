@@ -10,9 +10,9 @@ public interface ITicketRepository
     List<Ticket> GetUnassignedTickets();
     List<Ticket> GetOpenTickets();
     List<Ticket> GetTicketsInDateRange(DateTime startDate, DateTime endDate);
-    List<Ticket> GetTicketsByStatus(int ticketStatusId);
-    List<Ticket> GetTicketsByType(int ticketTypeId);
-    List<Ticket> GetTicketsByPriority(int ticketPriorityId);
+    List<Ticket> GetTicketsByStatus(int ticketStatusId, bool includeClosed);
+    List<Ticket> GetTicketsByType(int ticketTypeId, bool includeClosed);
+    List<Ticket> GetTicketsByPriority(int ticketPriorityId, bool includeClosed);
     
     void AddTicket(Ticket ticket);
     void UpdateTicket(Ticket ticket);

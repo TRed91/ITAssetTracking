@@ -25,31 +25,36 @@ public class AssetRepository : IAssetRepository
 
     public List<Asset> GetAssetsByType(int assetTypeId)
     {
-        return _context.Asset.Where(a => a.AssetTypeID == assetTypeId)
+        return _context.Asset
+            .Where(a => a.AssetTypeID == assetTypeId)
             .ToList();
     }
 
     public List<Asset> GetAssetsByLocation(int locationId)
     {
-        return _context.Asset.Where(a => a.LocationID == locationId)
+        return _context.Asset
+            .Where(a => a.LocationID == locationId)
             .ToList();
     }
 
     public List<Asset> GetAssetsByModel(int modelId)
     {
-        return _context.Asset.Where(a => a.ModelID == modelId)
+        return _context.Asset
+            .Where(a => a.ModelID == modelId)
             .ToList();
     }
 
     public List<Asset> GetAssetsByManufacturer(int manufacturerId)
     {
-        return _context.Asset.Where(a => a.ManufacturerID == manufacturerId)
+        return _context.Asset
+            .Where(a => a.ManufacturerID == manufacturerId)
             .ToList();
     }
 
     public List<Asset> GetAssetsByStatus(int assetStatusId)
     {
-        return _context.Asset.Where(a => a.AssetStatusID == assetStatusId)
+        return _context.Asset
+            .Where(a => a.AssetStatusID == assetStatusId)
             .ToList();
     }
 
@@ -90,7 +95,8 @@ public class AssetRepository : IAssetRepository
 
     public List<Model> GetModelsByManufacturer(int manufacturerId)
     {
-        return _context.AssetModel.Where(m => m.ManufacturerID == manufacturerId)
+        return _context.AssetModel
+            .Where(m => m.ManufacturerID == manufacturerId)
             .ToList();
     }
 
