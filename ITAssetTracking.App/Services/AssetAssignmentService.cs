@@ -130,13 +130,13 @@ public class AssetAssignmentService : IAssetAssignmentService
             {
                 return ResultFactory.Fail("Employee not found");
             }
-            // Check of Department exists
+            // Check if Department exists
             var department = _departmentRepo.GetDepartmentById(assetAssignment.DepartmentID);
             if (department == null)
             {
                 return ResultFactory.Fail("Department not found");
             }
-            // set assignment date to today
+            
             assetAssignment.AssignmentDate = DateTime.Now;
             
             _assetAssignmentRepo.AddAssetAssignment(assetAssignment);
@@ -164,6 +164,19 @@ public class AssetAssignmentService : IAssetAssignmentService
             if (assignments.Any(a => a.ReturnDate == null && a.AssetAssignmentID != assetAssignment.AssetAssignmentID))
             {
                 return ResultFactory.Fail("Asset is currently in use");
+            }
+            
+            // Check if Employee exists
+            var employee = _employeeRepo.GetEmployee(assetAssignment.EmployeeID);
+            if (employee == null)
+            {
+                return ResultFactory.Fail("Employee not found");
+            }
+            // Check if Department exists
+            var department = _departmentRepo.GetDepartmentById(assetAssignment.DepartmentID);
+            if (department == null)
+            {
+                return ResultFactory.Fail("Department not found");
             }
 
             originalAssignment.AssetID = assetAssignment.AssetID;

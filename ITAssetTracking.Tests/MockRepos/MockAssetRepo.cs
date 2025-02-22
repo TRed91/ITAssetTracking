@@ -5,64 +5,85 @@ namespace ITAssetTracking.Tests.MockRepos;
 
 public class MockAssetRepo : IAssetRepository
 {
+    private readonly MockDB _db;
+
+    public MockAssetRepo()
+    {
+        _db = new MockDB();
+    }
+    
     public Asset? GetAssetById(long assetId)
     {
-        throw new NotImplementedException();
+        return _db.Assets.FirstOrDefault(a => a.AssetID == assetId);
     }
 
     public Asset? GetAssetBySerialNumber(string serialNumber)
     {
-        throw new NotImplementedException();
+        return _db.Assets.FirstOrDefault(a => a.SerialNumber == serialNumber);
     }
 
     public List<Asset> GetAssets(int assetTypeId = 0, int locationId = 0, int modelId = 0, int manufacturerId = 0)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => 
+            (assetTypeId != 0 ? a.AssetTypeID == assetTypeId : a.AssetTypeID > 0) &&
+            (locationId != 0 ? a.LocationID == locationId : a.LocationID > 0) && 
+            (modelId != 0 ? a.ModelID == modelId : a.ModelID > 0) &&
+            (manufacturerId != 0 ? a.ManufacturerID == manufacturerId : a.ManufacturerID > 0))
+            .ToList();
     }
 
     public List<Asset> GetAssetsByType(int assetTypeId)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => a.AssetTypeID == assetTypeId).ToList();
     }
 
     public List<Asset> GetAssetsByLocation(int locationId)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => a.LocationID == locationId).ToList();
     }
 
     public List<Asset> GetAssetsByModel(int modelId)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => a.ModelID == modelId).ToList();
     }
 
     public List<Asset> GetAssetsByManufacturer(int manufacturerId)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => a.ManufacturerID == manufacturerId).ToList();
     }
 
     public List<Asset> GetAssetsByStatus(int assetStatusId)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => a.AssetStatusID == assetStatusId).ToList();
     }
 
     public List<Asset> GetAssetsInDateRange(DateTime startDate, DateTime endDate)
     {
-        throw new NotImplementedException();
+        return _db.Assets.Where(a => a.PurchaseDate >= startDate && a.PurchaseDate <= endDate).ToList();
     }
 
     public void AddAsset(Asset asset)
     {
-        throw new NotImplementedException();
+        asset.AssetID = _db.Assets.Max(a => a.AssetID) + 1;
+        _db.Assets.Add(asset);
     }
 
     public void UpdateAsset(Asset asset)
     {
-        throw new NotImplementedException();
+        var assetToUpdate = _db.Assets.FirstOrDefault(a => a.AssetID == asset.AssetID);
+        assetToUpdate.AssetStatusID = asset.AssetStatusID;
+        assetToUpdate.PurchaseDate = asset.PurchaseDate;
+        assetToUpdate.PurchasePrice = asset.PurchasePrice;
+        assetToUpdate.AssetTypeID = asset.AssetTypeID;
+        assetToUpdate.ModelID = asset.ModelID;
+        assetToUpdate.ManufacturerID = asset.ManufacturerID;
+        assetToUpdate.LocationID = asset.LocationID;
+        assetToUpdate.SerialNumber = asset.SerialNumber;
     }
 
     public void DeleteAsset(Asset asset)
     {
-        throw new NotImplementedException();
+        _db.Assets.Remove(asset);
     }
 
     public List<Manufacturer> GetManufacturers()
@@ -87,7 +108,7 @@ public class MockAssetRepo : IAssetRepository
 
     public List<Location> GetLocations()
     {
-        throw new NotImplementedException();
+        return _db.Locations.ToList();
     }
 
     public List<AssetStatus> GetAssetStatuses()

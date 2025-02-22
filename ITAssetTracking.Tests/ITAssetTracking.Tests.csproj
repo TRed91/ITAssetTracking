@@ -10,4 +10,10 @@
       <ProjectReference Include="..\ITAssetTracking.App\ITAssetTracking.App.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0-preview-25107-01" />
+      <PackageReference Include="NUnit" Version="4.3.2" />
+      <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    </ItemGroup>
+
 </Project>

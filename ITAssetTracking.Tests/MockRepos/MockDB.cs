@@ -32,13 +32,32 @@ public class MockDB
         },
         new AssetAssignment
         {
-            AssetAssignmentID = 2, AssetID = 2, DepartmentID = 2, EmployeeID = 2,
+            AssetAssignmentID = 2, AssetID = 2, DepartmentID = 1, EmployeeID = 2,
             AssignmentDate = new DateTime(2025, 02, 02), ReturnDate = new DateTime(2025, 02, 09)
         },
         new AssetAssignment
         {
-            AssetAssignmentID = 3, AssetID = 3, DepartmentID = 3, EmployeeID = 3,
+            AssetAssignmentID = 3, AssetID = 3, DepartmentID = 2, EmployeeID = 3,
             AssignmentDate = new DateTime(2025, 02, 02), ReturnDate = null
         },
+    };
+
+    public List<Department> Departments = new List<Department>
+    {
+        new Department { DepartmentID = 1, DepartmentName = "Department 1" },
+        new Department { DepartmentID = 2, DepartmentName = "Department 2" },
+    };
+
+    public List<Employee> Employees = new List<Employee>
+    {
+        new Employee { EmployeeID = 1, DepartmentID = 1, FirstName = "John", LastName = "Doe" },
+        new Employee { EmployeeID = 2, DepartmentID = 1, FirstName = "Jane", LastName = "Doe" },
+        new Employee { EmployeeID = 3, DepartmentID = 2, FirstName = "Emily", LastName = "Brown" },
+    };
+
+    public List<Location> Locations = new List<Location>
+    {
+        new Location { LocationID = 1, LocationName = "Location 1" },
+        new Location { LocationID = 2, LocationName = "Location 2" },
     };
 }
