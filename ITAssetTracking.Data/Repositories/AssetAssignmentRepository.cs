@@ -29,7 +29,7 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
             .ToList();
     }
 
-    public List<AssetAssignment> GetAssetAssignmentsByAssetId(int assetId, bool includeReturned)
+    public List<AssetAssignment> GetAssetAssignmentsByAssetId(long assetId, bool includeReturned)
     {
         if (includeReturned)
         {

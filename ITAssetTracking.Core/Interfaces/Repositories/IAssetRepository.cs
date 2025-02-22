@@ -4,9 +4,10 @@ namespace ITAssetTracking.Core.Interfaces.Repositories;
 
 public interface IAssetRepository
 {
-    Asset? GetAssetById(int assetId);
+    Asset? GetAssetById(long assetId);
+    Asset? GetAssetBySerialNumber(string serialNumber);
     
-    List<Asset> GetAssets();
+    List<Asset> GetAssets(int assetTypeId = 0, int locationId = 0, int modelId = 0, int manufacturerId = 0);
     List<Asset> GetAssetsByType(int assetTypeId);
     List<Asset> GetAssetsByLocation(int locationId);
     List<Asset> GetAssetsByModel(int modelId);

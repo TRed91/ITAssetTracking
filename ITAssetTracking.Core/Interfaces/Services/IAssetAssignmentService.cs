@@ -8,7 +8,7 @@ public interface IAssetAssignmentService
     Result<AssetAssignment> GetAssetAssignmentById(int assetAssignmentId);
     
     Result<List<AssetAssignment>> GetAllAssetAssignments(bool includeReturned = true);
-    Result<List<AssetAssignment>> GetAssetAssignmentsByAsset(int assetId, bool includeReturned = true);
+    Result<List<AssetAssignment>> GetAssetAssignmentsByAsset(long assetId, bool includeReturned = true);
     Result<List<AssetAssignment>> GetAssetAssignmentsByDepartment(int departmentId, bool includeReturned = true);
     Result<List<AssetAssignment>> GetAssetAssignmentsByEmployee(int employeeId, bool includeReturned = true);
     Result<List<AssetAssignment>> GetAssetAssignmentsInDateRange(DateTime startDate, DateTime endDate);
