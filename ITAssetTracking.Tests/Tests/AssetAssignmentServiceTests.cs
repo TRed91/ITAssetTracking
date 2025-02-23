@@ -14,7 +14,8 @@ public class AssetAssignmentServiceTests
          return new AssetAssignmentService(
             new MockAssetAssignmentRepo(), 
             new MockEmployeeRepo(),
-            new MockDepartmentRepo());
+            new MockDepartmentRepo(),
+            new MockAssetRepo());
     }
     [Test]
     public void AddsAssignment_Success()
@@ -32,6 +33,20 @@ public class AssetAssignmentServiceTests
         
         Assert.That(result.Ok, Is.True);
         Assert.That(newAssignment.AssetAssignmentID, Is.EqualTo(4));
+    }
+    
+    [Test]
+    public void NewAssetAssignment_Success_NullEmployeeID()
+    {
+        var service = GetService();
+        var newAssignment = new AssetAssignment
+        {
+            AssetID = 2,
+            DepartmentID = 2,
+            EmployeeID = null
+        };
+        var result = service.AddAssetAssignment(newAssignment);
+        Assert.That(result.Ok, Is.True);
     }
 
     [Test]
@@ -83,6 +98,23 @@ public class AssetAssignmentServiceTests
         
         Assert.That(result.Ok, Is.False);
         Assert.That(result.Message, Is.EqualTo("Department not found"));
+    }
+    
+    [Test]
+    public void NewAssetAssignment_Fail_EmployeeDepartmentNoMatch()
+    {
+        var service = GetService();
+        
+        var newAssignment = new AssetAssignment
+        {
+            AssetID = 2,
+            DepartmentID = 2,
+            EmployeeID = 1,
+        };
+        var result = service.AddAssetAssignment(newAssignment);
+        
+        Assert.That(result.Ok, Is.False);
+        Assert.That(result.Message, Is.EqualTo("Employee is not assigned to the requested department"));
     }
 
     [Test]

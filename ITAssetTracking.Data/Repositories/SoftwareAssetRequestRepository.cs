@@ -56,7 +56,7 @@ public class SoftwareAssetRequestRepository : ISoftwareAssetRequestRepository
             .ToList();
     }
 
-    public List<SoftwareAssetRequest> GetRequestsByAssetId(int assetId, bool includeClosed)
+    public List<SoftwareAssetRequest> GetRequestsByAssetId(long assetId, bool includeClosed)
     {
         if (includeClosed)
         {

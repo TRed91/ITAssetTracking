@@ -42,6 +42,25 @@ public class MockDB
         },
     };
 
+    public List<AssetRequest> AssetRequests = new List<AssetRequest>
+    {
+        new AssetRequest
+        {
+            AssetRequestID = 1, AssetID = 1, DepartmentID = 1, EmployeeID = 1,
+            RequestDate = new DateTime(2025, 02, 15), RequestResultID = null, RequestNote = null
+        },
+        new AssetRequest
+        {
+            AssetRequestID = 2, AssetID = 2, DepartmentID = 1, EmployeeID = 1,
+            RequestDate = new DateTime(2025, 02, 10), RequestResultID = 2, RequestNote = "Not for you"
+        },
+        new AssetRequest
+        {
+            AssetRequestID = 3, AssetID = 3, DepartmentID = 1, EmployeeID = 2,
+            RequestDate = new DateTime(2025, 02, 10), RequestResultID = 1, RequestNote = null
+        },
+    };
+
     public List<Department> Departments = new List<Department>
     {
         new Department { DepartmentID = 1, DepartmentName = "Department 1" },

@@ -10,15 +10,18 @@ public class AssetAssignmentService : IAssetAssignmentService
     private readonly IAssetAssignmentRepository _assetAssignmentRepo;
     private readonly IEmployeeRepository _employeeRepo;
     private readonly IDepartmentRepository _departmentRepo;
+    private readonly IAssetRepository _assetRepo;
 
     public AssetAssignmentService(
         IAssetAssignmentRepository assetAssignmentRepository, 
         IEmployeeRepository employeeRepository, 
-        IDepartmentRepository departmentRepository)
+        IDepartmentRepository departmentRepository, 
+        IAssetRepository assetRepository)
     {
         _assetAssignmentRepo = assetAssignmentRepository;
         _employeeRepo = employeeRepository;
         _departmentRepo = departmentRepository;
+        _assetRepo = assetRepository;
     }
     
     public Result<AssetAssignment> GetAssetAssignmentById(int assetAssignmentId)
@@ -117,6 +120,12 @@ public class AssetAssignmentService : IAssetAssignmentService
     {
         try
         {
+            // check if asset exists
+            var asset = _assetRepo.GetAssetById(assetAssignment.AssetID);
+            if (asset == null)
+            {
+                return ResultFactory.Fail<AssetAssignment>("Asset not found");
+            }
             // Check if there are unreturned assignments for the asset
             var assignments = _assetAssignmentRepo
                 .GetAssetAssignmentsByAssetId(assetAssignment.AssetID, false);
@@ -124,17 +133,25 @@ public class AssetAssignmentService : IAssetAssignmentService
             {
                 return ResultFactory.Fail("Asset is currently in use");
             }
-            // Check if Employee exists
-            var employee = _employeeRepo.GetEmployee(assetAssignment.EmployeeID);
-            if (employee == null)
-            {
-                return ResultFactory.Fail("Employee not found");
-            }
             // Check if Department exists
             var department = _departmentRepo.GetDepartmentById(assetAssignment.DepartmentID);
             if (department == null)
             {
                 return ResultFactory.Fail("Department not found");
+            }
+            // Check if Employee exists and is assigned to the correct department
+            if (assetAssignment.EmployeeID != null && assetAssignment.EmployeeID != 0)
+            {
+                var employee = _employeeRepo.GetEmployee((int)assetAssignment.EmployeeID);
+                if (employee == null)
+                {
+                    return ResultFactory.Fail("Employee not found");
+                }
+
+                if (employee.DepartmentID != assetAssignment.DepartmentID)
+                {
+                    return ResultFactory.Fail("Employee is not assigned to the requested department");
+                }
             }
             
             assetAssignment.AssignmentDate = DateTime.Now;
@@ -158,6 +175,12 @@ public class AssetAssignmentService : IAssetAssignmentService
                 return ResultFactory.Fail("Asset assignment not found");
             }
             
+            // check if asset exists
+            var asset = _assetRepo.GetAssetById(assetAssignment.AssetID);
+            if (asset == null)
+            {
+                return ResultFactory.Fail<AssetAssignment>("Asset not found");
+            }
             // Check if there are unreturned assignments for the asset
             var assignments = _assetAssignmentRepo
                 .GetAssetAssignmentsByAssetId(assetAssignment.AssetID, false);
@@ -165,12 +188,14 @@ public class AssetAssignmentService : IAssetAssignmentService
             {
                 return ResultFactory.Fail("Asset is currently in use");
             }
-            
             // Check if Employee exists
-            var employee = _employeeRepo.GetEmployee(assetAssignment.EmployeeID);
-            if (employee == null)
+            if (assetAssignment.EmployeeID != null && assetAssignment.EmployeeID != 0)
             {
-                return ResultFactory.Fail("Employee not found");
+                var employee = _employeeRepo.GetEmployee((int)assetAssignment.EmployeeID);
+                if (employee == null)
+                {
+                    return ResultFactory.Fail("Employee not found");
+                }
             }
             // Check if Department exists
             var department = _departmentRepo.GetDepartmentById(assetAssignment.DepartmentID);

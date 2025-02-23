@@ -14,7 +14,7 @@ public class AssetService : IAssetService
         _assetRepo = assetRepository;
     }
     
-    public Result<Asset> GetAssetById(int assetId)
+    public Result<Asset> GetAssetById(long assetId)
     {
         try
         {

@@ -10,7 +10,7 @@ public interface ISoftwareAssetRequestRepository
     List<SoftwareAssetRequest> GetOpenSoftwareAssetRequests();
     List<SoftwareAssetRequest> GetRequestsByEmployeeId(int employeeId, bool includeClosed);
     List<SoftwareAssetRequest> GetRequestsBySoftwareId(int softwareAssetId, bool includeClosed);
-    List<SoftwareAssetRequest> GetRequestsByAssetId(int assetId, bool includeClosed);
+    List<SoftwareAssetRequest> GetRequestsByAssetId(long assetId, bool includeClosed);
     List<SoftwareAssetRequest> GetRequestsByResultId(int requestResultId);
     List<SoftwareAssetRequest> GetRequestsInDateRange(DateTime startDate, DateTime endDate);
     

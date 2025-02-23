@@ -6,7 +6,7 @@ public class SoftwareAssetAssignment
     
     public int SoftwareAssetID { get; set; }
     public long? AssetID { get; set; }
-    public int EmployeeID { get; set; }
+    public int? EmployeeID { get; set; }
     
     public DateTime AssignmentDate { get; set; }
     public DateTime? ReturnDate { get; set; }

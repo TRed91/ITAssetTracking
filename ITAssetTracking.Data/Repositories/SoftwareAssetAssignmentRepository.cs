@@ -54,7 +54,7 @@ public class SoftwareAssetAssignmentRepository : ISoftwareAssetAssignmentReposit
             .ToList();
     }
 
-    public List<SoftwareAssetAssignment> GetAssignmentByAssetId(int assetId, bool includeReturned)
+    public List<SoftwareAssetAssignment> GetAssignmentByAssetId(long assetId, bool includeReturned)
     {
         if (includeReturned)
         {
@@ -64,6 +64,13 @@ public class SoftwareAssetAssignmentRepository : ISoftwareAssetAssignmentReposit
         }
         return _context.SoftwareAssetAssignment
             .Where(s => s.AssetID == assetId && s.ReturnDate == null)
+            .ToList();
+    }
+
+    public List<SoftwareAssetAssignment> GetAssignmentsInDateRange(DateTime startDate, DateTime endDate)
+    {
+        return _context.SoftwareAssetAssignment
+            .Where(s => s.AssignmentDate >= startDate && s.AssignmentDate <= endDate)
             .ToList();
     }
 

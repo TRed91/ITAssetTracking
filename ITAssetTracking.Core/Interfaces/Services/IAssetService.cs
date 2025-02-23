@@ -5,7 +5,7 @@ namespace ITAssetTracking.Core.Interfaces.Services;
 
 public interface IAssetService
 {
-    Result<Asset> GetAssetById(int assetId);
+    Result<Asset> GetAssetById(long assetId);
     
     Result<List<Asset>> GetAllAssets(int assetTypeId = 0, int locationId = 0, int modelId = 0, int manufacturerId = 0);
     Result<List<Asset>> GetAssetsByType(int assetTypeId);

@@ -8,7 +8,7 @@ public interface IAssetRequestRepository
     
     List<AssetRequest> GetAssetRequests();
     List<AssetRequest> GetOpenAssetRequests();
-    List<AssetRequest> GetAssetRequestsByAssetId(int assetId, bool includeClosed);
+    List<AssetRequest> GetAssetRequestsByAssetId(long assetId, bool includeClosed);
     List<AssetRequest> GetAssetRequestsByEmployeeId(int employeeId, bool includeClosed);
     List<AssetRequest> GetAssetRequestsByDepartmentId(int departmentId, bool includeClosed);
     List<AssetRequest> GetAssetRequestsByResultId(int requestResultId);
