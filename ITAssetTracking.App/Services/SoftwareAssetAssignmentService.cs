@@ -183,7 +183,8 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
             // check if there are open assignment
             var assignments = _swaaRepository.GetAssignmentsBySoftwareAssetId(
                 softwareAssetAssignment.SoftwareAssetID, false);
-            if (assignments.Count > 0)
+            if (assignments.Any(a => a.ReturnDate == null && 
+                                     softwareAssetAssignment.AssetAssignmentID != a.AssetAssignmentID))
             {
                 return ResultFactory.Fail("Software asset is already assigned");
             }

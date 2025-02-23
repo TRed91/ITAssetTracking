@@ -129,7 +129,7 @@ public class AssetAssignmentService : IAssetAssignmentService
             // Check if there are unreturned assignments for the asset
             var assignments = _assetAssignmentRepo
                 .GetAssetAssignmentsByAssetId(assetAssignment.AssetID, false);
-            if (assignments.Any(a => a.ReturnDate == null))
+            if (assignments.Count > 0)
             {
                 return ResultFactory.Fail("Asset is currently in use");
             }
