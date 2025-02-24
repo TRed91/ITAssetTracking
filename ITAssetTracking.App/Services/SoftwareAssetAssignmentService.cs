@@ -11,7 +11,6 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
     private readonly ISoftwareAssetRepository _softwareRepo;
     private readonly IAssetRepository _assetRepo;
     private readonly IEmployeeRepository _employeeRepo;
-    private readonly IAssetAssignmentRepository _assetAssignmentRepo;
 
     public SoftwareAssetAssignmentService(
         ISoftwareAssetAssignmentRepository softwareAssetAssignmentRepository, 
@@ -24,7 +23,6 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
         _softwareRepo = softwareAssetRepository;
         _assetRepo = assetRepository;
         _employeeRepo = employeeRepository;
-        _assetAssignmentRepo = assetAssignemntRepository;
     }
     
     public Result<SoftwareAssetAssignment> GetSoftwareAssetAssignment(int softwareAssetAssignmentId)
