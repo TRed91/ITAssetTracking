@@ -115,10 +115,13 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
 
     public Result AddSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment)
     {
+        if (!softwareAssetAssignment.AssetID.HasValue && !softwareAssetAssignment.EmployeeID.HasValue)
+        {
+            return ResultFactory.Fail("Asset Id or Employee Id is required");
+        }
+        softwareAssetAssignment.AssignmentDate = DateTime.Now;
         try
         {
-            softwareAssetAssignment.AssignmentDate = DateTime.Now;
-
             // check if software asset exists
             var swAsset = _softwareRepo.GetSoftwareAsset(softwareAssetAssignment.SoftwareAssetID);
             if (swAsset == null)
@@ -162,6 +165,10 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
 
     public Result UpdateSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment)
     {
+        if (!softwareAssetAssignment.AssetID.HasValue && !softwareAssetAssignment.EmployeeID.HasValue)
+        {
+            return ResultFactory.Fail("Asset Id or Employee Id is required");
+        }
         try
         {
             var assignmentToUpdate =

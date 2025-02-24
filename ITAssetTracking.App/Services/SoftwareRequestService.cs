@@ -8,11 +8,23 @@ namespace ITAssetTracking.App.Services;
 public class SoftwareRequestService : ISoftwareRequestService
 {
     private readonly ISoftwareAssetRequestRepository _sarRepo;
-    
+    private readonly ISoftwareAssetRepository _softwareRepo;
+    private readonly ISoftwareAssetAssignmentRepository _softwareAssignmentRepo;
+    private readonly IAssetRepository _assetRepo;
+    private readonly IEmployeeRepository _employeeRepo;
 
-    public SoftwareRequestService(ISoftwareAssetRequestRepository softwareAssetRequestRepository)
+    public SoftwareRequestService(
+        ISoftwareAssetRequestRepository softwareAssetRequestRepository,
+        ISoftwareAssetRepository softwareAssetRepository,
+        ISoftwareAssetAssignmentRepository softwareAssetAssignmentRepository,
+        IAssetRepository assetRepository,
+        IEmployeeRepository employeeRepository)
     {
         _sarRepo = softwareAssetRequestRepository;
+        _softwareRepo = softwareAssetRepository;
+        _softwareAssignmentRepo = softwareAssetAssignmentRepository;
+        _assetRepo = assetRepository;
+        _employeeRepo = employeeRepository;
     }
     public Result<SoftwareAssetRequest> GetSoftwareRequestById(int softwareRequestId)
     {
@@ -125,21 +137,120 @@ public class SoftwareRequestService : ISoftwareRequestService
 
     public Result AddSoftwareRequest(SoftwareAssetRequest softwareAssetRequest)
     {
+        if (!softwareAssetRequest.AssetID.HasValue && !softwareAssetRequest.EmployeeID.HasValue)
+        {
+            return ResultFactory.Fail("Asset Id or Employee Id is required");
+        }
         softwareAssetRequest.RequestDate = DateTime.Now;
         try
         {
             //check if software asset exists
-            var swAsset = 
+            var swAsset = _softwareRepo.GetSoftwareAsset(softwareAssetRequest.SoftwareAssetID);
+            if (swAsset == null)
+            {
+                return ResultFactory.Fail("Software asset not found");
+            }
+
+            //check if software is already assigned
+            var assignments = _softwareAssignmentRepo
+                .GetAssignmentsBySoftwareAssetId(softwareAssetRequest.SoftwareAssetID, false);
+            if (assignments.Count > 0)
+            {
+                return ResultFactory.Fail("Software asset already assigned");
+            }
+
+            //check if employee exists
+            if (softwareAssetRequest.EmployeeID != null)
+            {
+                var employee = _employeeRepo.GetEmployee((int)softwareAssetRequest.EmployeeID);
+                if (employee == null)
+                {
+                    return ResultFactory.Fail("Employee not found");
+                }
+            }
+
+            //check if asset exists
+            if (softwareAssetRequest.AssetID != null)
+            {
+                var asset = _assetRepo.GetAssetById((int)softwareAssetRequest.AssetID);
+                if (asset == null)
+                {
+                    return ResultFactory.Fail("Asset not found");
+                }
+            }
+
+            _sarRepo.AddRequest(softwareAssetRequest);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
         }
     }
 
     public Result UpdateSoftwareRequest(SoftwareAssetRequest softwareAssetRequest)
     {
-        throw new NotImplementedException();
+        if (!softwareAssetRequest.AssetID.HasValue && !softwareAssetRequest.EmployeeID.HasValue)
+        {
+            return ResultFactory.Fail("Asset Id or Employee Id is required");
+        }
+        try
+        {
+            var request = _sarRepo.GetSoftwareAssetRequestById(softwareAssetRequest.SoftwareAssetRequestID);
+            if (request == null)
+            {
+                return ResultFactory.Fail("Software asset request not found");
+            }
+            //check if software asset exists
+            var softwareAsset = _softwareRepo.GetSoftwareAsset(softwareAssetRequest.SoftwareAssetID);
+            if (softwareAsset == null)
+            {
+                return ResultFactory.Fail("Software asset not found");
+            }
+            //check if asset exists 
+            if (softwareAssetRequest.AssetID != null)
+            {
+                var asset = _assetRepo.GetAssetById((int)softwareAssetRequest.AssetID);
+                if (asset == null)
+                {
+                    return ResultFactory.Fail("Asset not found");
+                }
+            }
+            // check if employee exists
+            if (softwareAssetRequest.EmployeeID != null)
+            {
+                var employee = _employeeRepo.GetEmployee((int)softwareAssetRequest.EmployeeID);
+                if (employee == null)
+                {
+                    return ResultFactory.Fail("Employee not found");
+                }
+            }
+
+            _sarRepo.UpdateRequest(softwareAssetRequest);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
     }
 
     public Result DeleteSoftwareRequest(int softwareRequestId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var request = _sarRepo.GetSoftwareAssetRequestById(softwareRequestId);
+            if (request == null)
+            {
+                return ResultFactory.Fail("Software asset request not found");
+            }
+
+            _sarRepo.DeleteRequest(request);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
     }
 }
