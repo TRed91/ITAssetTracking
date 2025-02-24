@@ -86,6 +86,15 @@ public class SoftwareAssetService : ISoftwareAssetService
 
     public Result AddSoftwareAsset(SoftwareAsset softwareAsset)
     {
+        if (softwareAsset.ExpirationDate < DateTime.Today)
+        {
+            return ResultFactory.Fail("Software asset expired");
+        }
+
+        if (softwareAsset.NumberOfLicenses < 1)
+        {
+            return ResultFactory.Fail("Software asset has no licenses");
+        }
         try
         {
             _softwareAssetRepo.AddSoftwareAsset(softwareAsset);
@@ -99,6 +108,15 @@ public class SoftwareAssetService : ISoftwareAssetService
 
     public Result UpdateSoftwareAsset(SoftwareAsset softwareAsset)
     {
+        if (softwareAsset.ExpirationDate < DateTime.Today)
+        {
+            return ResultFactory.Fail("Software asset expired");
+        }
+
+        if (softwareAsset.NumberOfLicenses < 1)
+        {
+            return ResultFactory.Fail("Software asset has no licenses");
+        }
         try
         {
             var asset = _softwareAssetRepo.GetSoftwareAsset(softwareAsset.SoftwareAssetID);

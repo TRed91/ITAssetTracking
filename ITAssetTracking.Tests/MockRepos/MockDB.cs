@@ -23,6 +23,28 @@ public class MockDB
         }
     };
 
+    public List<SoftwareAsset> SoftwareAssets = new List<SoftwareAsset>
+    {
+        new SoftwareAsset
+        {
+            SoftwareAssetID = 1, AssetStatusID = 1, ManufacturerID = 1, LicenseTypeID = 1,
+            LicenseKey = "1111-1111-1111", NumberOfLicenses = 1, Version = "1.00.1",
+            ExpirationDate = new DateTime(2026, 01, 01)
+        },
+        new SoftwareAsset
+        {
+            SoftwareAssetID = 2, AssetStatusID = 2, ManufacturerID = 2, LicenseTypeID = 2,
+            LicenseKey = "2222-2222-2222", NumberOfLicenses = 2, Version = "2.00.2",
+            ExpirationDate = new DateTime(2026, 02, 02)
+        },
+        new SoftwareAsset
+        {
+            SoftwareAssetID = 3, AssetStatusID = 1, ManufacturerID = 3, LicenseTypeID = 3,
+            LicenseKey = "3333-3333-3333", NumberOfLicenses = 3, Version = "3.00.3",
+            ExpirationDate = new DateTime(2024, 03, 03)
+        },
+    };
+
     public List<AssetAssignment> AssetAssignments = new List<AssetAssignment>
     {
         new AssetAssignment
@@ -61,6 +83,45 @@ public class MockDB
         },
     };
 
+    public List<SoftwareAssetAssignment> SoftwareAssetAssignments = new List<SoftwareAssetAssignment>
+    {
+        new SoftwareAssetAssignment
+        {
+            AssetAssignmentID = 1, AssetID = 1, EmployeeID = 1, SoftwareAssetID = 1,
+            AssignmentDate = new DateTime(2025, 02, 05), ReturnDate = null
+        },
+        new SoftwareAssetAssignment
+        {
+            AssetAssignmentID = 2, AssetID = null, EmployeeID = 2, SoftwareAssetID = 2,
+            AssignmentDate = new DateTime(2025, 02, 05), 
+            ReturnDate = new DateTime(2025, 02, 12)
+        },
+        new SoftwareAssetAssignment
+        {
+            AssetAssignmentID = 3, AssetID = 2, EmployeeID = null, SoftwareAssetID = 3,
+            AssignmentDate = new DateTime(2025, 02, 05), ReturnDate = null
+        }
+    };
+
+    public List<SoftwareAssetRequest> SoftwareAssetRequests = new List<SoftwareAssetRequest>
+    {
+        new SoftwareAssetRequest
+        {
+            SoftwareAssetRequestID = 1, AssetID = 1, EmployeeID = 1, SoftwareAssetID = 1,
+            RequestDate = new DateTime(2025, 02, 05), RequestResultID = null, RequestNote = null
+        },
+        new SoftwareAssetRequest
+        {
+            SoftwareAssetRequestID = 2, AssetID = 2, EmployeeID = null, SoftwareAssetID = 1,
+            RequestDate = new DateTime(2025, 02, 05), RequestResultID = 1, RequestNote = null
+        },
+        new SoftwareAssetRequest
+        {
+            SoftwareAssetRequestID = 3, AssetID = null, EmployeeID = 2, SoftwareAssetID = 2,
+            RequestDate = new DateTime(2025, 02, 05), RequestResultID = 2, RequestNote = "Nope"
+        },
+    };
+
     public List<Department> Departments = new List<Department>
     {
         new Department { DepartmentID = 1, DepartmentName = "Department 1" },
@@ -72,6 +133,13 @@ public class MockDB
         new Employee { EmployeeID = 1, DepartmentID = 1, FirstName = "John", LastName = "Doe" },
         new Employee { EmployeeID = 2, DepartmentID = 1, FirstName = "Jane", LastName = "Doe" },
         new Employee { EmployeeID = 3, DepartmentID = 2, FirstName = "Emily", LastName = "Brown" },
+    };
+
+    public List<LicenseType> LicenseTypes = new List<LicenseType>
+    {
+        new LicenseType { LicenseTypeID = 1, LicenseTypeName = "License Type 1", ManufacturerID = 1 },
+        new LicenseType { LicenseTypeID = 2, LicenseTypeName = "License Type 2", ManufacturerID = 2 },
+        new LicenseType { LicenseTypeID = 3, LicenseTypeName = "License Type 3", ManufacturerID = 3 },
     };
 
     public List<Location> Locations = new List<Location>
