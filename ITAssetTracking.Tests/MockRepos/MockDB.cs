@@ -147,4 +147,48 @@ public class MockDB
         new Location { LocationID = 1, LocationName = "Location 1" },
         new Location { LocationID = 2, LocationName = "Location 2" },
     };
+
+    public List<Ticket> Tickets = new List<Ticket>
+    {
+        new Ticket
+        {
+            TicketID = 1, AssetID = 1, TicketPriorityID = 1, TicketStatusID = 1, TicketResolutionID = 1,
+            TicketTypeID = 1,
+            AssignedToEmployeeID = 3, ReportedByEmployeeID = 1, DateReported = new DateTime(2025, 02, 10),
+            DateClosed = new DateTime(2025, 02, 13), IssueDescription = "Some resolved Issue"
+        },
+        new Ticket
+        {
+            TicketID = 2, AssetID = 2, TicketPriorityID = 2, TicketStatusID = 2, TicketResolutionID = null,
+            TicketTypeID = 2,
+            AssignedToEmployeeID = 3, ReportedByEmployeeID = 2, DateReported = new DateTime(2025, 02, 10),
+            DateClosed = null, IssueDescription = "Some unresolved Issue"
+        },
+        new Ticket
+        {
+            TicketID = 3, AssetID = 3, TicketPriorityID = 3, TicketStatusID = 3, TicketResolutionID = null,
+            TicketTypeID = 3,
+            AssignedToEmployeeID = null, ReportedByEmployeeID = 2, DateReported = new DateTime(2025, 02, 10),
+            DateClosed = null, IssueDescription = "Some resolved Issue"
+        },
+    };
+
+    public List<TicketNotes> TicketNotes = new List<TicketNotes>
+    {
+        new TicketNotes
+        {
+            TicketNoteID = 1, TicketID = 1, EmployeeID = 3, CreatedDate = new DateTime(2025, 02, 11),
+            Note = "Some note 1"
+        },
+        new TicketNotes
+        {
+            TicketNoteID = 2, TicketID = 2, EmployeeID = 3, CreatedDate = new DateTime(2025, 02, 11),
+            Note = "Some note 2"
+        },
+        new TicketNotes
+        {
+            TicketNoteID = 3, TicketID = 2, EmployeeID = 3, CreatedDate = new DateTime(2025, 02, 11),
+            Note = "Some note 3"
+        },
+    };
 }

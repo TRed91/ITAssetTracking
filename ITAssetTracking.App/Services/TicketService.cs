@@ -13,7 +13,7 @@ public class TicketService : ITicketService
     private readonly IAssetRepository _assetRepo;
 
     public TicketService(
-        TicketRepository ticketRepository, 
+        ITicketRepository ticketRepository, 
         IEmployeeRepository employeeRepository, 
         IAssetRepository assetRepository)
     {
