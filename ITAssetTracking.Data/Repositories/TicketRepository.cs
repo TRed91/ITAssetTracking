@@ -82,6 +82,20 @@ public class TicketRepository : ITicketRepository
             .ToList();
     }
 
+    public List<Ticket> GetTicketsByAsset(long assetId, bool includeClosed)
+    {
+        if (includeClosed)
+        {
+            return _context.Ticket
+                .Where(t => t.AssetID == assetId)
+                .ToList();
+        }
+
+        return _context.Ticket
+            .Where(t => t.AssetID == assetId && t.DateClosed == null)
+            .ToList();
+    }
+
     public void AddTicket(Ticket ticket)
     {
         _context.Ticket.Add(ticket);

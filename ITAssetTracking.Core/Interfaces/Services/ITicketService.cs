@@ -11,9 +11,9 @@ public interface ITicketService
     Result<List<Ticket>> GetUnassignedTickets();
     Result<List<Ticket>> GetOpenTickets();
     Result<List<Ticket>> GetTicketsInDateRange(DateTime startDate, DateTime endDate);
-    Result<List<Ticket>> GetTicketsByStatus(int ticketStatusId);
-    Result<List<Ticket>> GetTicketsByType(int ticketTypeId);
-    Result<List<Ticket>> GetTicketsByPriority(int ticketPriorityId);
+    Result<List<Ticket>> GetTicketsByStatus(int ticketStatusId, bool includeClosed);
+    Result<List<Ticket>> GetTicketsByType(int ticketTypeId, bool includeClosed);
+    Result<List<Ticket>> GetTicketsByPriority(int ticketPriorityId, bool includeClosed);
     
     Result AddTicket(Ticket ticket);
     Result UpdateTicket(Ticket ticket);

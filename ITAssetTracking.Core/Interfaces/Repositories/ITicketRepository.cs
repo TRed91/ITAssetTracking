@@ -13,6 +13,7 @@ public interface ITicketRepository
     List<Ticket> GetTicketsByStatus(int ticketStatusId, bool includeClosed);
     List<Ticket> GetTicketsByType(int ticketTypeId, bool includeClosed);
     List<Ticket> GetTicketsByPriority(int ticketPriorityId, bool includeClosed);
+    List<Ticket> GetTicketsByAsset(long assetId, bool includeClosed);
     
     void AddTicket(Ticket ticket);
     void UpdateTicket(Ticket ticket);
