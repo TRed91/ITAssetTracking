@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data;
 
+// Db Context
 public class ITAssetTrackingContext : DbContext
 {
     private readonly string _connectionString;
