@@ -1,4 +1,5 @@
 using ITAssetTracking.App.Services;
+using ITAssetTracking.Core.Interfaces;
 using ITAssetTracking.Core.Interfaces.Repositories;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
@@ -8,81 +9,78 @@ namespace ITAssetTracking.App.Utility;
 
 public class ServiceFactory
 {
-    private readonly IAssetAssignmentRepository _assetAssignmentRepo;
-    private readonly IAssetRepository _assetRepo;
-    private readonly IAssetRequestRepository _assetRequestRepo;
-    private readonly IDepartmentRepository _departmentRepo;
-    private readonly IEmployeeRepository _employeeRepo;
-    private readonly ISoftwareAssetAssignmentRepository _softwareAssetAssignmentRepo;
-    private readonly ISoftwareAssetRepository _softwareAssetRepo;
-    private readonly ISoftwareAssetRequestRepository _softwareAssetRequestRepo;
-    private readonly ITicketRepository _ticketRepo;
+    private readonly IAppConfig _appConfig;
 
-    public ServiceFactory(ITAssetTrackingContext context)
+    public ServiceFactory(IAppConfig appConfig)
     {
-        _assetAssignmentRepo = new AssetAssignmentRepository(context);
-        _assetRepo = new AssetRepository(context);
-        _assetRequestRepo = new AssetRequestRepository(context);
-        _departmentRepo = new DepartmentRepository(context);
-        _employeeRepo = new EmployeeRepository(context);
-        _softwareAssetAssignmentRepo = new SoftwareAssetAssignmentRepository(context);
-        _softwareAssetRepo = new SoftwareAssetRepository(context);
-        _softwareAssetRequestRepo = new SoftwareAssetRequestRepository(context);
-        _ticketRepo = new TicketRepository(context);
+        _appConfig = appConfig;
     }
     
     public IAssetAssignmentService GetAssetAssignmentService()
     {
-        return new AssetAssignmentService(_assetAssignmentRepo, _employeeRepo, _departmentRepo, _assetRepo);
+        return new AssetAssignmentService(
+            _appConfig.GetAssetAssignmentRepository(),
+            _appConfig.GetEmployeeRepository(),
+            _appConfig.GetDepartmentRepository(),
+            _appConfig.GetAssetRepository());
     }
 
-    public IAssetService GetAssetRepository()
+    public IAssetService GetAssetService()
     {
-        return new AssetService(_assetRepo);
+        return new AssetService(_appConfig.GetAssetRepository());
     }
 
     public IAssetRequestService GetAssetRequestService()
     {
-        return new AssetRequestService(_assetRequestRepo, _assetRepo, _employeeRepo, _departmentRepo);
+        return new AssetRequestService(
+            _appConfig.GetAssetRequestRepository(), 
+            _appConfig.GetAssetRepository(), 
+            _appConfig.GetEmployeeRepository(), 
+            _appConfig.GetDepartmentRepository());
     }
 
     public IDepartmentService GetDepartmentService()
     {
-        return new DepartmentService(_departmentRepo);
+        return new DepartmentService(_appConfig.GetDepartmentRepository());
     }
 
     public IEmployeeService GetEmployeeService()
     {
-        return new EmployeeService(_employeeRepo, _departmentRepo);
+        return new EmployeeService(
+            _appConfig.GetEmployeeRepository(), 
+            _appConfig.GetDepartmentRepository());
     }
 
     public ISoftwareAssetAssignmentService GetSoftwareAssetAssignmentService()
     {
         return new SoftwareAssetAssignmentService(
-            _softwareAssetAssignmentRepo, 
-            _softwareAssetRepo, 
-            _assetRepo,
-            _employeeRepo, 
-            _assetAssignmentRepo);
+            _appConfig.GetSoftwareAssetAssignmentRepository(), 
+            _appConfig.GetSoftwareAssetRepository(), 
+            _appConfig.GetAssetRepository(),
+            _appConfig.GetEmployeeRepository(), 
+            _appConfig.GetAssetAssignmentRepository());
     }
 
     public ISoftwareAssetService GetSoftwareAssetService()
     {
-        return new SoftwareAssetService(_softwareAssetRepo);
+        return new SoftwareAssetService(_appConfig.GetSoftwareAssetRepository());
     }
 
     public ISoftwareRequestService GetSoftwareRequestService()
     {
         return new SoftwareRequestService(
-            _softwareAssetRequestRepo,
-            _softwareAssetRepo,
-            _softwareAssetAssignmentRepo,
-            _assetRepo,
-            _employeeRepo);
+            _appConfig.GetSoftwareAssetRequestRepository(),
+            _appConfig.GetSoftwareAssetRepository(),
+            _appConfig.GetSoftwareAssetAssignmentRepository(),
+            _appConfig.GetAssetRepository(),
+            _appConfig.GetEmployeeRepository());
     }
 
     public ITicketService GetTicketService()
     {
-        return new TicketService(_ticketRepo, _employeeRepo, _assetRepo);
+        return new TicketService(
+            _appConfig.GetTicketRepository(), 
+            _appConfig.GetEmployeeRepository(), 
+            _appConfig.GetAssetRepository());
     }
 }
