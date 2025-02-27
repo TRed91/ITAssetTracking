@@ -16,8 +16,7 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
         ISoftwareAssetAssignmentRepository softwareAssetAssignmentRepository, 
         ISoftwareAssetRepository softwareAssetRepository,
         IAssetRepository assetRepository,
-        IEmployeeRepository employeeRepository,
-        IAssetAssignmentRepository assetAssignemntRepository)
+        IEmployeeRepository employeeRepository)
     {
         _swaaRepository = softwareAssetAssignmentRepository;
         _softwareRepo = softwareAssetRepository;

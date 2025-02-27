@@ -15,8 +15,7 @@ public class SoftwareAssignmentServiceTests
             new MockSoftwareAssignmentRepo(), 
             new MockSoftwareAssetRepo(), 
             new MockAssetRepo(), 
-            new MockEmployeeRepo(),
-            new MockAssetAssignmentRepo());
+            new MockEmployeeRepo());
     }
     
     [Test]
