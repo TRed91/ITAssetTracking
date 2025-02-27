@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("e15e5a0e-bd22-49be-8e64-b311388d741f")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITAssetTracking.MVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36474e03bcbe335eb16233851b7a0c2e84b97236")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+728160694c49abd0f5a2826b4bc754c9b5f7320d")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITAssetTracking.MVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITAssetTracking.MVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
