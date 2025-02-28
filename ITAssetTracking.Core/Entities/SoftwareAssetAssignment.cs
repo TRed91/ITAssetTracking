@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class SoftwareAssetAssignment
 {
+    [Key]
     public int AssetAssignmentID { get; set; }
     
     public int SoftwareAssetID { get; set; }

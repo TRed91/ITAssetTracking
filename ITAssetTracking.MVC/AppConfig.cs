@@ -16,11 +16,11 @@ public class AppConfig : IAppConfig
 
     private ITAssetTrackingContext GetContext()
     {
-        if (string.IsNullOrEmpty(_config.GetConnectionString("ConnectionString")))
+        if (string.IsNullOrEmpty(_config["ConnectionString"]))
         {
             throw new ApplicationException("Missing connection string");
         }
-        return new ITAssetTrackingContext(_config.GetConnectionString("ConnectionString"));
+        return new ITAssetTrackingContext(_config["ConnectionString"]);
     }
 
     public IAssetAssignmentRepository GetAssetAssignmentRepository()

@@ -15,6 +15,7 @@ public class ITAssetTrackingContext : DbContext
     public DbSet<AssetType> AssetType { get; set; }
     public DbSet<Department> Department { get; set; }
     public DbSet<Employee> Employee { get; set; }
+    public DbSet<EmployeePasswords> EmployeePasswords { get; set; }
     public DbSet<LicenseType> LicenseType { get; set; }
     public DbSet<Location> Location { get; set; }
     public DbSet<Manufacturer> Manufacturer { get; set; }

@@ -45,4 +45,9 @@ public class MockEmployeeRepo : IEmployeeRepository
     {
         _db.Employees.Remove(employee);
     }
+
+    public void AddEmployeePassword(EmployeePasswords employeePassword)
+    {
+        throw new NotImplementedException();
+    }
 }

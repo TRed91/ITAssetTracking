@@ -1,0 +1,26 @@
+﻿@model NewEmployeeModel
+
+@{
+    ViewData["Title"] = "Register Employee";
+}
+
+<form asp-action="Register" method="post">
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="DepartmentID" class="form-label"></label>
+        <select asp-for="DepartmentID" asp-items="@Model.DepartmentList" class="form-select">
+            <option value="">- SELECT -</option>
+        </select>
+    </div>
+    <div class="d-flex gap-3">
+        <button class="btn btn-primary">Register</button>
+        <a asp-controller="Home" asp-action="Index">Go Back</a>
+    </div>
+</form>

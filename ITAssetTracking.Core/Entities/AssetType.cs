@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class AssetType
 {
+    [Key]
     public byte AssetTypeID { get; set; }
     public string AssetTypeName { get; set; }
     

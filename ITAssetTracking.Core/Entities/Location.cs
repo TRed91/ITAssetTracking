@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class Location
 {
+    [Key]
     public int LocationID { get; set; }
     public string LocationName { get; set; }
     

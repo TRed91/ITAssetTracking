@@ -119,4 +119,23 @@ public class EmployeeService : IEmployeeService
             return ResultFactory.Fail(ex.Message, ex);
         }
     }
+
+    public Result AddEmployeePassword(EmployeePasswords employeePassword)
+    {
+        try
+        {
+            var employee = _employeeRepo.GetEmployee(employeePassword.EmployeeID);
+            if (employee == null)
+            {
+                return ResultFactory.Fail("Employee not found");
+            }
+
+            _employeeRepo.AddEmployeePassword(employeePassword);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
+    }
 }

@@ -12,4 +12,6 @@ public interface IEmployeeRepository
     void AddEmployee(Employee employee);
     void UpdateEmployee(Employee employee);
     void DeleteEmployee(Employee employee);
+    
+    void AddEmployeePassword(EmployeePasswords employeePassword);
 }

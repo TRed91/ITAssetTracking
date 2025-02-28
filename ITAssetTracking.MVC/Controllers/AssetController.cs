@@ -24,10 +24,4 @@ public class AssetController : Controller
     {
         return View();
     }
-
-    [Authorize]
-    public IActionResult MyAssets()
-    {
-        return View();
-    }
 }

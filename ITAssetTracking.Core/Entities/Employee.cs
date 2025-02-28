@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class Employee
 {
+    [Key]
     public int EmployeeID { get; set; }
     public byte DepartmentID { get; set; }
     public string FirstName { get; set; }

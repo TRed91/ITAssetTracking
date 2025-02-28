@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class Department
 {
+    [Key]
     public byte DepartmentID { get; set; }
     public string DepartmentName { get; set; }
     

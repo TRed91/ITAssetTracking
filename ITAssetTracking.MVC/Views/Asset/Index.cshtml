@@ -2,14 +2,20 @@
     ViewData["Title"] = "Assets Index";
 }
 
-<div class="flex-column justify-content-around align-items-center">
-    <div class="card text-center">
-        <span>My Assets</span>
-    </div>
-    <div class="card text-center">
-        <span>Department Assets</span>
-    </div>
-    <div class="card text-center">
-        <span>All Assets</span>
-    </div>
+<div>
+    <a asp-controller="Asset" asp-action="MyAssets">
+        <div class="card text-center pt-5 pb-5 fs-2 mb-2">
+            <span>My Assets</span>
+        </div>
+    </a>
+    <a href="">
+        <div class="card text-center pt-5 pb-5 fs-2 mb-2">
+            <span>Department Assets</span>
+        </div>
+    </a>
+    <a href="">
+        <div class="card text-center pt-5 pb-5 fs-2">
+            <span>All Assets</span>
+        </div>
+    </a>
 </div>

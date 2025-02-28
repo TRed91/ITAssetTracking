@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class LogEvents
 {
+    [Key]
     public int Id { get; set; }
     public byte EventSourceID { get; set; }
     public string Message { get; set; }

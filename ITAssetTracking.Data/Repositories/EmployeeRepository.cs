@@ -43,7 +43,31 @@ public class EmployeeRepository : IEmployeeRepository
 
     public void DeleteEmployee(Employee employee)
     {
-        _context.Employee.Remove(employee);
+        var password = _context.EmployeePasswords
+            .FirstOrDefault(p => p.EmployeeID == employee.EmployeeID);
+        if (password != null)
+        {
+            _context.EmployeePasswords.Remove(password);
+            _context.Employee.Remove(employee);
+            _context.SaveChanges();   
+        }
+    }
+
+    public void AddEmployeePassword(EmployeePasswords employeePassword)
+    {
+        _context.EmployeePasswords.Add(employeePassword);
+        _context.SaveChanges();
+    }
+
+    public void DeleteEmployeePassword(int employeeId)
+    {
+        var password = _context.EmployeePasswords
+            .FirstOrDefault(p => p.EmployeeID == employeeId);
+        if (password == null)
+        {
+            throw new Exception($"Password with EmployeeID {employeeId} not found");
+        }
+        _context.EmployeePasswords.Remove(password);
         _context.SaveChanges();
     }
 }

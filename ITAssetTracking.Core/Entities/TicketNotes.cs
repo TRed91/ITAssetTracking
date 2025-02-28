@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class TicketNotes
 {
+    [Key]
     public int TicketNoteID { get; set; }
     
     public int TicketID { get; set; }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ITAssetTracking.Data;
 
 // ASP Identity Context
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options){}

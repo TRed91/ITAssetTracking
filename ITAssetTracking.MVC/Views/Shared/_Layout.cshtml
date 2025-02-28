@@ -29,6 +29,18 @@
         </div>
     </nav>
 </header>
+@if (TempData["msg"] != null)
+{
+    var msg = TempDataExtension.Deserialize((string)TempData["msg"]);
+    if (msg.Success)
+    {
+        <div class="bg-success text-white text-center fw-bold">@msg.Message</div>
+    }
+    else
+    {
+        <div class="bg-danger text-white text-center fw-bold">@msg.Message</div>
+    }
+}
 <div class="container">
     <main role="main" class="pb-3">
         @RenderBody()

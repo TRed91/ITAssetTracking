@@ -1,7 +1,10 @@
-﻿namespace ITAssetTracking.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITAssetTracking.Core.Entities;
 
 public class TicketPriority
 {
+    [Key]
     public byte TicketPriorityID { get; set; }
     public string TicketPriorityName { get; set; }
     
