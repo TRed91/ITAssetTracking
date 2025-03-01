@@ -5,6 +5,7 @@
 }
 
 <form asp-action="Register" method="post">
+    @Html.AntiForgeryToken()
     <div class="mb-3">
         <label asp-for="LastName" class="form-label"></label>
         <input asp-for="LastName" class="form-control">
@@ -16,11 +17,12 @@
     <div class="mb-3">
         <label asp-for="DepartmentID" class="form-label"></label>
         <select asp-for="DepartmentID" asp-items="@Model.DepartmentList" class="form-select">
-            <option value="">- SELECT -</option>
+            <option value="0">- SELECT -</option>
         </select>
     </div>
-    <div class="d-flex gap-3">
+    <div class="d-flex gap-3 align-items-center">
         <button class="btn btn-primary">Register</button>
         <a asp-controller="Home" asp-action="Index">Go Back</a>
     </div>
+    <div asp-validation-summary="All" class="text-danger mt-5"></div>
 </form>

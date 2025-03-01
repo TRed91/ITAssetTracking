@@ -3,6 +3,7 @@ using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,14 +16,14 @@ public class EmployeeController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmployeeService  _employeeService;
     private readonly IDepartmentService  _departmentService;
-    private readonly ILogger _logger;
+    private readonly Serilog.ILogger _logger;
 
     public EmployeeController(
         UserManager<ApplicationUser> userManager, 
-        SignInManager<ApplicationUser> signInManager,  
+        SignInManager<ApplicationUser> signInManager,
         IEmployeeService employeeService,
         IDepartmentService departmentService,
-        ILogger<EmployeeController> logger)
+        Serilog.ILogger logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -31,18 +32,14 @@ public class EmployeeController : Controller
         _logger = logger;
     }
     
-    public IActionResult Login()
-    {
-        return View();
-    }
-
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public IActionResult Register()
     {
         var departmentsResult = _departmentService.GetDepartments();
         if (!departmentsResult.Ok)
         {
-            _logger.LogError(departmentsResult.Message);
+            _logger.Error(departmentsResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , departmentsResult.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -51,12 +48,16 @@ public class EmployeeController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(NewEmployeeModel model)
     {
+        var departments = _departmentService.GetDepartments().Data;
+        model.DepartmentList = new SelectList(departments, "DepartmentID", "DepartmentName");
         if (!ModelState.IsValid)
         {
-            _logger.LogWarning("Invalid Model State while registering user");
+            _logger.Warning("Invalid Model State while registering user");
             return View(model);
         }
         var employee = model.ToEntity();
@@ -65,7 +66,7 @@ public class EmployeeController : Controller
         var addEmployeeResult = _employeeService.AddEmployee(employee);
         if (!addEmployeeResult.Ok)
         {
-            _logger.LogError(addEmployeeResult.Message);
+            _logger.Error(addEmployeeResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addEmployeeResult.Message));
             return View(model);
         }
@@ -97,7 +98,7 @@ public class EmployeeController : Controller
         var addPasswordResult = _employeeService.AddEmployeePassword(employeePassword);
         if (!addPasswordResult.Ok)
         {
-            _logger.LogError(addPasswordResult.Message);
+            _logger.Error(addPasswordResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addPasswordResult.Message));
             _employeeService.DeleteEmployee(employee.EmployeeID);
             return View(model);
@@ -120,7 +121,7 @@ public class EmployeeController : Controller
         }
         await _signInManager.SignInAsync(user, false);
         
-        _logger.LogInformation($"New User created with EmployeeID: {employee.EmployeeID}.");
+        _logger.Information($"New User created with EmployeeID: {employee.EmployeeID}.");
         TempData["msg"] = TempDataExtension
             .Serialize(new TempDataMsg(true, $"User created with id {employee.EmployeeID}"));
         return RedirectToAction("Index", "Home");

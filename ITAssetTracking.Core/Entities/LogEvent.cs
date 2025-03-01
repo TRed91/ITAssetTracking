@@ -2,7 +2,7 @@
 
 namespace ITAssetTracking.Core.Entities;
 
-public class LogEvents
+public class LogEvent
 {
     [Key]
     public int Id { get; set; }
@@ -11,8 +11,8 @@ public class LogEvents
     public string MessageTemplate { get; set; }
     public string Level { get; set; }
     public DateTime TimeStamp { get; set; }
-    public string Exception { get; set; }
-    public string Properties { get; set; }
+    public string? Exception { get; set; }
+    public string? Properties { get; set; }
     
     EventSource EventSource { get; set; }
 }

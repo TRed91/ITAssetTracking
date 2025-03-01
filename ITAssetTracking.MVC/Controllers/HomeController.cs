@@ -6,9 +6,9 @@ namespace ITAssetTracking.MVC.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly Serilog.ILogger _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(Serilog.ILogger logger)
     {
         _logger = logger;
     }

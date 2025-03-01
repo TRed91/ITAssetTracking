@@ -5,6 +5,7 @@ namespace ITAssetTracking.MVC.Models;
 public class LoginModel
 {
     [Required]
+    [Display(Name = "Username")]
     public string UserName { get; set; }
     [Required]
     [DataType(DataType.Password)]

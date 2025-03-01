@@ -30,6 +30,8 @@ public class ITAssetTrackingContext : DbContext
     public DbSet<TicketResolution> TicketResolution { get; set; }
     public DbSet<TicketStatus> TicketStatus { get; set; }
     public DbSet<TicketType> TicketType { get; set; }
+    public DbSet<LogEvent> LogEvent { get; set; }
+    public DbSet<EventSource> EventSource { get; set; } 
 
     public ITAssetTrackingContext(string connectionString)
     {

@@ -1,3 +1,4 @@
+using System.Data;
 using ITAssetTracking.App.Utility;
 using ITAssetTracking.Core.Interfaces.Repositories;
 using ITAssetTracking.Core.Interfaces.Services;
@@ -6,16 +7,34 @@ using ITAssetTracking.MVC;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Serilog;
+using Serilog.Core;
+using Serilog.Core.Enrichers;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var appConfig = new AppConfig(builder.Configuration);
 
-// Register Application Db Context for authentication
+// Register Application Db Context and configure authentication
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration["ConnectionString"]));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredLength = 8;
+        
+        options.User.RequireUniqueEmail = false;
+        
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -34,6 +53,40 @@ builder.Services.AddScoped<ISoftwareAssetService>(_ => sf.GetSoftwareAssetServic
 builder.Services.AddScoped<ISoftwareRequestService>(_ => sf.GetSoftwareRequestService());
 builder.Services.AddScoped<ITicketService>(_ => sf.GetTicketService());
 
+// configure logger
+builder.Logging.ClearProviders();
+var loggerConfig = new LoggerConfiguration();
+if (builder.Configuration.GetValue<bool>("Logging:DbLogging:Enabled"))
+{
+    var columnOptions = new ColumnOptions();
+    columnOptions.AdditionalColumns = new List<SqlColumn>
+    {
+        new SqlColumn
+        {
+            ColumnName = "EventSourceID",
+            DataType = SqlDbType.TinyInt,
+            AllowNull = false,
+        }
+    };
+
+    loggerConfig
+        .Enrich.WithProperty("EventSourceID", 1)
+        .WriteTo.MSSqlServer(
+            connectionString: builder.Configuration["ConnectionString"],
+            tableName: "LogEvent",
+            autoCreateSqlTable: false,
+            restrictedToMinimumLevel: appConfig.GetDbLogLevel(),
+            columnOptions: columnOptions
+    );
+
+}
+loggerConfig.MinimumLevel.Information()
+    .WriteTo.Console();
+Log.Logger = loggerConfig.CreateLogger();
+
+builder.Services.AddSingleton<Serilog.ILogger>(Log.Logger);
+builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+
 var app = builder.Build();
 
 // Configure middleware pipeline.
@@ -46,8 +99,8 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
         name: "default",

@@ -6,7 +6,7 @@ namespace ITAssetTracking.MVC.Models;
 
 public class NewEmployeeModel : IValidatableObject
 {
-    [Required]
+    [Required(ErrorMessage = "Department selection is required")]
     [Display(Name = "Department")]
     public byte DepartmentID { get; set; }
     [Required]
