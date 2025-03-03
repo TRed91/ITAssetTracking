@@ -61,7 +61,15 @@ public class EmployeeController : Controller
             return View(model);
         }
         var employee = model.ToEntity();
-        
+        // generate password 
+        var passwordResult = _employeeService.GeneratePassword(employee.LastName);
+        if (!passwordResult.Ok)
+        {
+            _logger.Error(passwordResult.Message);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, passwordResult.Message));
+            return View(model);
+        }
+        string password = passwordResult.Data;
         // add employee to db
         var addEmployeeResult = _employeeService.AddEmployee(employee);
         if (!addEmployeeResult.Ok)
@@ -70,25 +78,6 @@ public class EmployeeController : Controller
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addEmployeeResult.Message));
             return View(model);
         }
-        // generate password
-        Random rng = new Random();
-        string randomNumbers = "";
-        if (employee.LastName.Length == 2)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                randomNumbers += rng.Next(1, 10).ToString();
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                randomNumbers += rng.Next(1, 10).ToString();
-            }
-        }
-        var password = "!" + employee.LastName + randomNumbers;
-        
         // add password to db
         var employeePassword = new EmployeePasswords
         {

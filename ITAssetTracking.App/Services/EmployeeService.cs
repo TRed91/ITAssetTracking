@@ -138,4 +138,31 @@ public class EmployeeService : IEmployeeService
             return ResultFactory.Fail(ex.Message, ex);
         }
     }
+
+    public Result<string> GeneratePassword(string lastName)
+    {
+        if (lastName.Length < 2)
+        {
+            return ResultFactory.Fail<string>("Last name must be at least 2 characters");
+        }
+        
+        Random rng = new Random();
+        string randomNumbers = "";
+        if (lastName.Length == 2)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                randomNumbers += rng.Next(1, 10).ToString();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                randomNumbers += rng.Next(1, 10).ToString();
+            }
+        }
+        var password = "!" + lastName + randomNumbers;
+        return ResultFactory.Success(password);
+    }
 }

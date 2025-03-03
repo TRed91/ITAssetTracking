@@ -14,4 +14,6 @@ public interface IEmployeeService
     Result UpdateEmployee(Employee employee);
     Result DeleteEmployee(int employeeId);
     Result AddEmployeePassword(EmployeePasswords employeePassword);
+
+    Result<string> GeneratePassword(string lastName);
 }
