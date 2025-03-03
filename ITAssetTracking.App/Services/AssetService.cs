@@ -32,11 +32,11 @@ public class AssetService : IAssetService
         }
     }
 
-    public Result<List<Asset>> GetAllAssets(int assetTypeId = 0, int locationId = 0, int modelId = 0, int manufacturerId = 0)
+    public Result<List<Asset>> GetAllAssets(int assetTypeId = 0, int locationId = 0, int assetStatusId = 0, int manufacturerId = 0)
     {
         try
         {
-            var assets = _assetRepo.GetAssets(assetTypeId, locationId, modelId, manufacturerId);
+            var assets = _assetRepo.GetAssets(assetTypeId, locationId, assetStatusId, manufacturerId);
             return ResultFactory.Success(assets);
         }
         catch (Exception ex)

@@ -8,5 +8,5 @@ public class EventSource
     public byte EventSourceID { get; set; }
     public string EventSourceName { get; set; }
     
-    List<LogEvent> LogEvents { get; set; } = new List<LogEvent>();
+    public List<LogEvent> LogEvents { get; set; } = new List<LogEvent>();
 }

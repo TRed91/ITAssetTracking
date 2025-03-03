@@ -14,7 +14,7 @@ public class AssetAssignment
     public DateTime AssignmentDate { get; set; }
     public DateTime? ReturnDate { get; set; }
     
-    Asset Asset { get; set; }
-    Department Department { get; set; }
-    Employee Employee { get; set; }
+    public Asset Asset { get; set; }
+    public Department Department { get; set; }
+    public Employee Employee { get; set; }
 }

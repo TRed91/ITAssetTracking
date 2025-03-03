@@ -9,6 +9,6 @@ public class LicenseType
     public int ManufacturerID { get; set; }
     public string LicenseTypeName { get; set; }
     
-    Manufacturer Manufacturer { get; set; }
-    List<SoftwareAsset> SoftwareAssets { get; set; }
+    public Manufacturer Manufacturer { get; set; }
+    public List<SoftwareAsset> SoftwareAssets { get; set; }
 }

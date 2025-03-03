@@ -14,7 +14,7 @@ public class SoftwareAssetAssignment
     public DateTime AssignmentDate { get; set; }
     public DateTime? ReturnDate { get; set; }
     
-    SoftwareAsset SoftwareAsset { get; set; }
-    Employee Employee { get; set; }
-    Asset Asset { get; set; }
+    public SoftwareAsset SoftwareAsset { get; set; }
+    public Employee Employee { get; set; }
+    public Asset Asset { get; set; }
 }

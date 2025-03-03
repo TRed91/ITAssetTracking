@@ -18,13 +18,14 @@ public class AssetRepository : IAssetRepository
         return _context.Asset.FirstOrDefault(a => a.AssetID == assetId);
     }
 
-    public List<Asset> GetAssets(int assetTypeId = 0, int locationId = 0, int modelId = 0, int manufacturerId = 0)
+    public List<Asset> GetAssets(int assetTypeId = 0, int locationId = 0, int assetStatusId = 0, int manufacturerId = 0)
     {
         return _context.Asset
+            .Include(a => a.Model)
             .Where(a => 
                 (assetTypeId != 0 ? a.AssetTypeID == assetTypeId : a.AssetTypeID > 0) &&
                 (locationId != 0 ? a.LocationID == locationId : a.LocationID > 0) &&
-                (modelId != 0 ? a.ModelID == modelId : a.ModelID > 0) &&
+                (assetStatusId != 0 ? a.AssetStatusID == assetStatusId : a.AssetStatusID > 0) &&
                 (manufacturerId != 0 ? a.ManufacturerID == manufacturerId : a.ManufacturerID > 0))
             .ToList();
     }
@@ -101,12 +102,12 @@ public class AssetRepository : IAssetRepository
 
     public List<Model> GetModels()
     {
-        return _context.AssetModel.ToList();
+        return _context.Model.ToList();
     }
 
     public List<Model> GetModelsByManufacturer(int manufacturerId)
     {
-        return _context.AssetModel
+        return _context.Model
             .Where(m => m.ManufacturerID == manufacturerId)
             .ToList();
     }

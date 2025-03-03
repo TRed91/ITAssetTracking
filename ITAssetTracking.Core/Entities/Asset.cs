@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ITAssetTracking.Core.Entities;
 
@@ -17,14 +18,14 @@ public class Asset
     public DateTime PurchaseDate { get; set; }
     public decimal PurchasePrice { get; set; }
     
-    AssetType AssetType { get; set; }
-    Manufacturer Manufacturer { get; set; }
-    Model Model { get; set; }
-    AssetStatus AssetStatus { get; set; }
-    Location Location { get; set; }
+    public AssetType AssetType { get; set; }
+    public Manufacturer Manufacturer { get; set; }
+    public Model Model { get; set; }
+    public AssetStatus AssetStatus { get; set; }
+    public Location Location { get; set; }
     
-    List<AssetAssignment> AssetAssignments { get; set; }
-    List<SoftwareAssetAssignment> SoftwareAssetAssignments { get; set; }
-    List<AssetRequest> AssetRequests { get; set; }
-    List<SoftwareAssetRequest> SoftwareAssetRequests { get; set; }
+    public List<AssetAssignment> AssetAssignments { get; set; }
+    public List<SoftwareAssetAssignment> SoftwareAssetAssignments { get; set; }
+    public List<AssetRequest> AssetRequests { get; set; }
+    public List<SoftwareAssetRequest> SoftwareAssetRequests { get; set; }
 }

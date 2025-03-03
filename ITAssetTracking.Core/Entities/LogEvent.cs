@@ -14,5 +14,5 @@ public class LogEvent
     public string? Exception { get; set; }
     public string? Properties { get; set; }
     
-    EventSource EventSource { get; set; }
+    public EventSource EventSource { get; set; }
 }

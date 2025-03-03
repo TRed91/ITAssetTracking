@@ -22,12 +22,12 @@ public class Ticket
     public DateTime? DateClosed { get; set; }
     public string IssueDescription { get; set; }
     
-    TicketStatus TicketStatus { get; set; }
-    TicketType TicketType { get; set; }
-    TicketPriority TicketPriority { get; set; }
-    TicketResolution TicketResolution { get; set; }
-    Employee AssignedToEmployee { get; set; }
-    Employee ReportedByEmployee { get; set; }
+    public TicketStatus TicketStatus { get; set; }
+    public TicketType TicketType { get; set; }
+    public TicketPriority TicketPriority { get; set; }
+    public TicketResolution TicketResolution { get; set; }
+    public Employee AssignedToEmployee { get; set; }
+    public Employee ReportedByEmployee { get; set; }
     
-    List<TicketNotes> TicketNotes { get; set; } = new List<TicketNotes>();
+    public List<TicketNotes> TicketNotes { get; set; } = new List<TicketNotes>();
 }

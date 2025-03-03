@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ITAssetTracking.Core.Entities;
 
@@ -9,6 +10,6 @@ public class Model
     public int ManufacturerID { get; set; }
     public string ModelNumber { get; set; }
     
-    Manufacturer Manufacturer { get; set; }
-    List<Asset> Assets { get; set; }
+    public Manufacturer Manufacturer { get; set; }
+    public List<Asset> Assets { get; set; }
 }

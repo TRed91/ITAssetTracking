@@ -19,7 +19,7 @@ public class ITAssetTrackingContext : DbContext
     public DbSet<LicenseType> LicenseType { get; set; }
     public DbSet<Location> Location { get; set; }
     public DbSet<Manufacturer> Manufacturer { get; set; }
-    public DbSet<Model> AssetModel { get; set; }
+    public DbSet<Model> Model { get; set; }
     public DbSet<RequestResult> RequestResult { get; set; }
     public DbSet<SoftwareAsset> SoftwareAsset { get; set; }
     public DbSet<SoftwareAssetAssignment> SoftwareAssetAssignment { get; set; }
