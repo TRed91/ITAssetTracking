@@ -1,3 +1,4 @@
+using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -138,5 +139,93 @@ public class AssetController : Controller
         model.AssetStatuses = new SelectList(statusesRes.Data, "AssetStatusID", "AssetStatusName");
         
         return  View(model);
+    }
+
+    public IActionResult Manufacturers(ManufacturersModel model)
+    {
+        var manufacturersResult = _assetService.GetManufacturers();
+        if (!manufacturersResult.Ok)
+        {
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, manufacturersResult.Message));
+            _logger.Error("Error retrieving data: " + manufacturersResult.Exception);
+            return RedirectToAction("Index", "Home");
+        }
+        var manufacturers = manufacturersResult.Data;
+        if (!string.IsNullOrEmpty(model.Search))
+        {
+            manufacturers = manufacturers
+                .Where(m => m.ManufacturerName.Contains(model.Search))
+                .ToList();
+        }
+        model.Manufacturers = manufacturers;
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Add(int manufacturerId)
+    {
+        string? manufacturerName = null;
+        var models = new List<Model>();
+        var locationsResult = _assetService.GetLocations();
+        var assetTypesResult = _assetService.GetAssetTypes();
+        if (!assetTypesResult.Ok || !locationsResult.Ok)
+        {
+            _logger.Error("Error retrieving data: " + (assetTypesResult.Exception ?? locationsResult.Exception));
+            TempData["msg"] = TempDataExtension.Serialize(
+                new TempDataMsg(false, assetTypesResult.Message ?? locationsResult.Message ?? "Unknown Error"));
+        }
+        
+        models = _assetService.GetModelsByManufacturer(manufacturerId).Data;
+        manufacturerName = _assetService.GetManufacturerById(manufacturerId).Data.ManufacturerName;
+
+        var model = new AddAssetModel
+        {
+            Manufacturer = manufacturerName,
+            ManufacturerId = manufacturerId,
+            Models = new SelectList(models, "ModelID", "ModelNumber"),
+            AssetTypes = new SelectList(assetTypesResult.Data, "AssetTypeID", "AssetTypeName"),
+            Locations = new SelectList(locationsResult.Data, "LocationID", "LocationName")
+        };
+        
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Add(AddAssetModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            if (model.ManufacturerId != null && model.ManufacturerId != 0)
+            {
+                var models = _assetService.GetModelsByManufacturer((int)model.ManufacturerId).Data;
+                model.Models = new SelectList(models, "ModelID", "ModelNumber");
+            }
+            
+            var locations = _assetService.GetLocations().Data;
+            var assetTypes = _assetService.GetAssetTypes().Data;
+            model.AssetTypes = new SelectList(assetTypes, "AssetTypeID", "AssetTypeName");
+            model.Locations = new SelectList(locations, "LocationID", "LocationName");
+            
+            return View(model);
+        }
+
+        Asset asset = model.ToEntity();
+        var result = _assetService.AddAsset(asset);
+        if (!result.Ok)
+        {
+            _logger.Error("Error adding asset: " + result.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(
+                new TempDataMsg(false, result.Message));
+            
+            RedirectToAction("Add", new { manufacturerId = model.ManufacturerId });
+        }
+        
+        _logger.Information($"Asset with id {asset.AssetID} added successfully");
+        TempData["msg"] = TempDataExtension.Serialize(
+            new TempDataMsg(true, $"Asset with id {asset.AssetID} added successfully"));
+       
+        //TODO redirect to details instead
+        return RedirectToAction("Index", "Home");
     }
 }

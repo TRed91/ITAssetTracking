@@ -20,9 +20,12 @@ public interface IAssetRepository
     void DeleteAsset(Asset asset);
     
     List<Manufacturer> GetManufacturers();
+    Manufacturer? GetManufacturerById(int manufacturerId);
     List<Model> GetModels();
     List<Model> GetModelsByManufacturer(int manufacturerId);
+    List<Model> GetModelsWithNoManufacturer();
     List<AssetType> GetAssetTypes();
     List<Location> GetLocations();
     List<AssetStatus> GetAssetStatuses();
+    AssetStatus? GetAssetStatusByName(string assetStatusName);
 }

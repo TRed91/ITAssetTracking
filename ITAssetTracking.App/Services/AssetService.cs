@@ -137,6 +137,14 @@ public class AssetService : IAssetService
                 return ResultFactory.Fail($"Asset with Serial Number {asset.SerialNumber} already exists");
             }
 
+            // Default asset status to storage
+            var assetStatus = _assetRepo.GetAssetStatusByName("Storage");
+            if (assetStatus == null)
+            {
+                return ResultFactory.Fail($"Storage Status ID not found");
+            }
+            asset.AssetStatusID = assetStatus.AssetStatusID;
+            
             _assetRepo.AddAsset(asset);
             return ResultFactory.Success();
         }
@@ -205,6 +213,24 @@ public class AssetService : IAssetService
         }
     }
 
+    public Result<Manufacturer> GetManufacturerById(int manufacturerId)
+    {
+        try
+        {
+            var manufacturer = _assetRepo.GetManufacturerById(manufacturerId);
+            if (manufacturer == null)
+            {
+                return ResultFactory.Fail<Manufacturer>($"Manufacturer with id {manufacturerId} not found");
+            }
+
+            return ResultFactory.Success(manufacturer);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<Manufacturer>(ex.Message, ex);
+        }
+    }
+
     public Result<List<Model>> GetModels()
     {
         try
@@ -223,6 +249,19 @@ public class AssetService : IAssetService
         try
         {
             var models = _assetRepo.GetModelsByManufacturer(manufacturerId);
+            return ResultFactory.Success(models);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<Model>>(ex.Message, ex);
+        }
+    }
+
+    public Result<List<Model>> GetModelsWithNoManufacturer()
+    {
+        try
+        {
+            var models = _assetRepo.GetModelsWithNoManufacturer();
             return ResultFactory.Success(models);
         }
         catch (Exception ex)

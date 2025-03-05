@@ -91,12 +91,22 @@ public class MockAssetRepo : IAssetRepository
         throw new NotImplementedException();
     }
 
+    public Manufacturer? GetManufacturerById(int manufacturerId)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<Model> GetModels()
     {
         throw new NotImplementedException();
     }
 
     public List<Model> GetModelsByManufacturer(int manufacturerId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Model> GetModelsWithNoManufacturer()
     {
         throw new NotImplementedException();
     }
@@ -114,5 +124,14 @@ public class MockAssetRepo : IAssetRepository
     public List<AssetStatus> GetAssetStatuses()
     {
         throw new NotImplementedException();
+    }
+
+    public AssetStatus? GetAssetStatusByName(string assetStatusName)
+    {
+        return new AssetStatus
+        {
+            AssetStatusID = 1,
+            AssetStatusName = "Storage"
+        };
     }
 }

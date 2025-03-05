@@ -20,8 +20,10 @@ public interface IAssetService
     Result DeleteAsset(int assetId);
     
     Result<List<Manufacturer>> GetManufacturers();
+    Result<Manufacturer> GetManufacturerById(int manufacturerId);
     Result<List<Model>> GetModels();
     Result<List<Model>> GetModelsByManufacturer(int manufacturerId);
+    Result<List<Model>> GetModelsWithNoManufacturer();
     Result<List<AssetType>> GetAssetTypes();
     Result<List<Location>> GetLocations();
     Result<List<AssetStatus>> GetAssetStatuses();

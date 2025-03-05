@@ -100,6 +100,11 @@ public class AssetRepository : IAssetRepository
         return _context.Manufacturer.ToList();
     }
 
+    public Manufacturer? GetManufacturerById(int manufacturerId)
+    {
+        return _context.Manufacturer.FirstOrDefault(m => m.ManufacturerID == manufacturerId);
+    }
+
     public List<Model> GetModels()
     {
         return _context.Model.ToList();
@@ -109,6 +114,13 @@ public class AssetRepository : IAssetRepository
     {
         return _context.Model
             .Where(m => m.ManufacturerID == manufacturerId)
+            .ToList();
+    }
+
+    public List<Model> GetModelsWithNoManufacturer()
+    {
+        return _context.Model
+            .Where(m => m.ManufacturerID == null)
             .ToList();
     }
 
@@ -125,5 +137,10 @@ public class AssetRepository : IAssetRepository
     public List<AssetStatus> GetAssetStatuses()
     {
         return _context.AssetStatus.ToList();
+    }
+
+    public AssetStatus? GetAssetStatusByName(string assetStatusName)
+    {
+        return _context.AssetStatus.FirstOrDefault(a => a.AssetStatusName == assetStatusName);
     }
 }

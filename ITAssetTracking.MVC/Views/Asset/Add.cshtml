@@ -1,0 +1,50 @@
+@model AddAssetModel
+
+@{
+    ViewData["Title"] = "Add new Asset";
+}
+
+<h1 class="display-4">Add Asset</h1>
+
+<p>Manufacturer</p>
+<p class="fs-5">@Model.Manufacturer</p>
+
+<form asp-controller="Asset" asp-action="Add" method="post" class="col-md-6">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ManufacturerId) 
+    <div class="mb-3">
+        <label asp-for="ModelId" class="form-label"></label>
+        <select asp-for="ModelId" asp-items="@Model.Models" class="form-select">
+            <option value="0">- SELECT -</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="AssetTypeId" class="form-label"></label>
+        <select asp-for="AssetTypeId" asp-items="@Model.AssetTypes" class="form-select">
+            <option value="0">- SELECT -</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="LocationId" class="form-label"></label>
+        <select asp-for="LocationId" asp-items="@Model.Locations" class="form-select">
+            <option value="0">- SELECT -</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SerialNumber" class="form-label"></label>
+        <input asp-for="SerialNumber" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="PurchaseDate" class="form-label"></label>
+        <input asp-for="PurchaseDate" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="PurchasePrice" class="form-label"></label>
+        <input asp-for="PurchasePrice" class="form-control">
+    </div>
+    <div class="d-flex gap-3 align-items-center mb-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Manufacturers">Go Back</a>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
