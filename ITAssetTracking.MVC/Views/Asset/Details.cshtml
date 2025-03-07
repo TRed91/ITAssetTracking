@@ -1,0 +1,130 @@
+@model AssetDetailsModel
+
+@{
+    ViewData["Title"] = "Asset Details";
+}
+
+<section class="card p-4">
+    <h1 class="display-4">Asset Details</h1>
+    <div class="d-flex gap-5">
+        <div class="d-flex flex-column gap-3">
+            <div>
+                <p>Model Nr.</p>
+                <p class="fs-5">@Model.ModelNumber</p>
+            </div>
+            <div>
+                <p>Asset Type</p>
+                <p class="fs-5">@Model.AssetType</p>
+            </div>
+            <div>
+                <p>Status</p>
+                <p class="fs-5">@Model.Status</p>
+            </div>
+            <div>
+                <p>Purchase Date</p>
+                <p class="fs-5">@Model.PurchaseDate.Date.ToShortDateString()</p>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-3">
+            <div>
+                <p>Serial Nr.</p>
+                <p class="fs-5">@Model.SerialNumber</p>
+            </div>
+            <div>
+                <p>Manufacturer</p>
+                <p class="fs-5">@Model.Manufacturer</p>
+            </div>
+            <div>
+                <p>Location</p>
+                <p class="fs-5">@Model.Location</p>
+            </div>
+            <div>
+                <p>Purchase Price</p>
+                <p class="fs-5">$@Model.PurchasePrice</p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mt-3">
+        <div class="d-flex gap-5">
+            <a asp-action="Edit" asp-route-assetId="@Model.AssetId">
+                <button class="btn btn-primary">Edit</button>
+            </a>
+            <a onclick="history.back()" style="cursor: pointer" class="link-primary">Go Back</a>
+        </div>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+</section>
+<section class="p-3 bg-dark-subtle d-flex gap-3 flex-column flex-fill flex-md-row align-items-center">
+    <a asp-action="AssignEmployee" class="p-2 card text-decoration-none">Assign To Employee</a>
+    <a asp-action="AssignDepartment" class="p-2 card text-decoration-none">Assign To Department</a>
+    <a asp-action="Return" class="p-2 card text-decoration-none">Return Asset</a>
+    <a asp-action="Request" class="p-2 card text-decoration-none">Request Reassignment</a>
+    <a asp-action="CreateTicket" class="p-2 card text-decoration-none">Support Ticket</a>
+</section>
+<section class="card p-4">
+    <h2 class="fs-4">Assignment History</h2>
+    @if (Model.AssetAssignments.Count > 0)
+    {
+        <table class="table table-bordered mb-3">
+            <thead class="table-primary">
+            <tr>
+                <td>Department</td>
+                <td>Employee</td>
+                <td>Assignment Date</td>
+                <td>Return Date</td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var a in Model.AssetAssignments)
+            {
+                string returnDate = "";
+                if (a.ReturnDate.HasValue)
+                {
+                    returnDate = a.ReturnDate.Value.ToShortDateString();
+                }
+                <tr>
+                    <td>@a.Department.DepartmentName</td>
+                    <td>@a.Employee.LastName, @a.Employee.FirstName</td>
+                    <td>@a.AssignmentDate</td>
+                    <td>@returnDate</td>
+                </tr>
+            }
+            </tbody>
+        </table>   
+    }
+    else
+    {
+        <p class="fs-5">No Assignment found</p>
+    }
+    <h2 class="fs-4">Ticket History</h2>
+    @if (Model.SupportTickets.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="table-primary">
+            <tr>
+                <td>Status</td>
+                <td>Type</td>
+                <td>Priority</td>
+                <td>Technician</td>
+                <td>Report Date</td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var t in Model.SupportTickets)
+            {
+                <tr>
+                    <td>@t.TicketStatus.TicketStatusName</td>
+                    <td>@t.TicketType.TicketTypeName</td>
+                    <td>@t.TicketPriority.TicketPriorityName</td>
+                    <td>@t.AssignedToEmployee.LastName, @t.AssignedToEmployee.FirstName</td>
+                    <td>@t.DateReported.Date.ToShortDateString()</td>
+                </tr>
+            }
+            </tbody>
+        </table>   
+    }
+    else
+    {
+        <p class="fs-5">No Tickets found</p>
+    }
+</section>

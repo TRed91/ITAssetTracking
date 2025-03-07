@@ -11,15 +11,18 @@ public class AssetController : Controller
 {
     private readonly IAssetService _assetService;
     private readonly IAssetAssignmentService _assetAssignmentService;
+    private readonly ITicketService _ticketService;
     private readonly Serilog.ILogger _logger;
 
     public AssetController(
         IAssetService assetService, 
         IAssetAssignmentService assetAssignmentService,
+        ITicketService ticketService,
         Serilog.ILogger logger)
     {
         _assetService = assetService;
         _assetAssignmentService = assetAssignmentService;
+        _ticketService = ticketService;
         _logger = logger;
     }
 
@@ -227,5 +230,20 @@ public class AssetController : Controller
        
         //TODO redirect to details instead
         return RedirectToAction("Index", "Home");
+    }
+
+    public IActionResult Details(int assetId)
+    {
+        var assetResult = _assetService.GetAssetById(assetId);
+        
+        if (!assetResult.Ok)
+        {
+            _logger.Error("Error retrieving data: " + assetResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
+            return RedirectToAction("Index", "Asset");
+        }
+        
+        var model = new AssetDetailsModel(assetResult.Data);
+        return View(model);
     }
 }

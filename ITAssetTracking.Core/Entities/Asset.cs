@@ -28,4 +28,5 @@ public class Asset
     public List<SoftwareAssetAssignment> SoftwareAssetAssignments { get; set; }
     public List<AssetRequest> AssetRequests { get; set; }
     public List<SoftwareAssetRequest> SoftwareAssetRequests { get; set; }
+    public List<Ticket> Tickets { get; set; }
 }

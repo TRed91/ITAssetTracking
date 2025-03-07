@@ -79,7 +79,7 @@
                         <td>@(asset.Manufacturer != null ? asset.Manufacturer.ManufacturerName : "")</td>
                         <td>@asset.AssetStatus.AssetStatusName</td>
                         <td>@asset.Location.LocationName</td>
-                        <td><a asp-action="Details" asp-route-id="@asset.AssetID">Details</a></td>
+                        <td><a asp-action="Details" asp-route-assetId="@asset.AssetID">Details</a></td>
                     </tr>
                 }
                 </tbody>

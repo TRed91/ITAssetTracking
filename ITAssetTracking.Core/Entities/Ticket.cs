@@ -22,6 +22,7 @@ public class Ticket
     public DateTime? DateClosed { get; set; }
     public string IssueDescription { get; set; }
     
+    public Asset Asset { get; set; }
     public TicketStatus TicketStatus { get; set; }
     public TicketType TicketType { get; set; }
     public TicketPriority TicketPriority { get; set; }

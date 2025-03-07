@@ -92,11 +92,11 @@ public class TicketService : ITicketService
         }
     }
 
-    public Result<List<Ticket>> GetTicketsByStatus(int ticketStatusId, bool includeClosed)
+    public Result<List<Ticket>> GetTicketsByStatus(int ticketStatusId, bool includeClosed = true)
     {
         try
         {
-            var tickets = _ticketRepo.GetTicketsByStatus(ticketStatusId, includeClosed);
+            var tickets = _ticketRepo.GetTicketsByStatus(ticketStatusId, includeClosed = true);
             return ResultFactory.Success(tickets);
         }
         catch (Exception ex)
@@ -105,7 +105,7 @@ public class TicketService : ITicketService
         }
     }
 
-    public Result<List<Ticket>> GetTicketsByType(int ticketTypeId, bool includeClosed)
+    public Result<List<Ticket>> GetTicketsByType(int ticketTypeId, bool includeClosed = true)
     {
         try
         {
@@ -118,11 +118,24 @@ public class TicketService : ITicketService
         }
     }
 
-    public Result<List<Ticket>> GetTicketsByPriority(int ticketPriorityId, bool includeClosed)
+    public Result<List<Ticket>> GetTicketsByPriority(int ticketPriorityId, bool includeClosed = true)
     {
         try
         {
             var tickets = _ticketRepo.GetTicketsByPriority(ticketPriorityId, includeClosed);
+            return ResultFactory.Success(tickets);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<Ticket>>(ex.Message, ex);
+        }
+    }
+
+    public Result<List<Ticket>> GetTicketsByAsset(int assetId, bool includeClosed = true)
+    {
+        try
+        {
+            var tickets = _ticketRepo.GetTicketsByAsset(assetId, includeClosed);
             return ResultFactory.Success(tickets);
         }
         catch (Exception ex)

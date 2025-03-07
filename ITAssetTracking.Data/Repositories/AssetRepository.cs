@@ -15,7 +15,15 @@ public class AssetRepository : IAssetRepository
     
     public Asset? GetAssetById(long assetId)
     {
-        return _context.Asset.FirstOrDefault(a => a.AssetID == assetId);
+        return _context.Asset
+            .Include(a => a.AssetAssignments)
+            .Include(a => a.Tickets)
+            .Include(a => a.AssetStatus)
+            .Include(a => a.AssetType)
+            .Include(a => a.Model)
+            .Include(a => a.Manufacturer)
+            .Include(a => a.Location)
+            .FirstOrDefault(a => a.AssetID == assetId);
     }
 
     public List<Asset> GetAssets(int assetTypeId = 0, int locationId = 0, int assetStatusId = 0, int manufacturerId = 0)
