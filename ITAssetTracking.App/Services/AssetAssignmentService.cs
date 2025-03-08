@@ -204,12 +204,7 @@ public class AssetAssignmentService : IAssetAssignmentService
                 return ResultFactory.Fail("Department not found");
             }
 
-            originalAssignment.AssetID = assetAssignment.AssetID;
-            originalAssignment.DepartmentID = assetAssignment.DepartmentID;
-            originalAssignment.EmployeeID = assetAssignment.EmployeeID;
-            originalAssignment.ReturnDate = assetAssignment.ReturnDate;
-
-            _assetAssignmentRepo.UpdateAssetAssignment(originalAssignment);
+            _assetAssignmentRepo.UpdateAssetAssignment(assetAssignment);
             return ResultFactory.Success();
         }
         catch (Exception ex)

@@ -85,8 +85,9 @@ public class MockAssetAssignmentRepo : IAssetAssignmentRepository
         assetAssignmentToUpdate.ReturnDate = assetAssignment.ReturnDate;
     }
 
-    public void DeleteAssetAssignment(AssetAssignment assetAssignment)
+    public void DeleteAssetAssignment(int assetAssignmentId)
     {
+        var assetAssignment = _db.AssetAssignments.FirstOrDefault(a => a.AssetAssignmentID == assetAssignmentId);
         _db.AssetAssignments.Remove(assetAssignment);
     }
 }

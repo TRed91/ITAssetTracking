@@ -41,8 +41,9 @@ public class MockEmployeeRepo : IEmployeeRepository
         employeeToUpdate.DepartmentID = employee.DepartmentID;
     }
 
-    public void DeleteEmployee(Employee employee)
+    public void DeleteEmployee(int employeeId)
     {
+        var employee = _db.Employees.FirstOrDefault(e => e.EmployeeID == employeeId);
         _db.Employees.Remove(employee);
     }
 

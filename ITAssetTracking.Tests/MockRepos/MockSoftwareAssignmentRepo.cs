@@ -86,8 +86,9 @@ public class MockSoftwareAssignmentRepo : ISoftwareAssetAssignmentRepository
         assignment.ReturnDate = softwareAssetAssignment.ReturnDate;
     }
 
-    public void DeleteSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment)
+    public void DeleteSoftwareAssetAssignment(int softwareAssetAssignmentId)
     {
+        var softwareAssetAssignment = _db.SoftwareAssetAssignments.FirstOrDefault(a => a.AssetAssignmentID == softwareAssetAssignmentId);
         _db.SoftwareAssetAssignments.Remove(softwareAssetAssignment);
     }
 }

@@ -9,7 +9,7 @@
 <p>Manufacturer</p>
 <p class="fs-5">@Model.Manufacturer</p>
 
-<form asp-controller="Asset" asp-action="Add" method="post" class="col-md-6">
+<form asp-controller="Asset" asp-action="Edit" asp-route-assetId="@Model.AssetId" method="post" class="col-md-6">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.ManufacturerId) 
     <div class="mb-3">

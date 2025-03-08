@@ -124,15 +124,8 @@ public class SoftwareAssetService : ISoftwareAssetService
             {
                 return ResultFactory.Fail("Software asset not found");
             }
-
-            asset.AssetStatusID = softwareAsset.AssetStatusID;
-            asset.ManufacturerID = softwareAsset.ManufacturerID;
-            asset.LicenseTypeID = softwareAsset.LicenseTypeID;
-            asset.Version = softwareAsset.Version;
-            asset.ExpirationDate = softwareAsset.ExpirationDate;
-            asset.LicenseKey = softwareAsset.LicenseKey;
-            asset.NumberOfLicenses = softwareAsset.NumberOfLicenses;
-            _softwareAssetRepo.UpdateSoftwareAsset(asset);
+            
+            _softwareAssetRepo.UpdateSoftwareAsset(softwareAsset);
             return ResultFactory.Success();
         }
         catch (Exception ex)

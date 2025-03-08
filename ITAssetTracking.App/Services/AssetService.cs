@@ -163,16 +163,8 @@ public class AssetService : IAssetService
             {
                 return ResultFactory.Fail($"Asset with id {asset.AssetID} not found");
             }
-
-            originalAsset.AssetStatusID = asset.AssetStatusID;
-            originalAsset.ManufacturerID = asset.ManufacturerID;
-            originalAsset.ModelID = asset.ModelID;
-            originalAsset.LocationID = asset.LocationID;
-            originalAsset.SerialNumber = asset.SerialNumber;
-            originalAsset.AssetTypeID = asset.AssetTypeID;
-            originalAsset.PurchasePrice = asset.PurchasePrice;
-
-            _assetRepo.UpdateAsset(originalAsset);
+            
+            _assetRepo.UpdateAsset(asset);
             return ResultFactory.Success();
         }
         catch (Exception ex)
@@ -181,7 +173,7 @@ public class AssetService : IAssetService
         }
     }
 
-    public Result DeleteAsset(int assetId)
+    public Result DeleteAsset(long assetId)
     {
         try
         {

@@ -212,13 +212,8 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
                     return ResultFactory.Fail("Asset not found");
                 }
             }
-
-            assignmentToUpdate.EmployeeID = softwareAssetAssignment.EmployeeID;
-            assignmentToUpdate.SoftwareAssetID = softwareAssetAssignment.SoftwareAssetID;
-            assignmentToUpdate.AssetID = softwareAssetAssignment.AssetID;
-            assignmentToUpdate.ReturnDate = softwareAssetAssignment.ReturnDate;
-
-            _swaaRepository.UpdateSoftwareAssetAssignment(assignmentToUpdate);
+            
+            _swaaRepository.UpdateSoftwareAssetAssignment(softwareAssetAssignment);
             return ResultFactory.Success();
         }
         catch (Exception ex)

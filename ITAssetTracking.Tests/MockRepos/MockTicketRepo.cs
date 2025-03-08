@@ -118,8 +118,9 @@ public class MockTicketRepo : ITicketRepository
         
     }
 
-    public void DeleteTicket(Ticket ticket)
+    public void DeleteTicket(int ticketId)
     {
+        var ticket = _db.Tickets.FirstOrDefault(t => t.TicketID == ticketId);
         _db.Tickets.Remove(ticket);
     }
 
@@ -150,8 +151,9 @@ public class MockTicketRepo : ITicketRepository
         note.Note = ticketNote.Note;
     }
 
-    public void DeleteTicketNote(TicketNotes ticketNote)
+    public void DeleteTicketNote(int ticketNoteId)
     {
+        var ticketNote = _db.TicketNotes.FirstOrDefault(t => t.TicketNoteID == ticketNoteId);
         _db.TicketNotes.Remove(ticketNote);
     }
 

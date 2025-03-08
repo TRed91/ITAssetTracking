@@ -88,11 +88,7 @@ public class EmployeeService : IEmployeeService
                 return ResultFactory.Fail("Employee not found");
             }
 
-            oldEmployee.FirstName = employee.FirstName;
-            oldEmployee.LastName = employee.LastName;
-            oldEmployee.DepartmentID = employee.DepartmentID;
-
-            _employeeRepo.UpdateEmployee(oldEmployee);
+            _employeeRepo.UpdateEmployee(employee);
             return ResultFactory.Success();
         }
         catch (Exception ex)

@@ -100,8 +100,9 @@ public class MockSoftwareRequestRepo : ISoftwareAssetRequestRepository
         request.RequestResultID = softwareAssetRequest.RequestResultID;
     }
 
-    public void DeleteRequest(SoftwareAssetRequest softwareAssetRequest)
+    public void DeleteRequest(int softwareAssetRequestId)
     {
+        var softwareAssetRequest = _db.SoftwareAssetRequests.FirstOrDefault(r => r.SoftwareAssetRequestID == softwareAssetRequestId);
         _db.SoftwareAssetRequests.Remove(softwareAssetRequest);
     }
 }

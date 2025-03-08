@@ -75,8 +75,9 @@ public class MockSoftwareAssetRepo : ISoftwareAssetRepository
         asset.NumberOfLicenses = softwareAsset.NumberOfLicenses;
     }
 
-    public void DeleteSoftwareAsset(SoftwareAsset softwareAsset)
+    public void DeleteSoftwareAsset(int softwareAssetId)
     {
+        var softwareAsset = _db.SoftwareAssets.FirstOrDefault(a => a.SoftwareAssetID == softwareAssetId);
         _db.SoftwareAssets.Remove(softwareAsset);
     }
 

@@ -17,7 +17,7 @@ public interface IAssetService
     
     Result AddAsset(Asset asset);
     Result UpdateAsset(Asset asset);
-    Result DeleteAsset(int assetId);
+    Result DeleteAsset(long assetId);
     
     Result<List<Manufacturer>> GetManufacturers();
     Result<Manufacturer> GetManufacturerById(int manufacturerId);

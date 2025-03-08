@@ -243,12 +243,12 @@ public class AssetController : Controller
             return RedirectToAction("Details", new { assetId });
         }
         
+        var model = new AssetFormModel(assetResult.Data);
+        
         //populate select lists
         var modelsResult = _assetService.GetModelsByManufacturer(assetResult.Data.ManufacturerID);
         var assetTypesResult = _assetService.GetAssetTypes();
         var locationsResult = _assetService.GetLocations();
-        
-        var model = new AssetFormModel(assetResult.Data);
         model.Locations = new SelectList(locationsResult.Data, "LocationID", "LocationName");
         model.AssetTypes = new SelectList(assetTypesResult.Data, "AssetTypeID", "AssetTypeName");
         model.Models = new SelectList(modelsResult.Data, "ModelID", "ModelNumber");
@@ -262,9 +262,11 @@ public class AssetController : Controller
     {
         if (ModelState.IsValid)
         {
+            var originalAsset = _assetService.GetAssetById(assetId).Data;
             var asset = model.ToEntity();
             asset.AssetID = assetId;
-            var updateResult = _assetService.UpdateAsset(model.ToEntity());
+            asset.AssetStatusID = originalAsset.AssetStatusID;
+            var updateResult = _assetService.UpdateAsset(asset);
             if (updateResult.Ok)
             {
                 var msg = $"Asset with id {assetId} updated successfully";
@@ -289,6 +291,38 @@ public class AssetController : Controller
         
         return View(model);
     }
+
+    [HttpGet]
+    public IActionResult Delete(long assetId)
+    {
+        var assetResult = _assetService.GetAssetById(assetId);
+        if (!assetResult.Ok)
+        {
+            _logger.Error("Error retrieving asset: " + assetResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
+            return RedirectToAction("Details", new { assetId });
+        }
+        return View(assetResult.Data);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteAsset(long assetId)
+    {
+        var deleteResult = _assetService.DeleteAsset(assetId);
+        if (!deleteResult.Ok)
+        {
+            _logger.Error("Error deleting asset: " + deleteResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, deleteResult.Message));
+            return RedirectToAction("Details", new { assetId });
+        }
+        
+        var msg = $"Asset with id {assetId} deleted successfully";
+        _logger.Information(msg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, msg));
+        return RedirectToAction("Index");
+    }
+    
     public IActionResult Details(long assetId)
     {
         var assetResult = _assetService.GetAssetById(assetId);

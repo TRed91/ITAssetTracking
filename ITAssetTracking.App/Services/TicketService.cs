@@ -217,18 +217,8 @@ public class TicketService : ITicketService
                     return ResultFactory.Fail("Assigned employee not found");
                 }
             }
-
-            ticketToUpdate.TicketPriorityID = ticket.TicketPriorityID;
-            ticketToUpdate.TicketTypeID = ticket.TicketTypeID;
-            ticketToUpdate.TicketStatusID = ticket.TicketStatusID;
-            ticketToUpdate.TicketResolutionID = ticket.TicketResolutionID;
-            ticketToUpdate.AssignedToEmployeeID = ticket.AssignedToEmployeeID;
-            ticketToUpdate.ReportedByEmployeeID = ticket.ReportedByEmployeeID;
-            ticketToUpdate.AssetID = ticket.AssetID;
-            ticketToUpdate.IssueDescription = ticket.IssueDescription;
-            ticketToUpdate.DateClosed = ticket.DateClosed;
-
-            _ticketRepo.UpdateTicket(ticketToUpdate);
+            
+            _ticketRepo.UpdateTicket(ticket);
             return ResultFactory.Success();
         }
         catch (Exception ex)
@@ -338,11 +328,7 @@ public class TicketService : ITicketService
                 return ResultFactory.Fail("Ticket not found");
             }
 
-            notesToUpdate.EmployeeID = ticketNotes.EmployeeID;
-            notesToUpdate.TicketID = ticketNotes.TicketID;
-            notesToUpdate.Note = ticketNotes.Note;
-
-            _ticketRepo.UpdateTicketNote(notesToUpdate);
+            _ticketRepo.UpdateTicketNote(ticketNotes);
             return ResultFactory.Success();
         }
         catch (Exception ex)

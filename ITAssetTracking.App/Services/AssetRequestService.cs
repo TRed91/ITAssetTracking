@@ -208,13 +208,7 @@ public class AssetRequestService : IAssetRequestService
                 }
             }
 
-            request.DepartmentID = assetRequest.DepartmentID;
-            request.EmployeeID = assetRequest.EmployeeID;
-            request.RequestNote = assetRequest.RequestNote;
-            request.RequestResultID = assetRequest.RequestResultID;
-            request.AssetID = assetRequest.AssetID;
-
-            _assetRequestRepo.UpdateAssetRequest(request);
+            _assetRequestRepo.UpdateAssetRequest(assetRequest);
             return ResultFactory.Success();
         }
         catch (Exception ex)

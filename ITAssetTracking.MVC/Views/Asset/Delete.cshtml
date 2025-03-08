@@ -1,0 +1,11 @@
+@model Asset
+
+@{
+    ViewData["Title"] = "Delete Asset";
+}
+
+<p class="fs-3">Delete Asset with Serial Number: @Model.SerialNumber?</p>
+<form asp-controller="Asset" asp-action="DeleteAsset" asp-route-assetId="@Model.AssetID" method="post" class="d-flex gap-5">
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a asp-action="Details" asp-route-assetId="@Model.AssetID" class="link-primary text-decoration-none">Go Back</a>
+</form>

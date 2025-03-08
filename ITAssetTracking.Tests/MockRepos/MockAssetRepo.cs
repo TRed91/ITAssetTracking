@@ -81,8 +81,9 @@ public class MockAssetRepo : IAssetRepository
         assetToUpdate.SerialNumber = asset.SerialNumber;
     }
 
-    public void DeleteAsset(Asset asset)
+    public void DeleteAsset(long assetId)
     {
+        var asset = _db.Assets.FirstOrDefault(a => a.AssetID == assetId);
         _db.Assets.Remove(asset);
     }
 

@@ -95,9 +95,9 @@ public class MockAssetRequestRepo : IAssetRequestRepository
         request.DepartmentID = assetRequest.DepartmentID;
     }
 
-    public void DeleteAssetRequest(AssetRequest assetRequest)
+    public void DeleteAssetRequest(int assetRequestId)
     {
-        var request = _db.AssetRequests.FirstOrDefault(a => a.AssetRequestID == assetRequest.AssetRequestID);
+        var request = _db.AssetRequests.FirstOrDefault(a => a.AssetRequestID == assetRequestId);
         _db.AssetRequests.Remove(request);
     }
 }
