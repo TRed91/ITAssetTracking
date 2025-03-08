@@ -111,7 +111,7 @@ public class EmployeeService : IEmployeeService
                 return ResultFactory.Fail("Employee not found");
             }
 
-            _employeeRepo.DeleteEmployee(employee);
+            _employeeRepo.DeleteEmployee(employeeId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

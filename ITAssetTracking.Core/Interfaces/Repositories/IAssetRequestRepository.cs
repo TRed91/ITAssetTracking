@@ -16,5 +16,5 @@ public interface IAssetRequestRepository
     
     void AddAssetRequest(AssetRequest assetRequest);
     void UpdateAssetRequest(AssetRequest assetRequest);
-    void DeleteAssetRequest(AssetRequest assetRequest);
+    void DeleteAssetRequest(int assetRequestId);
 }

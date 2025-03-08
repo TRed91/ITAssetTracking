@@ -17,13 +17,13 @@ public interface ITicketRepository
     
     void AddTicket(Ticket ticket);
     void UpdateTicket(Ticket ticket);
-    void DeleteTicket(Ticket ticket);
+    void DeleteTicket(int ticketId);
     
     TicketNotes? GetTicketNoteById(int ticketNoteId);
     List<TicketNotes> GetTicketNotes(int ticketId);
     void AddTicketNote(TicketNotes ticketNote);
     void UpdateTicketNote(TicketNotes ticketNote);
-    void DeleteTicketNote(TicketNotes ticketNote);
+    void DeleteTicketNote(int ticketNoteId);
     
     List<TicketStatus> GetTicketStatuses();
     List<TicketPriority> GetTicketPriorities();

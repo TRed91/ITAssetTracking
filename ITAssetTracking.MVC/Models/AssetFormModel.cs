@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Models;
 
-public class AddAssetModel : IValidatableObject
+public class AssetFormModel : IValidatableObject
 {
+    public long? AssetId { get; set; }
     public string? Manufacturer { get; set; }
     public SelectList? Models { get; set; }
     public SelectList? AssetTypes { get; set; }
@@ -20,7 +21,7 @@ public class AddAssetModel : IValidatableObject
     public byte AssetTypeId { get; set; }
     [Required]
     [Display(Name = "Location")]
-    public byte LocationId { get; set; }
+    public int LocationId { get; set; }
     [Required]
     [Display(Name = "Serial Number")]
     public string SerialNumber { get; set; }
@@ -33,6 +34,20 @@ public class AddAssetModel : IValidatableObject
     [Display(Name = "Purchase Price")]
     [DataType(DataType.Currency)]
     public decimal PurchasePrice { get; set; }
+
+    public AssetFormModel() { }
+
+    public AssetFormModel(Asset asset)
+    {
+        AssetId = asset.AssetID;
+        ManufacturerId = asset.ManufacturerID;
+        ModelId = asset.ModelID;
+        AssetTypeId = asset.AssetTypeID;
+        LocationId = asset.LocationID;
+        SerialNumber = asset.SerialNumber;
+        PurchaseDate = asset.PurchaseDate;
+        PurchasePrice = asset.PurchasePrice;
+    }
 
     public Asset ToEntity()
     {

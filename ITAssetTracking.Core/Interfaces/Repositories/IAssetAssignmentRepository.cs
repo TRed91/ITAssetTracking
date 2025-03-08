@@ -14,5 +14,5 @@ public interface IAssetAssignmentRepository
     
     void AddAssetAssignment(AssetAssignment assetAssignment);
     void UpdateAssetAssignment(AssetAssignment assetAssignment);
-    void DeleteAssetAssignment(AssetAssignment assetAssignment);
+    void DeleteAssetAssignment(int assetAssignmentId);
 }

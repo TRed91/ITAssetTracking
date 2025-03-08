@@ -181,7 +181,7 @@ public class AssetController : Controller
         models = _assetService.GetModelsByManufacturer(manufacturerId).Data;
         manufacturerName = _assetService.GetManufacturerById(manufacturerId).Data.ManufacturerName;
 
-        var model = new AddAssetModel
+        var model = new AssetFormModel
         {
             Manufacturer = manufacturerName,
             ManufacturerId = manufacturerId,
@@ -195,25 +195,25 @@ public class AssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Add(AddAssetModel model)
+    public IActionResult Add(AssetFormModel formModel)
     {
         if (!ModelState.IsValid)
         {
-            if (model.ManufacturerId != null && model.ManufacturerId != 0)
+            if (formModel.ManufacturerId != null && formModel.ManufacturerId != 0)
             {
-                var models = _assetService.GetModelsByManufacturer((int)model.ManufacturerId).Data;
-                model.Models = new SelectList(models, "ModelID", "ModelNumber");
+                var models = _assetService.GetModelsByManufacturer((int)formModel.ManufacturerId).Data;
+                formModel.Models = new SelectList(models, "ModelID", "ModelNumber");
             }
             
             var locations = _assetService.GetLocations().Data;
             var assetTypes = _assetService.GetAssetTypes().Data;
-            model.AssetTypes = new SelectList(assetTypes, "AssetTypeID", "AssetTypeName");
-            model.Locations = new SelectList(locations, "LocationID", "LocationName");
+            formModel.AssetTypes = new SelectList(assetTypes, "AssetTypeID", "AssetTypeName");
+            formModel.Locations = new SelectList(locations, "LocationID", "LocationName");
             
-            return View(model);
+            return View(formModel);
         }
 
-        Asset asset = model.ToEntity();
+        Asset asset = formModel.ToEntity();
         var result = _assetService.AddAsset(asset);
         if (!result.Ok)
         {
@@ -221,7 +221,7 @@ public class AssetController : Controller
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, result.Message));
             
-            RedirectToAction("Add", new { manufacturerId = model.ManufacturerId });
+            RedirectToAction("Add", new { manufacturerId = formModel.ManufacturerId });
         }
         
         _logger.Information($"Asset with id {asset.AssetID} added successfully");
@@ -229,10 +229,67 @@ public class AssetController : Controller
             new TempDataMsg(true, $"Asset with id {asset.AssetID} added successfully"));
        
         //TODO redirect to details instead
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Details", new { assetId = asset.AssetID });
     }
 
-    public IActionResult Details(int assetId)
+    [HttpGet]
+    public IActionResult Edit(long assetId)
+    {
+        var assetResult = _assetService.GetAssetById(assetId);
+        if (!assetResult.Ok)
+        {
+            TempData["msg"] = TempDataExtension.Serialize(
+                new TempDataMsg(false, assetResult.Message));
+            return RedirectToAction("Details", new { assetId });
+        }
+        
+        //populate select lists
+        var modelsResult = _assetService.GetModelsByManufacturer(assetResult.Data.ManufacturerID);
+        var assetTypesResult = _assetService.GetAssetTypes();
+        var locationsResult = _assetService.GetLocations();
+        
+        var model = new AssetFormModel(assetResult.Data);
+        model.Locations = new SelectList(locationsResult.Data, "LocationID", "LocationName");
+        model.AssetTypes = new SelectList(assetTypesResult.Data, "AssetTypeID", "AssetTypeName");
+        model.Models = new SelectList(modelsResult.Data, "ModelID", "ModelNumber");
+        
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(long assetId, AssetFormModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var asset = model.ToEntity();
+            asset.AssetID = assetId;
+            var updateResult = _assetService.UpdateAsset(model.ToEntity());
+            if (updateResult.Ok)
+            {
+                var msg = $"Asset with id {assetId} updated successfully";
+                _logger.Information(msg);
+                TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, msg));
+            }
+            else
+            {
+                _logger.Error("Error updating asset: " + updateResult.Exception);
+                TempData["msg"] = TempDataExtension.Serialize(
+                    new TempDataMsg(false, updateResult.Message));
+            }
+            return RedirectToAction("Details", new { assetId });
+        }
+        //populate select lists
+        var models = _assetService.GetModelsByManufacturer(model.ManufacturerId).Data;
+        var locations = _assetService.GetLocations().Data;
+        var assetTypes = _assetService.GetAssetTypes().Data;
+        model.AssetTypes = new SelectList(assetTypes, "AssetTypeID", "AssetTypeName");
+        model.Locations = new SelectList(locations, "LocationID", "LocationName");
+        model.Models = new SelectList(models, "ModelID", "ModelNumber");
+        
+        return View(model);
+    }
+    public IActionResult Details(long assetId)
     {
         var assetResult = _assetService.GetAssetById(assetId);
         

@@ -90,13 +90,26 @@ public class AssetRequestRepository : IAssetRequestRepository
 
     public void UpdateAssetRequest(AssetRequest assetRequest)
     {
-        _context.AssetRequest.Update(assetRequest);
-        _context.SaveChanges();
+        var request = _context.AssetRequest.FirstOrDefault(a => a.AssetRequestID == assetRequest.AssetRequestID);
+        if (request != null)
+        {
+            request.RequestDate = assetRequest.RequestDate;
+            request.RequestResultID = assetRequest.RequestResultID;
+            request.EmployeeID = assetRequest.EmployeeID;
+            request.DepartmentID = assetRequest.DepartmentID;
+            request.AssetID = assetRequest.AssetID;
+            request.RequestNote = assetRequest.RequestNote;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteAssetRequest(AssetRequest assetRequest)
+    public void DeleteAssetRequest(int assetRequestId)
     {
-        _context.AssetRequest.Remove(assetRequest);
-        _context.SaveChanges();
+        var request = _context.AssetRequest.FirstOrDefault(a => a.AssetRequestID == assetRequestId);
+        if (request != null)
+        {
+            _context.AssetRequest.Remove(request);
+            _context.SaveChanges();
+        }
     }
 }

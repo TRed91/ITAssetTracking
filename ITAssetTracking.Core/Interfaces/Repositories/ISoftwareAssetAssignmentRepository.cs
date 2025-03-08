@@ -14,5 +14,5 @@ public interface ISoftwareAssetAssignmentRepository
     
     void AddSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
     void UpdateSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
-    void DeleteSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
+    void DeleteSoftwareAssetAssignment(int softwareAssetAssignmentId);
 }

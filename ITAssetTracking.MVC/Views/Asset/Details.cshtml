@@ -44,17 +44,19 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-between mt-3">
-        <div class="d-flex gap-5">
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="d-flex align-items-center gap-5">
             <a asp-action="Edit" asp-route-assetId="@Model.AssetId">
                 <button class="btn btn-primary">Edit</button>
             </a>
-            <a onclick="history.back()" style="cursor: pointer" class="link-primary">Go Back</a>
+            <a onclick="history.back()" style="cursor: pointer" class="link-primary text-decoration-none">Go Back</a>
         </div>
-        <button class="btn btn-danger">Delete</button>
+        <a asp-action="Delete" asp-route-assetId="@Model.AssetId">
+            <button class="btn btn-danger">Delete</button>
+        </a>
     </div>
 </section>
-<section class="p-3 bg-dark-subtle d-flex gap-3 flex-column flex-fill flex-md-row align-items-center">
+<section class="p-3 bg-dark-subtle d-flex gap-3 flex-column flex-fill flex-md-row justify-content-center align-items-center">
     <a asp-action="AssignEmployee" class="p-2 card text-decoration-none">Assign To Employee</a>
     <a asp-action="AssignDepartment" class="p-2 card text-decoration-none">Assign To Department</a>
     <a asp-action="Return" class="p-2 card text-decoration-none">Return Asset</a>

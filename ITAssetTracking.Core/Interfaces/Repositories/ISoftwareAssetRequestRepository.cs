@@ -16,5 +16,5 @@ public interface ISoftwareAssetRequestRepository
     
     void AddRequest(SoftwareAssetRequest softwareAssetRequest);
     void UpdateRequest(SoftwareAssetRequest softwareAssetRequest);
-    void DeleteRequest(SoftwareAssetRequest softwareAssetRequest);
+    void DeleteRequest(int softwareAssetRequestId);
 }

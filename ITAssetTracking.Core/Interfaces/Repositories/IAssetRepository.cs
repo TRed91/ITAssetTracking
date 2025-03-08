@@ -17,7 +17,7 @@ public interface IAssetRepository
     
     void AddAsset(Asset asset);
     void UpdateAsset(Asset asset);
-    void DeleteAsset(Asset asset);
+    void DeleteAsset(long assetId);
     
     List<Manufacturer> GetManufacturers();
     Manufacturer? GetManufacturerById(int manufacturerId);

@@ -247,7 +247,7 @@ public class TicketService : ITicketService
                 return ResultFactory.Fail("Ticket not found");
             }
 
-            _ticketRepo.DeleteTicket(ticket);
+            _ticketRepo.DeleteTicket(ticketId);
             return ResultFactory.Success();
         }
         catch (Exception ex)
@@ -361,7 +361,7 @@ public class TicketService : ITicketService
                 return ResultFactory.Fail("Ticket note not found");
             }
 
-            _ticketRepo.DeleteTicketNote(ticketNotes);
+            _ticketRepo.DeleteTicketNote(ticketNoteId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

@@ -237,7 +237,7 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
                 return ResultFactory.Fail("Software asset assignment not found");
             }
 
-            _swaaRepository.DeleteSoftwareAssetAssignment(assignmentToDelete);
+            _swaaRepository.DeleteSoftwareAssetAssignment(softwareAssetAssignmentId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

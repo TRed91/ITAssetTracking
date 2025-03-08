@@ -151,7 +151,7 @@ public class SoftwareAssetService : ISoftwareAssetService
                 return ResultFactory.Fail("Software asset not found");
             }
 
-            _softwareAssetRepo.DeleteSoftwareAsset(asset);
+            _softwareAssetRepo.DeleteSoftwareAsset(softwareAssetId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

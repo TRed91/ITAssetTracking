@@ -104,14 +104,30 @@ public class TicketRepository : ITicketRepository
 
     public void UpdateTicket(Ticket ticket)
     {
-        _context.Ticket.Update(ticket);
-        _context.SaveChanges();
+        var ticketToUpdate = _context.Ticket.FirstOrDefault(t => t.TicketID == ticket.TicketID);
+        if (ticketToUpdate != null)
+        {
+            ticketToUpdate.TicketPriorityID = ticket.TicketPriorityID;
+            ticketToUpdate.TicketStatusID = ticket.TicketStatusID;
+            ticketToUpdate.TicketResolutionID = ticket.TicketResolutionID;
+            ticketToUpdate.DateClosed = ticket.DateClosed;
+            ticketToUpdate.DateReported = ticket.DateReported;
+            ticketToUpdate.AssignedToEmployeeID = ticket.AssignedToEmployeeID;
+            ticketToUpdate.AssetID = ticket.AssetID;
+            ticketToUpdate.IssueDescription = ticket.IssueDescription;
+            ticketToUpdate.ReportedByEmployeeID = ticket.ReportedByEmployeeID;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteTicket(Ticket ticket)
+    public void DeleteTicket(int ticketId)
     {
-        _context.Ticket.Remove(ticket);
-        _context.SaveChanges();
+        var ticket = _context.Ticket.FirstOrDefault(t => t.TicketID == ticketId);
+        if (ticket != null)
+        {
+            _context.Ticket.Remove(ticket);
+            _context.SaveChanges();
+        }
     }
 
     public TicketNotes? GetTicketNoteById(int ticketNoteId)
@@ -134,14 +150,23 @@ public class TicketRepository : ITicketRepository
 
     public void UpdateTicketNote(TicketNotes ticketNote)
     {
-        _context.TicketNotes.Update(ticketNote);
-        _context.SaveChanges();
+        var note = _context.TicketNotes.FirstOrDefault(t => t.TicketNoteID == ticketNote.TicketNoteID);
+        if (note != null)
+        {
+            note.EmployeeID = ticketNote.EmployeeID;
+            note.Note = ticketNote.Note;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteTicketNote(TicketNotes ticketNote)
+    public void DeleteTicketNote(int ticketNoteId)
     {
-        _context.TicketNotes.Remove(ticketNote);
-        _context.SaveChanges();
+        var note = _context.TicketNotes.FirstOrDefault(t => t.TicketNoteID == ticketNoteId);
+        if (note != null)
+        {
+            _context.TicketNotes.Remove(note);
+            _context.SaveChanges();
+        }
     }
 
     public List<TicketStatus> GetTicketStatuses()

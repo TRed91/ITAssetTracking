@@ -83,13 +83,28 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
 
     public void UpdateAssetAssignment(AssetAssignment assetAssignment)
     {
-        _context.AssetAssignment.Update(assetAssignment);
-        _context.SaveChanges();
+        var assignment = _context.AssetAssignment
+            .FirstOrDefault(a => a.AssetAssignmentID == assetAssignment.AssetAssignmentID);
+        if (assignment != null)
+        {
+            assignment.AssignmentDate = assetAssignment.AssignmentDate;
+            assignment.AssetID = assetAssignment.AssetID;
+            assignment.ReturnDate = assetAssignment.ReturnDate;
+            assignment.DepartmentID = assetAssignment.DepartmentID;
+            assignment.EmployeeID = assetAssignment.EmployeeID;
+            _context.SaveChanges();
+        }
+        
     }
 
-    public void DeleteAssetAssignment(AssetAssignment assetAssignment)
+    public void DeleteAssetAssignment(int assetAssignmentId)
     {
-        _context.AssetAssignment.Remove(assetAssignment);
-        _context.SaveChanges();
+        var assignment = _context.AssetAssignment
+            .FirstOrDefault(a => a.AssetAssignmentID == assetAssignmentId);
+        if (assignment != null)
+        {
+            _context.AssetAssignment.Remove(assignment);
+            _context.SaveChanges();
+        }
     }
 }

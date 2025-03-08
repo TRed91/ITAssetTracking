@@ -82,13 +82,27 @@ public class SoftwareAssetAssignmentRepository : ISoftwareAssetAssignmentReposit
 
     public void UpdateSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment)
     {
-        _context.SoftwareAssetAssignment.Update(softwareAssetAssignment);
-        _context.SaveChanges();
+        var assignmnent = _context.SoftwareAssetAssignment
+            .FirstOrDefault(s => s.AssetAssignmentID == softwareAssetAssignment.AssetAssignmentID);
+        if (assignmnent != null)
+        {
+            assignmnent.AssetID = softwareAssetAssignment.AssetID;
+            assignmnent.AssignmentDate = softwareAssetAssignment.AssignmentDate;
+            assignmnent.EmployeeID = softwareAssetAssignment.EmployeeID;
+            assignmnent.ReturnDate = softwareAssetAssignment.ReturnDate;
+            assignmnent.SoftwareAssetID = softwareAssetAssignment.SoftwareAssetID;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment)
+    public void DeleteSoftwareAssetAssignment(int softwareAssetAssignmentId)
     {
-        _context.SoftwareAssetAssignment.Remove(softwareAssetAssignment);
-        _context.SaveChanges();
+        var assignment = _context.SoftwareAssetAssignment
+            .FirstOrDefault(s => s.AssetAssignmentID == softwareAssetAssignmentId);
+        if (assignment != null)
+        {
+            _context.SoftwareAssetAssignment.Remove(assignment);
+            _context.SaveChanges();
+        }
     }
 }

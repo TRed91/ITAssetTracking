@@ -233,7 +233,7 @@ public class AssetRequestService : IAssetRequestService
                 return ResultFactory.Fail("Asset request not found");
             }
 
-            _assetRequestRepo.DeleteAssetRequest(request);
+            _assetRequestRepo.DeleteAssetRequest(assetRequestId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

@@ -91,13 +91,28 @@ public class SoftwareAssetRequestRepository : ISoftwareAssetRequestRepository
 
     public void UpdateRequest(SoftwareAssetRequest softwareAssetRequest)
     {
-        _context.SoftwareAssetRequest.Update(softwareAssetRequest);
-        _context.SaveChanges();
+        var requestToUpdate = _context.SoftwareAssetRequest
+            .FirstOrDefault(s => s.SoftwareAssetRequestID == softwareAssetRequest.SoftwareAssetRequestID);
+        if (requestToUpdate != null)
+        {
+            requestToUpdate.RequestDate = softwareAssetRequest.RequestDate;
+            requestToUpdate.RequestResultID = softwareAssetRequest.RequestResultID;
+            requestToUpdate.EmployeeID = softwareAssetRequest.EmployeeID;
+            requestToUpdate.AssetID = softwareAssetRequest.AssetID;
+            requestToUpdate.RequestNote = softwareAssetRequest.RequestNote;
+            requestToUpdate.SoftwareAssetID = softwareAssetRequest.SoftwareAssetID;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteRequest(SoftwareAssetRequest softwareAssetRequest)
+    public void DeleteRequest(int softwareAssetRequestId)
     {
-        _context.SoftwareAssetRequest.Remove(softwareAssetRequest);
-        _context.SaveChanges();
+        var request = _context.SoftwareAssetRequest
+            .FirstOrDefault(s => s.SoftwareAssetRequestID == softwareAssetRequestId);
+        if (request != null)
+        {
+            _context.SoftwareAssetRequest.Remove(request);
+            _context.SaveChanges();
+        }
     }
 }

@@ -93,14 +93,31 @@ public class AssetRepository : IAssetRepository
 
     public void UpdateAsset(Asset asset)
     {
-        _context.Asset.Update(asset);
-        _context.SaveChanges();
+        var assetToUpdate = _context.Asset.FirstOrDefault(a => a.AssetID == asset.AssetID);
+        if (assetToUpdate != null)
+        {
+            assetToUpdate.ManufacturerID = asset.ManufacturerID;
+            assetToUpdate.ModelID = asset.ModelID;
+            assetToUpdate.LocationID = asset.LocationID;
+            assetToUpdate.AssetStatusID = asset.AssetStatusID;
+            assetToUpdate.AssetTypeID = asset.AssetTypeID;
+            assetToUpdate.SerialNumber = asset.SerialNumber;
+            assetToUpdate.PurchaseDate = asset.PurchaseDate;
+            assetToUpdate.PurchasePrice = asset.PurchasePrice;
+            assetToUpdate.PurchaseDate = asset.PurchaseDate;
+            _context.SaveChanges();
+        }
+        
     }
 
-    public void DeleteAsset(Asset asset)
+    public void DeleteAsset(long assetId)
     {
-        _context.Asset.Remove(asset);
-        _context.SaveChanges();
+        var asset = _context.Asset.FirstOrDefault(a => a.AssetID == assetId);
+        if (asset != null)
+        {
+            _context.Asset.Remove(asset);
+            _context.SaveChanges();
+        }
     }
 
     public List<Manufacturer> GetManufacturers()

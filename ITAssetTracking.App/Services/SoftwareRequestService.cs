@@ -245,7 +245,7 @@ public class SoftwareRequestService : ISoftwareRequestService
                 return ResultFactory.Fail("Software asset request not found");
             }
 
-            _sarRepo.DeleteRequest(request);
+            _sarRepo.DeleteRequest(softwareRequestId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

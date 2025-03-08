@@ -228,7 +228,7 @@ public class AssetAssignmentService : IAssetAssignmentService
                 return ResultFactory.Fail("Asset assignment not found");
             }
 
-            _assetAssignmentRepo.DeleteAssetAssignment(assignment);
+            _assetAssignmentRepo.DeleteAssetAssignment(assetAssignmentId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

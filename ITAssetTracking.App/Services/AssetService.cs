@@ -191,7 +191,7 @@ public class AssetService : IAssetService
                 return ResultFactory.Fail($"Asset with id {assetId} not found");
             }
 
-            _assetRepo.DeleteAsset(asset);
+            _assetRepo.DeleteAsset(assetId);
             return ResultFactory.Success();
         }
         catch (Exception ex)

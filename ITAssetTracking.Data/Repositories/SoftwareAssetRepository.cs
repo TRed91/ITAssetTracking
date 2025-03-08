@@ -70,14 +70,29 @@ public class SoftwareAssetRepository : ISoftwareAssetRepository
 
     public void UpdateSoftwareAsset(SoftwareAsset softwareAsset)
     {
-        _context.SoftwareAsset.Update(softwareAsset);
-        _context.SaveChanges();
+        var assetToUpdate = _context.SoftwareAsset
+            .FirstOrDefault(s => s.SoftwareAssetID == softwareAsset.SoftwareAssetID);
+        if (assetToUpdate != null)
+        {
+            assetToUpdate.AssetStatusID = softwareAsset.AssetStatusID;
+            assetToUpdate.LicenseTypeID = softwareAsset.LicenseTypeID;
+            assetToUpdate.ExpirationDate = softwareAsset.ExpirationDate;
+            assetToUpdate.ManufacturerID = softwareAsset.ManufacturerID;
+            assetToUpdate.Version = softwareAsset.Version;
+            assetToUpdate.LicenseKey = softwareAsset.LicenseKey;
+            assetToUpdate.NumberOfLicenses = softwareAsset.NumberOfLicenses;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteSoftwareAsset(SoftwareAsset softwareAsset)
+    public void DeleteSoftwareAsset(int softwareAssetId)
     {
-        _context.SoftwareAsset.Remove(softwareAsset);
-        _context.SaveChanges();
+        var asset = _context.SoftwareAsset.FirstOrDefault(s => s.SoftwareAssetID == softwareAssetId);
+        if (asset != null)
+        {
+            _context.SoftwareAsset.Remove(asset);
+            _context.SaveChanges();
+        }
     }
 
     public List<LicenseType> GetLicenseTypes()

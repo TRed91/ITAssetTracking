@@ -37,17 +37,27 @@ public class EmployeeRepository : IEmployeeRepository
 
     public void UpdateEmployee(Employee employee)
     {
-        _context.Employee.Update(employee);
-        _context.SaveChanges();
+        var employeeToUpdate = _context.Employee.FirstOrDefault(e => e.EmployeeID == employee.EmployeeID);
+        if (employeeToUpdate != null)
+        {
+            employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.LastName = employee.LastName;
+            employeeToUpdate.DepartmentID = employee.DepartmentID;
+            _context.SaveChanges();
+        }
     }
 
-    public void DeleteEmployee(Employee employee)
+    public void DeleteEmployee(int employeeId)
     {
+        var employee = _context.Employee.FirstOrDefault(e => e.EmployeeID == employeeId);
         var password = _context.EmployeePasswords
-            .FirstOrDefault(p => p.EmployeeID == employee.EmployeeID);
-        if (password != null)
+            .FirstOrDefault(p => p.EmployeeID == employeeId);
+        if (employee != null)
         {
-            _context.EmployeePasswords.Remove(password);
+            if (password != null)
+            {
+                _context.EmployeePasswords.Remove(password);
+            }
             _context.Employee.Remove(employee);
             _context.SaveChanges();   
         }
