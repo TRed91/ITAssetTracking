@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -15,6 +16,9 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
     public AssetAssignment? GetAssetAssignmentById(int assetAssignmentId)
     {
         return _context.AssetAssignment
+            .Include(a => a.Asset)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)
             .FirstOrDefault(a => a.AssetAssignmentID == assetAssignmentId);
     }
 
@@ -22,9 +26,16 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
     {
         if (includeReturned)
         {
-            return _context.AssetAssignment.ToList();
+            return _context.AssetAssignment
+                .Include(a => a.Asset)
+                .Include(a => a.Department)
+                .Include(a => a.Employee)
+                .ToList();
         }
         return _context.AssetAssignment
+            .Include(a => a.Asset)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)
             .Where(a => a.ReturnDate == null)
             .ToList();
     }
@@ -34,10 +45,16 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
         if (includeReturned)
         {
             return _context.AssetAssignment
+                .Include(a => a.Asset)
+                .Include(a => a.Department)
+                .Include(a => a.Employee)
                 .Where(a => a.AssetID == assetId)
                 .ToList();
         }
         return _context.AssetAssignment
+            .Include(a => a.Asset)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)    
             .Where(a => a.AssetID == assetId && a.ReturnDate == null)
             .ToList();
     }
@@ -47,10 +64,16 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
         if (includeReturned)
         {
             return _context.AssetAssignment
+                .Include(a => a.Asset)
+                .Include(a => a.Department)
+                .Include(a => a.Employee)
                 .Where(a => a.DepartmentID == departmentId)
                 .ToList();
         }
         return _context.AssetAssignment
+            .Include(a => a.Asset)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)
             .Where(a => a.DepartmentID == departmentId && a.ReturnDate == null)
             .ToList();
     }
@@ -60,10 +83,16 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
         if (includeReturned)
         {
             return _context.AssetAssignment
+                .Include(a => a.Asset)
+                .Include(a => a.Department)
+                .Include(a => a.Employee)
                 .Where(a => a.EmployeeID == employeeId)
                 .ToList();
         }
         return _context.AssetAssignment
+            .Include(a => a.Asset)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)
             .Where(a => a.EmployeeID == employeeId && a.ReturnDate == null)
             .ToList();
     }
@@ -71,6 +100,9 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
     public List<AssetAssignment> GetAssetAssignmentsInDateRange(DateTime startDate, DateTime endDate)
     {
         return _context.AssetAssignment
+            .Include(a => a.Asset)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)
             .Where(a => a.AssignmentDate >= startDate && a.AssignmentDate <= endDate)
             .ToList();
     }

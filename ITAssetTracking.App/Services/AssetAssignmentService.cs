@@ -124,7 +124,7 @@ public class AssetAssignmentService : IAssetAssignmentService
             var asset = _assetRepo.GetAssetById(assetAssignment.AssetID);
             if (asset == null)
             {
-                return ResultFactory.Fail<AssetAssignment>("Asset not found");
+                return ResultFactory.Fail<AssetAssignment>($"Asset not with id {assetAssignment.AssetID} found");
             }
             // Check if there are unreturned assignments for the asset
             var assignments = _assetAssignmentRepo
@@ -154,9 +154,19 @@ public class AssetAssignmentService : IAssetAssignmentService
                 }
             }
             
+            // create assignment record
             assetAssignment.AssignmentDate = DateTime.Now;
             
             _assetAssignmentRepo.AddAssetAssignment(assetAssignment);
+
+            // Update asset status to 'In Use'
+            var status = _assetRepo.GetAssetStatusByName("In Use");
+            if (status != null)
+            {
+                asset.AssetStatusID = status.AssetStatusID;
+            }
+            _assetRepo.UpdateAsset(asset);
+            
             return ResultFactory.Success();
         }
         catch (Exception ex)
@@ -224,6 +234,45 @@ public class AssetAssignmentService : IAssetAssignmentService
             }
 
             _assetAssignmentRepo.DeleteAssetAssignment(assetAssignmentId);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
+    }
+
+    public Result Return(long assetId)
+    {
+        try
+        {
+            var asset = _assetRepo.GetAssetById(assetId);
+            if (asset == null)
+            {
+                return ResultFactory.Fail("Asset not found");
+            }
+            var openAssignment = _assetAssignmentRepo.GetAssetAssignmentsByAssetId(assetId, false);
+            if (openAssignment.Count == 0)
+            {
+                return ResultFactory.Fail($"No open assignments for asset with id {assetId} found");
+            }
+            if (openAssignment.Count > 1)
+            {
+                return ResultFactory.Fail($"Multiple open assignments for asset with id {assetId} found. Please contact support.");
+            }
+            var status = _assetRepo.GetAssetStatusByName("Storage");
+            if (status == null)
+            {
+                return ResultFactory.Fail("Asset status not found");
+            }
+            
+            // update asset status to storage
+            asset.AssetStatusID = status.AssetStatusID;
+            _assetRepo.UpdateAsset(asset);
+            // update assignment
+            openAssignment[0].ReturnDate = DateTime.Now;
+            _assetAssignmentRepo.UpdateAssetAssignment(openAssignment[0]);
+            
             return ResultFactory.Success();
         }
         catch (Exception ex)

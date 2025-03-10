@@ -16,4 +16,5 @@ public interface IAssetAssignmentService
     Result AddAssetAssignment(AssetAssignment assetAssignment);
     Result UpdateAssetAssignment(AssetAssignment assetAssignment);
     Result DeleteAssetAssignment(int assetAssignmentId);
+    Result Return(long assetId);
 }

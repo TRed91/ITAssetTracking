@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -14,17 +15,28 @@ public class EmployeeRepository : IEmployeeRepository
     
     public Employee? GetEmployee(int employeeId)
     {
-        return _context.Employee.FirstOrDefault(e => e.EmployeeID == employeeId);
+        return _context.Employee
+            .Include(e => e.Department)
+            .Include(e => e.AssetAssignments)
+            .Include(e => e.SoftwareAssetAssignments)
+            .FirstOrDefault(e => e.EmployeeID == employeeId);
     }
 
     public List<Employee> GetEmployees()
     {
-        return _context.Employee.ToList();
+        return _context.Employee
+            .Include(e => e.Department)
+            .Include(e => e.AssetAssignments)
+            .Include(e => e.SoftwareAssetAssignments)
+            .ToList();
     }
 
     public List<Employee> GetEmployeesByDepartmentId(int departmentId)
     {
         return _context.Employee
+            .Include(e => e.Department)
+            .Include(e => e.AssetAssignments)
+            .Include(e => e.SoftwareAssetAssignments)
             .Where(e => e.DepartmentID == departmentId)
             .ToList();
     }

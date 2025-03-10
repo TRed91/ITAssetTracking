@@ -17,6 +17,9 @@ public class AssetRepository : IAssetRepository
     {
         return _context.Asset
             .Include(a => a.AssetAssignments)
+                .ThenInclude(a => a.Department)
+            .Include(a => a.AssetAssignments)
+                .ThenInclude(a => a.Employee)
             .Include(a => a.Tickets)
             .Include(a => a.AssetStatus)
             .Include(a => a.AssetType)

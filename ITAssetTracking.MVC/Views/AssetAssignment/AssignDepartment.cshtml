@@ -1,0 +1,29 @@
+@model AssignDepartmentModel
+
+@{
+    ViewData["Title"] = "Assign To Department";
+}
+
+<h1 class="display-4">Assign Asset with Serial Number: @Model.SerialNumber</h1>
+<table class="table table-bordered col-md-4">
+    <thead class="table-primary">
+    <tr>
+        <th colspan="2">Select Department</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var d in Model.Departments)
+    {
+        <tr>
+            <td>@d.DepartmentName</td>
+            <td>
+                <form asp-action="AssignDepartment" method="post">
+                    <input asp-for="AssetID" value="@Model.AssetID" hidden>
+                    <input asp-for="DepartmentID" value="@d.DepartmentID" hidden>
+                    <button class="btn btn-link p-0 text-decoration-none">Assign</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -57,9 +57,16 @@
     </div>
 </section>
 <section class="p-3 bg-dark-subtle d-flex gap-3 flex-column flex-fill flex-md-row justify-content-center align-items-center">
-    <a asp-action="AssignEmployee" class="p-2 card text-decoration-none">Assign To Employee</a>
-    <a asp-action="AssignDepartment" class="p-2 card text-decoration-none">Assign To Department</a>
-    <a asp-action="Return" class="p-2 card text-decoration-none">Return Asset</a>
+    <a asp-controller="AssetAssignment" asp-action="AssignEmployee" asp-route-assetId="@Model.AssetId"
+       class="p-2 card text-decoration-none">
+        Assign To Employee
+    </a>
+    <a asp-controller="AssetAssignment" asp-action="AssignDepartment" asp-route-assetId="@Model.AssetId" class="p-2 card text-decoration-none">Assign To Department</a>
+    <a asp-controller="AssetAssignment" asp-action="Return" class="p-2 card text-decoration-none">
+        <form asp-controller="AssetAssignment" asp-action="Return" asp-route-assetId="@Model.AssetId">
+            <button class="btn btn-link text-black text-decoration-none p-0">Return Asset</button>
+        </form>
+    </a>
     <a asp-action="Request" class="p-2 card text-decoration-none">Request Reassignment</a>
     <a asp-action="CreateTicket" class="p-2 card text-decoration-none">Support Ticket</a>
 </section>
@@ -70,24 +77,29 @@
         <table class="table table-bordered mb-3">
             <thead class="table-primary">
             <tr>
-                <td>Department</td>
-                <td>Employee</td>
-                <td>Assignment Date</td>
-                <td>Return Date</td>
+                <th>Department</th>
+                <th>Employee</th>
+                <th>Assignment Date</th>
+                <th>Return Date</th>
             </tr>
             </thead>
             <tbody>
             @foreach (var a in Model.AssetAssignments)
             {
-                string returnDate = "";
-                if (a.ReturnDate.HasValue)
+                string returnDate = "", employeeName = "";
+                if (a.ReturnDate != null)
                 {
                     returnDate = a.ReturnDate.Value.ToShortDateString();
                 }
+
+                if (a.Employee != null)
+                {
+                    employeeName = a.Employee.LastName + ", " + a.Employee.FirstName;
+                }
                 <tr>
                     <td>@a.Department.DepartmentName</td>
-                    <td>@a.Employee.LastName, @a.Employee.FirstName</td>
-                    <td>@a.AssignmentDate</td>
+                    <td>@employeeName</td>
+                    <td>@a.AssignmentDate.Date.ToShortDateString()</td>
                     <td>@returnDate</td>
                 </tr>
             }
@@ -104,11 +116,11 @@
         <table class="table table-bordered">
             <thead class="table-primary">
             <tr>
-                <td>Status</td>
-                <td>Type</td>
-                <td>Priority</td>
-                <td>Technician</td>
-                <td>Report Date</td>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Priority</th>
+                <th>Technician</th>
+                <th>Report Date</th>
             </tr>
             </thead>
             <tbody>

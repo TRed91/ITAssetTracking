@@ -10,19 +10,13 @@ namespace ITAssetTracking.MVC.Controllers;
 public class AssetController : Controller
 {
     private readonly IAssetService _assetService;
-    private readonly IAssetAssignmentService _assetAssignmentService;
-    private readonly ITicketService _ticketService;
     private readonly Serilog.ILogger _logger;
 
     public AssetController(
         IAssetService assetService, 
-        IAssetAssignmentService assetAssignmentService,
-        ITicketService ticketService,
         Serilog.ILogger logger)
     {
         _assetService = assetService;
-        _assetAssignmentService = assetAssignmentService;
-        _ticketService = ticketService;
         _logger = logger;
     }
 

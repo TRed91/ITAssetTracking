@@ -1,12 +1,14 @@
 ﻿using ITAssetTracking.App.Services;
 using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Services;
+using ITAssetTracking.Core.Utility;
 using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Result = ITAssetTracking.Core.Utility.Result;
 
 namespace ITAssetTracking.MVC.Controllers;
 
@@ -114,5 +116,45 @@ public class EmployeeController : Controller
         TempData["msg"] = TempDataExtension
             .Serialize(new TempDataMsg(true, $"User created with id {employee.EmployeeID}"));
         return RedirectToAction("Index", "Home");
+    }
+
+    public IActionResult Index(AssignEmployeeModel model)
+    {
+        Result<List<Employee>> employeesResult;
+        List<Employee> employees;
+        if (model.DepartmentId != null)
+        {
+            employeesResult = _employeeService.GetEmployeesByDepartment((int)model.DepartmentId);
+        }
+        else
+        {
+            employeesResult = _employeeService.GetEmployees();
+        }
+        if (!employeesResult.Ok)
+        {
+            _logger.Error("Error retrieving employees list: " + employeesResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , employeesResult.Message));
+            return RedirectToAction("Index", "Home");
+        }
+        employees = employeesResult.Data;
+        var departments = _departmentService.GetDepartments().Data;
+        
+        if (model.StartsWith != null)
+        {
+            employees = employees
+                .Where(e => e.LastName[0] == model.StartsWith)
+                .ToList();
+        }
+        if (model.Search != null)
+        {
+            employees = employees
+                .Where(e => e.LastName.ToLower().Contains(model.Search.ToLower()) ||
+                            e.FirstName.ToLower().Contains(model.Search.ToLower()))
+                .ToList();
+        }
+        model.Employees = employees;
+        model.Departments = new SelectList(departments, "DepartmentID", "DepartmentName");
+        
+        return View(model);
     }
 }
