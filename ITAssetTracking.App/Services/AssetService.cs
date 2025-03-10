@@ -8,10 +8,12 @@ namespace ITAssetTracking.App.Services;
 public class AssetService : IAssetService
 {
     private readonly IAssetRepository _assetRepo;
+    private readonly IAssetAssignmentRepository _assignmentRepo;
 
-    public AssetService(IAssetRepository assetRepository)
+    public AssetService(IAssetRepository assetRepository, IAssetAssignmentRepository assignmentRepository)
     {
         _assetRepo = assetRepository;
+        _assignmentRepo = assignmentRepository;
     }
     
     public Result<Asset> GetAssetById(long assetId)

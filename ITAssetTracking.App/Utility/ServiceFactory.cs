@@ -27,7 +27,9 @@ public class ServiceFactory
 
     public IAssetService GetAssetService()
     {
-        return new AssetService(_appConfig.GetAssetRepository());
+        return new AssetService(
+            _appConfig.GetAssetRepository(),
+            _appConfig.GetAssetAssignmentRepository());
     }
 
     public IAssetRequestService GetAssetRequestService()

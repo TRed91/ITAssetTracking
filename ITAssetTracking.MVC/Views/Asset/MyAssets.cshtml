@@ -1,0 +1,74 @@
+@model MyAssetsModel
+
+@{
+    ViewData["Title"] = $"{Model.EmployeeName}'s Assets";
+}
+
+<h1 class="display-4 mb-2">@Model.EmployeeName's Assets</h1>
+@if (Model.Assets.Count == 0)
+{
+    <p class="fs-4">No assets assigned</p>
+}
+else
+{
+    <table class="table table-bordered mb-4">
+        <thead class="table-primary">
+        <tr>
+            <th colspan="4">Assets</th>
+        </tr>
+        <tr>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var a in Model.Assets)
+        {
+            <tr>
+                <td>@a.Asset.Model.ModelNumber</td>
+                <td>@a.Asset.AssetType.AssetTypeName</td>
+                <td>@a.Asset.AssetStatus.AssetStatusName</td>
+                <td>
+                    <a asp-controller="Asset" asp-action="Details" asp-route-assetId="@a.Asset.AssetID"
+                    class="link-primary text-decoration-none">
+                        Details
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@if (Model.SoftwareAssets.Count == 0)
+{
+    <p class="fs-4">No software assets assigned</p>
+}
+else
+{
+    <table class="table table-bordered mb-4">
+        <thead class="table-primary">
+        <tr>
+            <th colspan="4">Software Assets</th>
+        </tr>
+        <tr>
+            <th>License</th>
+            <th>Version</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var s in Model.SoftwareAssets)
+        {
+            <tr>
+                <td>@s.SoftwareAsset.LicenseType.LicenseTypeName</td>
+                <td>@s.SoftwareAsset.Version</td>
+                <td>@s.SoftwareAsset.AssetStatus.AssetStatusName</td>
+                <td>Details</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

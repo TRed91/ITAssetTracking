@@ -1,22 +1,37 @@
+using System.Security.Claims;
 using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Services;
+using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.Text.Json;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace ITAssetTracking.MVC.Controllers;
 
 public class AssetController : Controller
 {
     private readonly IAssetService _assetService;
+    private readonly IAssetAssignmentService _assignmentService;
+    private readonly IEmployeeService _employeeService;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
 
     public AssetController(
         IAssetService assetService, 
+        IAssetAssignmentService assetAssignmentService,
+        IEmployeeService employeeService,
+        UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
         _assetService = assetService;
+        _assignmentService = assetAssignmentService;
+        _employeeService = employeeService;
+        _userManager = userManager;
         _logger = logger;
     }
 
@@ -136,6 +151,37 @@ public class AssetController : Controller
         model.AssetStatuses = new SelectList(statusesRes.Data, "AssetStatusID", "AssetStatusName");
         
         return  View(model);
+    }
+
+    public async Task<IActionResult> MyAssets()
+    {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if (user == null)
+        {
+            var err = "Unauthorized Access";
+            _logger.Error(err);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, err));
+            return RedirectToAction("Index", "Home");
+        }
+        var assetsResult = _assignmentService.GetAssetAssignmentsByEmployee(user.EmployeeID, false);
+        var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
+
+        if (!assetsResult.Ok)
+        {
+            var errMsg = assetsResult.Message ?? employeeResult.Message;
+            var ex = assetsResult.Exception ?? employeeResult.Exception;
+            _logger.Error("Error retrieving data: " + errMsg + ex );
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+            return RedirectToAction("Index", "Home");
+        }
+        
+        var model = new MyAssetsModel
+        {
+            EmployeeName = employeeResult.Data.LastName + ", " + employeeResult.Data.FirstName,
+            Assets = assetsResult.Data,
+            SoftwareAssets = new List<SoftwareAssetAssignment>()
+        };
+        return View(model);
     }
 
     public IActionResult Manufacturers(ManufacturersModel model)
