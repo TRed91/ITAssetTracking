@@ -28,4 +28,5 @@ public interface IAssetRepository
     List<Location> GetLocations();
     List<AssetStatus> GetAssetStatuses();
     AssetStatus? GetAssetStatusByName(string assetStatusName);
+    List<Asset> GetAvailableAssets();
 }

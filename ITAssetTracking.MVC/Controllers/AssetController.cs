@@ -198,6 +198,13 @@ public class AssetController : Controller
         {
             // if access to one department, department id becomes the logged in employee's department id
             var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
+            if (!employeeResult.Ok)
+            {
+                var errMsg = employeeResult.Message;
+                _logger.Error("Error retrieving data: " + errMsg);
+                TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+                return RedirectToAction("Index", "Asset");
+            }
             departmentId = employeeResult.Data.DepartmentID;
         }
         else
@@ -210,6 +217,19 @@ public class AssetController : Controller
         var manufacturersRes = _assetService.GetManufacturers();
         var statusesRes = _assetService.GetAssetStatuses();
         var departmentsRes = _departmentService.GetDepartments();
+
+        // handle data fetching errors
+        if (!assetsResult.Ok || !assetTypesRes.Ok || !manufacturersRes.Ok || !statusesRes.Ok || !departmentsRes.Ok)
+        {
+            var errMsg = assetsResult.Message ?? 
+                         assetTypesRes.Message ?? 
+                         manufacturersRes.Message ?? 
+                         statusesRes.Message ?? 
+                         departmentsRes.Message ?? "Unknown Error";
+            _logger.Error("Error retrieving data: " + errMsg);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+            return RedirectToAction("Index", "Asset");
+        }
         
         // populate model
         model.DepartmentId = departmentId;

@@ -42,6 +42,32 @@ public class AssetRequestService : IAssetRequestService
         }
     }
 
+    public Result<List<AssetType>> GetAvailableAssets()
+    {
+        try
+        {
+            var assets = _assetRepo.GetAvailableAssets();
+            var types = assets
+                .Select(a => a.AssetType)
+                .Distinct()
+                .ToList();
+            
+            foreach (var type in types)
+            {
+                var a = assets
+                    .Where(a => a.AssetTypeID == type.AssetTypeID)
+                    .ToList(); 
+                type.Assets.AddRange(a);
+            }
+            
+            return ResultFactory.Success(types);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<AssetType>>(ex.Message, ex);
+        }
+    }
+
     public Result<List<AssetRequest>> GetAllAssetRequests()
     {
         try

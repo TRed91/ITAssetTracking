@@ -171,4 +171,15 @@ public class AssetRepository : IAssetRepository
     {
         return _context.AssetStatus.FirstOrDefault(a => a.AssetStatusName == assetStatusName);
     }
+
+    public List<Asset> GetAvailableAssets()
+    {
+        return _context.Asset
+            .Include(a => a.Model)
+            .Include(a => a.AssetType)
+            .Include(a => a.Manufacturer)
+            .Where(a => a.AssetAssignments
+                .All(aa => aa.ReturnDate != null))
+            .ToList();
+    }
 }

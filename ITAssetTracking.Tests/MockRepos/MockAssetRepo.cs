@@ -135,4 +135,9 @@ public class MockAssetRepo : IAssetRepository
             AssetStatusName = "Storage"
         };
     }
+
+    public List<Asset> GetAvailableAssets()
+    {
+        throw new NotImplementedException();
+    }
 }
