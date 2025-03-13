@@ -65,6 +65,15 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
         {
             return _context.AssetAssignment
                 .Include(a => a.Asset)
+                .ThenInclude(a => a.AssetStatus)
+                .Include(a => a.Asset)
+                .ThenInclude(a => a.AssetType)
+                .Include(a => a.Asset)
+                .ThenInclude(a => a.Manufacturer)
+                .Include(a => a.Asset)
+                .ThenInclude(a => a.Model)
+                .Include(a => a.Asset)
+                .ThenInclude(a => a.Location)
                 .Include(a => a.Department)
                 .Include(a => a.Employee)
                 .Where(a => a.DepartmentID == departmentId)
@@ -72,6 +81,15 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
         }
         return _context.AssetAssignment
             .Include(a => a.Asset)
+            .ThenInclude(a => a.AssetStatus)
+            .Include(a => a.Asset)
+            .ThenInclude(a => a.AssetType)
+            .Include(a => a.Asset)
+            .ThenInclude(a => a.Manufacturer)
+            .Include(a => a.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(a => a.Asset)
+            .ThenInclude(a => a.Location)
             .Include(a => a.Department)
             .Include(a => a.Employee)
             .Where(a => a.DepartmentID == departmentId && a.ReturnDate == null)

@@ -18,6 +18,7 @@ public class AssetController : Controller
     private readonly IAssetService _assetService;
     private readonly IAssetAssignmentService _assignmentService;
     private readonly IEmployeeService _employeeService;
+    private readonly IDepartmentService _departmentService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
 
@@ -25,12 +26,14 @@ public class AssetController : Controller
         IAssetService assetService, 
         IAssetAssignmentService assetAssignmentService,
         IEmployeeService employeeService,
+        IDepartmentService departmentService,
         UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
         _assetService = assetService;
         _assignmentService = assetAssignmentService;
         _employeeService = employeeService;
+        _departmentService = departmentService;
         _userManager = userManager;
         _logger = logger;
     }
@@ -181,6 +184,103 @@ public class AssetController : Controller
             Assets = assetsResult.Data,
             SoftwareAssets = new List<SoftwareAssetAssignment>()
         };
+        return View(model);
+    }
+    
+    public async Task<IActionResult> DepartmentAssets(DepartmentAssetsModel model)
+    {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        int departmentId;
+        model.EnableDepSelectList = roles.Any(r => r == "Admin" || r == "Auditor");
+        if (!model.EnableDepSelectList)
+        {
+            // if access to one department, department id becomes the logged in employee's department id
+            var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
+            departmentId = employeeResult.Data.DepartmentID;
+        }
+        else
+        {
+            // if access to all departments default to department id 1
+            departmentId = model.DepartmentId;
+        }
+        var assetsResult = _assignmentService.GetAssetAssignmentsByDepartment(departmentId, false);
+        var assetTypesRes = _assetService.GetAssetTypes();
+        var manufacturersRes = _assetService.GetManufacturers();
+        var statusesRes = _assetService.GetAssetStatuses();
+        var departmentsRes = _departmentService.GetDepartments();
+        
+        // populate model
+        model.DepartmentId = departmentId;
+        model.AssignedAssets = assetsResult.Data;
+        model.DepartmentSelectList = new SelectList(departmentsRes.Data, "DepartmentID", "DepartmentName");
+        model.ManufacturerSelectList = new SelectList(manufacturersRes.Data, "ManufacturerID", "ManufacturerName");
+        model.AssetTypeSelectList = new SelectList(assetTypesRes.Data, "AssetTypeID", "AssetTypeName");
+        model.AssetStatusSelectList = new SelectList(statusesRes.Data, "AssetStatusID", "AssetStatusName");
+
+        // filter assets
+        if (model.ManufacturerId != 0)
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.Asset.ManufacturerID == model.ManufacturerId)
+                .ToList();
+        }
+        if (model.AssetTypeId != 0)
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.Asset.AssetTypeID == model.AssetTypeId)
+                .ToList();
+        }
+        if (model.AssetStatusId != 0)
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.Asset.AssetStatusID == model.AssetStatusId)
+                .ToList();
+        }
+        if (!string.IsNullOrEmpty(model.SearchString))
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.Asset.SerialNumber.Contains(model.SearchString) || 
+                            a.Asset.Model.ModelNumber.Contains(model.SearchString))
+                .ToList();
+        }
+        
+        // order the result
+        switch (model.Order)
+        {
+            case AssetsOrder.Location:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.Asset.Location.LocationName)
+                    .ToList();
+                break;
+            case AssetsOrder.Manufacturer:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.Asset.Manufacturer.ManufacturerName)
+                    .ToList();
+                break;
+            case AssetsOrder.AssetStatus:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.Asset.AssetStatus.AssetStatusName)
+                    .ToList();
+                break;
+            case AssetsOrder.AssetType:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.Asset.AssetType.AssetTypeName)
+                    .ToList();
+                break;
+            case AssetsOrder.Model:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.Asset.Model.ModelNumber)
+                    .ToList();
+                break;
+            default:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.Asset.SerialNumber)
+                    .ToList();
+                break;
+        }
+        
         return View(model);
     }
 

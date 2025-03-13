@@ -16,6 +16,7 @@ public class EmployeeController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IEmployeeService  _employeeService;
     private readonly IDepartmentService  _departmentService;
     private readonly Serilog.ILogger _logger;
@@ -23,12 +24,14 @@ public class EmployeeController : Controller
     public EmployeeController(
         UserManager<ApplicationUser> userManager, 
         SignInManager<ApplicationUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         IEmployeeService employeeService,
         IDepartmentService departmentService,
         Serilog.ILogger logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _roleManager = roleManager;
         _employeeService = employeeService;
         _departmentService = departmentService;
         _logger = logger;
