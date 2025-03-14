@@ -80,6 +80,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRBc3NpZ25tZW50L0Fzc2lnbkVtcGxveWVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/AvailableAssets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L0F2YWlsYWJsZUFzc2V0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/RequestAsset.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L1JlcXVlc3RBc3NldC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Employee/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

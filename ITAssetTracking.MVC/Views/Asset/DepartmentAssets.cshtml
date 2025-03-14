@@ -55,7 +55,7 @@
                 <a asp-controller="Asset" asp-action="Filter" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Hardware Assets</a>
                 <a class="p2 text-decoration-none text-black">Software Assets</a>
             </div>
-            <a asp-controller="AssetRequests" asp-action="Request" class="btn btn-primary">Request Asset</a>
+            <a asp-controller="AssetRequest" asp-action="AvailableAssets" asp-route-departmentId="@Model.DepartmentId" class="btn btn-primary">Request Asset</a>
         </div>
         @if (Model.AssignedAssets.Count == 0)
         {

@@ -1,0 +1,38 @@
+@model AssetRequestModel
+
+@{
+    ViewData["Title"] = "Request Asset";
+}
+
+<h6 class="display-6">Request Asset: @Model.SerialNumber</h6>
+<p class="fs-3">For Department: @Model.DepartmentName</p>
+<form asp-action="RequestAsset" method="post" class="mb-5">
+    <input asp-for="AssetId" value="@Model.AssetId" hidden>
+    <input asp-for="DepartmentID" value="@Model.DepartmentID" hidden>
+    <button class="btn btn-primary" type="submit">Request for Department</button>
+</form>
+@if (Model.Employees.Count == 0)
+{
+    <p class="lead">No Employees found</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <tbody>
+        @foreach (var e in Model.Employees)
+        {
+            <tr>
+                <td>@e.LastName, @e.FirstName </td>
+                <td>
+                    <form asp-action="RequestAsset" method="post">
+                        <input asp-for="AssetId" value="@Model.AssetId" hidden>
+                        <input asp-for="DepartmentID" value="@Model.DepartmentID" hidden>
+                        <input asp-for="EmployeeId" value="@e.EmployeeID" hidden>
+                        <button class="btn btn-link text-decoration-none p-0" type="submit">Select</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

@@ -5,7 +5,9 @@ namespace ITAssetTracking.MVC.Models;
 
 public class AvailableAssetsModel
 {
-    public int? AssetTypeId { get; set; }
+    public int? SelectedAssetTypeId { get; set; }
+    
+    public int RequestingDepartmentId { get; set; }
     public SelectList? AssetTypesSelectList { get; set; }
-    public List<AssetType> AssetTypes { get; set; } = new List<AssetType>();
+    public List<AssetType> AvailableAssets { get; set; } = new List<AssetType>();
 }

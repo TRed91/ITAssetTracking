@@ -18,4 +18,5 @@ public interface IAssetRequestService
     Result AddAssetRequest(AssetRequest assetRequest);
     Result UpdateAssetRequest(AssetRequest assetRequest);
     Result DeleteAssetRequest(int assetRequestId);
+    Result<List<AssetType>> GetAvailableAssets();
 }

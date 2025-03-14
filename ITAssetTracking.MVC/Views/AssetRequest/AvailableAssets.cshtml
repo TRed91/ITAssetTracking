@@ -1,0 +1,54 @@
+@model AvailableAssetsModel
+
+@{
+    ViewData["Title"] = "Available Assets";
+}
+
+<form asp-action="AvailableAssets" method="get" 
+      asp-route-departmentId="@Model.RequestingDepartmentId" 
+      class="d-flex gap-3 gap-md-5 p-3">
+    <div class="d-flex gap-3">
+        <label asp-for="SelectedAssetTypeId" class="form-label">Type</label>
+        <select asp-for="SelectedAssetTypeId" asp-items="@Model.AssetTypesSelectList" class="form-select">
+            <option value="0">Any</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply</button>
+</form>
+@if (Model.AvailableAssets.Count == 0)
+{
+    <p class="lead">No available assets</p>
+}
+else
+{
+    foreach (var type in Model.AvailableAssets)
+    {
+        <table class="table table-bordered">
+            <thead class="table-primary">
+            <tr>
+                <th colspan="4">@type.AssetTypeName</th>
+            </tr>
+            <tr>
+                <th class="col-3">Model</th>
+                <th class="col-2">Manufacturer</th>
+                <th class="col-3">Serial Number</th>
+                <th class="col-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var asset in type.Assets)
+            {
+                string modelNumber = asset.Model != null ? asset.Model.ModelNumber : "";
+                string manufacturer = asset.Manufacturer != null ? asset.Manufacturer.ManufacturerName : "";
+                <tr>
+                    <td>@modelNumber</td>
+                    <td>@manufacturer</td>
+                    <td>@asset.SerialNumber</td>
+                    <td><a asp-action="RequestAsset" asp-route-departmentId="@Model.RequestingDepartmentId"
+                           asp-route-assetId="@asset.AssetID">Request</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }   
+}
