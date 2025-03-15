@@ -39,4 +39,8 @@
       <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.1.1-dev-00122" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Views\Middleware\" />
+    </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ using ITAssetTracking.Core.Interfaces.Repositories;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
 using ITAssetTracking.MVC;
-using ITAssetTracking.MVC.Views.Middleware;
+using ITAssetTracking.MVC.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -104,7 +104,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.Use(CustomMiddleware.FetchRequests);
+app.UseFetchRequests();
 
 app.MapControllerRoute(
         name: "default",

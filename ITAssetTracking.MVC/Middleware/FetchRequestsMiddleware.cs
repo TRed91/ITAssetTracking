@@ -2,11 +2,22 @@ using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
 using Microsoft.AspNetCore.Identity;
 
-namespace ITAssetTracking.MVC.Views.Middleware;
+namespace ITAssetTracking.MVC.Middleware;
 
-public static class CustomMiddleware
+/// <summary>
+/// Custom middleware that retrieves open requests count if the user is authorized as
+/// 'admin', 'asset manager' or 'software license manager'
+/// </summary>
+public class FetchRequestsMiddleware
 {
-    public static async Task FetchRequests(HttpContext context, RequestDelegate next)
+    private readonly RequestDelegate _next;
+
+    public FetchRequestsMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+    
+    public async Task InvokeAsync(HttpContext context)
     {
         var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
         var assetRequestService = context.RequestServices.GetRequiredService<IAssetRequestService>();
@@ -30,6 +41,17 @@ public static class CustomMiddleware
             context.Items.Add("Requests", requests.Data.Count);
         }
     
-        await next(context);
+        await _next(context);
+    }
+}
+
+/// <summary>
+/// Extension method to expose middleware
+/// </summary>
+public static class FetchRequestsMiddlewareExtensions
+{
+    public static IApplicationBuilder UseFetchRequests(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<FetchRequestsMiddleware>();
     }
 }
