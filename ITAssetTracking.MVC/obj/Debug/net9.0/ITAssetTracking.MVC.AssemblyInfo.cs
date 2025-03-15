@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITAssetTracking.MVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1de560f2bd427cd1ad18d0e4c2dcf58b4994c77a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67014674adba8667dfa0de4e18375c418be7fafa")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITAssetTracking.MVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITAssetTracking.MVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

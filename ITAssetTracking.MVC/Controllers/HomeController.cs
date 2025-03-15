@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using ITAssetTracking.Data;
 using Microsoft.AspNetCore.Mvc;
 using ITAssetTracking.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITAssetTracking.MVC.Controllers;
 

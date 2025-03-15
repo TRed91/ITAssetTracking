@@ -18,6 +18,7 @@ public class AssetController : Controller
     private readonly IAssetService _assetService;
     private readonly IAssetAssignmentService _assignmentService;
     private readonly IEmployeeService _employeeService;
+    private readonly IAssetRequestService _assetRequestService;
     private readonly IDepartmentService _departmentService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
@@ -27,19 +28,39 @@ public class AssetController : Controller
         IAssetAssignmentService assetAssignmentService,
         IEmployeeService employeeService,
         IDepartmentService departmentService,
+        IAssetRequestService assetRequestService,
         UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
         _assetService = assetService;
         _assignmentService = assetAssignmentService;
+        _assetRequestService = assetRequestService;
         _employeeService = employeeService;
         _departmentService = departmentService;
         _userManager = userManager;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        if (roles.Contains("Admin") ||
+            roles.Contains("AssetManager") ||
+            roles.Contains("SoftwareLicenseManager"))
+        {
+            var requests = _assetRequestService.GetOpenAssetRequests();
+            if (!requests.Ok)
+            {
+                _logger.Error("Error retrieving asset requests: " + requests.Message + requests.Exception);
+                TempData["msg"] = TempDataExtension.Serialize(
+                    new TempDataMsg(false, requests.Message));
+                return View();
+            }
+            ViewData["Requests"] = requests.Data.Count;
+        }
+        
         return View();
     }
 
