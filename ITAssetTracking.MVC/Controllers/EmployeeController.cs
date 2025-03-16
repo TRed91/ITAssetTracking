@@ -113,7 +113,6 @@ public class EmployeeController : Controller
             _employeeService.DeleteEmployee(employee.EmployeeID);
             return View(model);
         }
-        await _signInManager.SignInAsync(user, false);
         
         _logger.Information($"New User created with EmployeeID: {employee.EmployeeID}.");
         TempData["msg"] = TempDataExtension
