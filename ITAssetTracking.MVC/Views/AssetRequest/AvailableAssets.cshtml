@@ -4,8 +4,8 @@
     ViewData["Title"] = "Available Assets";
 }
 
-<form asp-action="AvailableAssets" method="get" 
-      asp-route-departmentId="@Model.RequestingDepartmentId" 
+<form asp-action="AvailableAssets" 
+      method="get"
       class="d-flex gap-3 gap-md-5 p-3">
     <div class="d-flex gap-3">
         <label asp-for="SelectedAssetTypeId" class="form-label">Type</label>
@@ -13,6 +13,7 @@
             <option value="0">Any</option>
         </select>
     </div>
+    <input type="text" name="departmentId" value="@Model.RequestingDepartmentId" hidden>
     <button type="submit" class="btn btn-primary">Apply</button>
 </form>
 @if (Model.AvailableAssets.Count == 0)

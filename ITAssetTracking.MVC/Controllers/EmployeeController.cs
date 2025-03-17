@@ -79,7 +79,7 @@ public class EmployeeController : Controller
         var addEmployeeResult = _employeeService.AddEmployee(employee);
         if (!addEmployeeResult.Ok)
         {
-            _logger.Error(addEmployeeResult.Message);
+            _logger.Error("Error adding user: " + addEmployeeResult.Exception);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addEmployeeResult.Message));
             return View(model);
         }
@@ -92,7 +92,7 @@ public class EmployeeController : Controller
         var addPasswordResult = _employeeService.AddEmployeePassword(employeePassword);
         if (!addPasswordResult.Ok)
         {
-            _logger.Error(addPasswordResult.Message);
+            _logger.Error("Error adding password: " + addPasswordResult.Exception);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addPasswordResult.Message));
             _employeeService.DeleteEmployee(employee.EmployeeID);
             return View(model);

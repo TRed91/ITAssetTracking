@@ -1,0 +1,30 @@
+﻿@model AssetRequestModel
+
+@{
+    ViewData["Title"] = "Confirm Assignment";
+}
+
+<h1 class="display-5 bg-primary-subtle p-2">Confirm Assignment</h1>
+<p>Serial Nr: @Model.SerialNumber<p>
+<p>Model: @Model.ModelNumber</p>
+<p>Type: @Model.AssetTypeName</p>
+<p class="bg-primary-subtle p-2">Assign To: </p>
+<p>Department: @Model.DepartmentName</p>
+<p>Employee: @Model.EmployeeName</p>
+<form asp-action="Assign" method="post">
+    <input asp-for="AssetRequestId" value="@Model.AssetRequestId" hidden>
+    <input asp-for="AssetId" value="@Model.AssetId" hidden>
+    <input asp-for="DepartmentId" value="@Model.DepartmentId" hidden>
+    <input asp-for="EmployeeId" value="@Model.EmployeeId" hidden>
+    <input asp-for="SerialNumber" value="@Model.SerialNumber" hidden>
+    <input asp-for="ModelNumber" value="@Model.ModelNumber" hidden>
+    <input asp-for="AssetTypeName" value="@Model.AssetTypeName" hidden>
+    <input asp-for="DepartmentName" value="@Model.DepartmentName" hidden>
+    <input asp-for="EmployeeName" value="@Model.EmployeeName" hidden>
+    <div class="bg-primary-subtle p-2">Add Note: </div>
+    <textarea asp-for="Note" cols="50" rows="10" class="form-text"></textarea>
+    <div class="d-flex gap-5">
+        <button class="btn btn-primary" type="submit">Confirm</button>
+        <a asp-action="Index">Go Back</a>
+    </div>
+</form>

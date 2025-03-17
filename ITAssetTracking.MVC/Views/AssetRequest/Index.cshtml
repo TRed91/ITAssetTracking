@@ -1,0 +1,63 @@
+﻿@model RequestsIndexModel
+
+@{
+    ViewData["Title"] = "Open Requests";;
+}
+
+<div class="d-flex align-items-center gap-3">
+    <a asp-controller="Asset" asp-action="Filter" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Hardware Assets</a>
+    <a class="p2 text-decoration-none text-black">Software Assets</a>
+</div>
+@if (Model.Requests.Count < 1)
+{
+    <p class="lead">No open asset requests.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+        <tr>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Department</th>
+            <th>Employee</th>
+            <th>Request Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.Requests)
+        {
+            string employeeName = "";
+            if (r.EmployeeID != null)
+            {
+                employeeName = r.Employee.LastName + ", " + r.Employee.FirstName;
+            }
+            <tr>
+                <td>@r.Asset.Model.ModelNumber</td>
+                <td>@r.Asset.AssetType.AssetTypeName</td>
+                <td>@r.Department.DepartmentName</td>
+                <td>@employeeName</td>
+                <td>@r.RequestDate.Date.ToShortDateString()</td>
+                <td>
+                    <a asp-controller="AssetRequest"
+                       asp-action="Assign"
+                       asp-route-requestId="@r.AssetRequestID"
+                       class="text-decoration-none">
+                        Assign
+                    </a>
+                </td>
+                <td>
+                    <a asp-controller="AssetRequest"
+                       asp-action="Deny"
+                       asp-route-requestId="@r.AssetRequestID"
+                       class="text-danger text-decoration-none">
+                        Deny
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

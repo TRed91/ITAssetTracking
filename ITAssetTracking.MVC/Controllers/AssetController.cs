@@ -398,18 +398,17 @@ public class AssetController : Controller
         var result = _assetService.AddAsset(asset);
         if (!result.Ok)
         {
-            _logger.Error("Error adding asset: " + result.Exception);
+            _logger.Error("Error adding asset: " + result.Message + ": " + result.Exception);
             TempData["msg"] = TempDataExtension.Serialize(
-                new TempDataMsg(false, result.Message));
+                new TempDataMsg(false, "Error adding asset: " + result.Message));
             
-            RedirectToAction("Add", new { manufacturerId = formModel.ManufacturerId });
+            return RedirectToAction("Add", new { manufacturerId = formModel.ManufacturerId });
         }
         
         _logger.Information($"Asset with id {asset.AssetID} added successfully");
         TempData["msg"] = TempDataExtension.Serialize(
             new TempDataMsg(true, $"Asset with id {asset.AssetID} added successfully"));
-       
-        //TODO redirect to details instead
+        
         return RedirectToAction("Details", new { assetId = asset.AssetID });
     }
 
@@ -510,7 +509,7 @@ public class AssetController : Controller
         
         if (!assetResult.Ok)
         {
-            _logger.Error("Error retrieving data: " + assetResult.Exception);
+            _logger.Error("Error retrieving data: " + assetResult.Message + ": " + assetResult.Exception);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
             return RedirectToAction("Index", "Asset");
         }

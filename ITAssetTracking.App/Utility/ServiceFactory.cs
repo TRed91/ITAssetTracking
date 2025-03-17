@@ -36,6 +36,7 @@ public class ServiceFactory
     {
         return new AssetRequestService(
             _appConfig.GetAssetRequestRepository(), 
+            _appConfig.GetAssetAssignmentRepository(),
             _appConfig.GetAssetRepository(), 
             _appConfig.GetEmployeeRepository(), 
             _appConfig.GetDepartmentRepository());

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITAssetTracking.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+50656be5bc1f9cb3f5bd72fd7eff845ead20b0eb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+65a0f17a8ac2359cbc0893818f534965a9244359")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITAssetTracking.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITAssetTracking.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
