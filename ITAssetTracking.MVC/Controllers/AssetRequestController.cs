@@ -1,7 +1,10 @@
 using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Enums;
 using ITAssetTracking.Core.Interfaces.Services;
+using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,6 +16,8 @@ public class AssetRequestController : Controller
     private readonly IEmployeeService _employeeService;
     private readonly IAssetService _assetService;
     private readonly IAssetRequestService _assetRequestService;
+    private readonly IAssetAssignmentService _assetAssignmentService;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
 
     public AssetRequestController(
@@ -21,12 +26,15 @@ public class AssetRequestController : Controller
         IAssetService assetService,
         IAssetRequestService assetRequestService,
         IAssetAssignmentService assetAssignmentService,
+        UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
         _departmentService = departmentService;
         _employeeService = employeeService;
         _assetService = assetService;
         _assetRequestService = assetRequestService;
+        _assetAssignmentService = assetAssignmentService;
+        _userManager = userManager;
         _logger = logger;
     }
     
@@ -52,14 +60,23 @@ public class AssetRequestController : Controller
     public IActionResult Assign(int requestId)
     {
         var requestResult = _assetRequestService.GetAssetRequestById(requestId);
-        if (!requestResult.Ok)
+        var openAssignmentsResult = _assetAssignmentService
+            .GetAssetAssignmentsByAsset(requestResult.Data.AssetID, false);
+        if (!requestResult.Ok || !openAssignmentsResult.Ok)
         {
-            _logger.Error($"Failed to get asset request with id: {requestId}:  {requestResult.Message} => {requestResult.Exception}");
-            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, requestResult.Message));
+            var errMsg = requestResult.Message ?? openAssignmentsResult.Message ?? "Unknown Error";
+            var ex = requestResult.Exception ?? openAssignmentsResult.Exception;
+            _logger.Error($"Failed to fetch Data: {requestId}:  {errMsg} => {ex}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("Index");
         }
 
         var model = new AssetRequestModel(requestResult.Data);
+        
+        if (openAssignmentsResult.Data.Count > 0)
+        {
+            model.CurrentAssignment = openAssignmentsResult.Data[0];
+        }
         
         return View(model);
     }
@@ -223,5 +240,20 @@ public class AssetRequestController : Controller
         _logger.Information(msg);
         TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, msg));
         return RedirectToAction("DepartmentAssets", "Asset");
+    }
+
+    [Authorize(Roles = "DepartmentManager")]
+    public async Task<IActionResult> RequestReassignment(long assetId)
+    {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var employee = _employeeService.GetEmployeeById(user.EmployeeID);
+        if (!employee.Ok)
+        {
+            _logger.Error($"Failed to get employee with id {user.EmployeeID}: {employee.Message} => {employee.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, employee.Message));
+            return RedirectToAction("Details", "Asset", new { assetId });
+        }
+
+        return RedirectToAction("RequestAsset", new { departmentId = employee.Data.DepartmentID, assetId });
     }
 }

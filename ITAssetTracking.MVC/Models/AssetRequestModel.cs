@@ -17,6 +17,8 @@ public class AssetRequestModel
     public string DepartmentName { get; set; }
     public string? EmployeeName { get; set; }
 
+    public AssetAssignment? CurrentAssignment { get; set; }
+
     public AssetRequestModel() { }
 
     public AssetRequestModel(AssetRequest entity)

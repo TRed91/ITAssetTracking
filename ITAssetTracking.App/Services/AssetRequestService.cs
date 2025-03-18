@@ -93,6 +93,13 @@ public class AssetRequestService : IAssetRequestService
                         DepartmentID = request.DepartmentID,
                         AssignmentDate = DateTime.Now,
                     };
+                    
+                    var currentAssignments = _assetAssignmentRepo.GetAssetAssignmentsByAssetId(request.AssetID, false);
+                    if (currentAssignments.Count > 0)
+                    {
+                        currentAssignments[0].ReturnDate = DateTime.Now;
+                        _assetAssignmentRepo.UpdateAssetAssignment(currentAssignments[0]);
+                    }
             
                     _assetAssignmentRepo.AddAssetAssignment(assignment);
                     
