@@ -81,6 +81,19 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
         }
     }
 
+    public Result<List<SoftwareAssetAssignment>> GetAssignmentsByDepartment(int departmentId, bool includeReturned = true)
+    {
+        try
+        {
+            var assignments = _swaaRepository.GetAssignmentsByDepartmentId(departmentId, includeReturned);
+            return ResultFactory.Success(assignments);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<SoftwareAssetAssignment>>(ex.Message, ex);
+        }
+    }
+
     public Result<List<SoftwareAssetAssignment>> GetAssignmentByAsset(long assetId, bool includeReturned = true)
     {
         try

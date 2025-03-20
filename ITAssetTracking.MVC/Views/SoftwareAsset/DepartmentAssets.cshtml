@@ -1,11 +1,11 @@
-@model DepartmentAssetsModel
+﻿@model DepartmentSoftwareAssetsModel
 
 @{
     ViewData["Title"] = "Department Assets";
 }
 
 <div class="d-flex flex-column flex-md-row">
-    <form asp-controller="Asset" asp-action="DepartmentAssets" method="get" class="card p-3 col-md-3">
+    <form asp-controller="SoftwareAsset" asp-action="DepartmentAssets" method="get" class="card p-3 col-md-3">
         <div class="mb-5">
             <label asp-for="DepartmentId" class="form-label"></label>
             @if (Model.EnableDepSelectList)
@@ -27,8 +27,8 @@
             <select asp-for="Order" asp-items="@Model.OrderOptions" class="form-select"></select>
         </div>
         <div class="mb-3">
-            <label asp-for="AssetTypeId" class="form-label"></label>
-            <select asp-for="AssetTypeId" asp-items="@Model.AssetTypeSelectList" class="form-select">
+            <label asp-for="LicenseTypeId" class="form-label"></label>
+            <select asp-for="LicenseTypeId" asp-items="@Model.LicenseTypeSelectList" class="form-select">
                 <option value="0">- Any -</option>
             </select>
         </div>
@@ -52,10 +52,10 @@
     <div class="flex-grow-1">
         <div class="d-flex justify-content-between align-items-center m-2">
             <div class="d-flex align-items-center gap-3">
-                <a asp-controller="Asset" asp-action="DepartmentAssets" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Hardware Assets</a>
-                <a asp-controller="SoftwareAsset" asp-action="DepartmentAssets" class="p2 text-decoration-none text-black">Software Assets</a>
+                <a asp-controller="Asset" asp-action="DepartmentAssets" class="p2 text-decoration-none text-black">Hardware Assets</a>
+                <a asp-controller="SoftwareAsset" asp-action="DepartmentAssets" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Software Assets</a>
             </div>
-            <a asp-controller="AssetRequest" asp-action="AvailableAssets" asp-route-departmentId="@Model.DepartmentId" class="btn btn-primary">Request Asset</a>
+            <a asp-controller="SoftwareAssetRequest" asp-action="AvailableAssets" asp-route-departmentId="@Model.DepartmentId" class="btn btn-primary">Request Asset</a>
         </div>
         @if (Model.AssignedAssets.Count == 0)
         {
@@ -66,12 +66,10 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
                 <tr>
-                    <th>Serial Nr.</th>
-                    <th>Model</th>
                     <th>Type</th>
                     <th>Manufacturer</th>
                     <th>Status</th>
-                    <th>Location</th>
+                    <th>Expiration Date</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -79,13 +77,11 @@
                 @foreach (var asset in Model.AssignedAssets)
                 {
                     <tr>
-                        <td>@asset.Asset.SerialNumber</td>
-                        <td>@(asset.Asset.Model != null ? asset.Asset.Model.ModelNumber : "")</td>
-                        <td>@asset.Asset.AssetType.AssetTypeName</td>
-                        <td>@(asset.Asset.Manufacturer != null ? asset.Asset.Manufacturer.ManufacturerName : "")</td>
-                        <td>@asset.Asset.AssetStatus.AssetStatusName</td>
-                        <td>@asset.Asset.Location.LocationName</td>
-                        <td><a asp-action="Details" asp-route-assetId="@asset.AssetID">Details</a></td>
+                        <td>@asset.SoftwareAsset.LicenseType.LicenseTypeName</td>
+                        <td>@asset.SoftwareAsset.Manufacturer.ManufacturerName</td>
+                        <td>@asset.SoftwareAsset.AssetStatus.AssetStatusName</td>
+                        <td>@asset.SoftwareAsset.ExpirationDate.Date.ToShortDateString()</td>
+                        <td><a asp-action="Details" asp-route-assetId="@asset.SoftwareAssetID">Details</a></td>
                     </tr>
                 }
                 </tbody>

@@ -43,6 +43,41 @@ public class AssetFilterModel
     }
 }
 
+public class SoftwareFilterModel
+{
+    public List<SoftwareAsset> Assets { get; set; } = new List<SoftwareAsset>();
+    
+    [Display(Name = "Type")]
+    public int LicenseTypeId { get; set; }
+    [Display(Name = "Manufacturer")]
+    public int ManufacturerId { get; set; }
+    [Display(Name = "Status")]
+    public int AssetStatusId { get; set; }
+    [Display(Name = "Include Expired")]
+    public bool IncludeExpired { get; set; } = false;
+
+    public SoftwareAssetsOrder Order { get; set; } = SoftwareAssetsOrder.LicenseType;
+    public string? Search { get; set; }
+
+    public SelectList OrderOptions { get; set; } = GetOrderOptions();
+
+    public SelectList? LicenseTypes { get; set; }
+    public SelectList? Manufacturers { get; set; }
+    public SelectList? AssetStatuses { get; set; }
+
+    private static SelectList GetOrderOptions()
+    {
+        var items = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Type", Value = "1" },
+            new SelectListItem { Text = "Manufacturer", Value = "2" },
+            new SelectListItem { Text = "Status", Value = "3" },
+            new SelectListItem { Text = "Expiration Date", Value = "5"}
+        };
+        return new SelectList(items,  "Value", "Text");
+    }
+}
+
 public enum AssetsOrder
 {
     SerialNumber = 1,
@@ -51,4 +86,12 @@ public enum AssetsOrder
     Manufacturer,
     AssetStatus,
     Location,
+}
+
+public enum SoftwareAssetsOrder
+{
+    LicenseType = 1,
+    Manufacturer,
+    AssetStatus,
+    ExpirationDate,
 }

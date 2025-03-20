@@ -13,6 +13,7 @@ public class AssetRequestServiceTests
     {
         return new AssetRequestService(
             new MockAssetRequestRepo(), 
+            new MockAssetAssignmentRepo(),
             new MockAssetRepo(), 
             new MockEmployeeRepo(), 
             new MockDepartmentRepo());

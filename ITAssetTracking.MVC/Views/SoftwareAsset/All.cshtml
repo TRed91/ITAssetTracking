@@ -1,18 +1,18 @@
-﻿@model AssetFilterModel
+﻿@model SoftwareFilterModel
 
 @{
-    ViewData["Title"] = "All Assets";
+    ViewData["Title"] = "All Software Assets";
 }
 
 <div class="d-flex flex-column flex-md-row">
-    <form asp-controller="Asset" asp-action="All" method="get" class="card p-3 col-md-3">
+    <form asp-controller="SoftwareAsset" asp-action="All" method="get" class="card p-3 col-md-3">
         <div class="mb-5">
             <label asp-for="Order" class="form-label"></label>
             <select asp-for="Order" asp-items="@Model.OrderOptions" class="form-select"></select>
         </div>
         <div class="mb-3">
-            <label asp-for="AssetTypeId" class="form-label"></label>
-            <select asp-for="AssetTypeId" asp-items="@Model.AssetTypes" class="form-select">
+            <label asp-for="LicenseTypeId" class="form-label"></label>
+            <select asp-for="LicenseTypeId" asp-items="@Model.LicenseTypes" class="form-select">
                 <option value="0">- Any -</option>
             </select>
         </div>
@@ -23,20 +23,14 @@
             </select>
         </div>
         <div class="mb-3">
-            <label asp-for="LocationId" class="form-label"></label>
-            <select asp-for="LocationId" asp-items="@Model.Locations" class="form-select">
-                <option value="0">- Any -</option>
-            </select>
-        </div>
-        <div class="mb-3">
             <label asp-for="AssetStatusId" class="form-label"></label>
             <select asp-for="AssetStatusId" asp-items="@Model.AssetStatuses" class="form-select">
                 <option value="0">- Any -</option>
             </select>
         </div>
         <div class="mb-5 d-flex gap-1 align-items-center">
-            <input asp-for="IncludeRetired" class="form-check form-check-inline">
-            <label asp-for="IncludeRetired">Include Retired</label>
+            <input asp-for="IncludeExpired" class="form-check form-check-inline">
+            <label asp-for="IncludeExpired">Include Expired</label>
         </div>
         <div class="mb-5">
             <input asp-for="Search" class="form-control" placeholder="Search">
@@ -46,10 +40,10 @@
     <div class="flex-grow-1">
         <div class="d-flex justify-content-between align-items-center m-2">
             <div class="d-flex align-items-center gap-3">
-                <a asp-controller="Asset" asp-action="Filter" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Hardware Assets</a>
-                <a asp-controller="SoftwareAsset" asp-action="Filter" class="p2 text-decoration-none text-black">Software Assets</a>
+                <a asp-controller="Asset" asp-action="Filter" class="p2 text-decoration-none text-black">Hardware Assets</a>
+                <a asp-controller="SoftwareAsset" asp-action="Filter" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Software Assets</a>
             </div>
-            <a asp-action="Manufacturers" class="btn btn-primary">Add</a>
+            <a asp-action="LicenseTypes" class="btn btn-primary">Add</a>
         </div>
         @if (Model.Assets.Count == 0)
         {
@@ -60,12 +54,10 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
                 <tr>
-                    <th>Serial Nr.</th>
-                    <th>Model</th>
-                    <th>Type</th>
+                    <th>License Type</th>
                     <th>Manufacturer</th>
                     <th>Status</th>
-                    <th>Location</th>
+                    <th>Expiration Date</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -73,13 +65,11 @@
                 @foreach (var asset in Model.Assets)
                 {
                     <tr>
-                        <td>@asset.SerialNumber</td>
-                        <td>@(asset.Model != null ? asset.Model.ModelNumber : "")</td>
-                        <td>@asset.AssetType.AssetTypeName</td>
-                        <td>@(asset.Manufacturer != null ? asset.Manufacturer.ManufacturerName : "")</td>
+                        <td>@asset.LicenseType.LicenseTypeName</td>
+                        <td>@asset.Manufacturer.ManufacturerName</td>
                         <td>@asset.AssetStatus.AssetStatusName</td>
-                        <td>@asset.Location.LocationName</td>
-                        <td><a asp-action="Details" asp-route-assetId="@asset.AssetID">Details</a></td>
+                        <td>@asset.ExpirationDate.Date.ToShortDateString()</td>
+                        <td><a asp-action="Details" asp-route-assetId="@asset.SoftwareAssetID">Details</a></td>
                     </tr>
                 }
                 </tbody>

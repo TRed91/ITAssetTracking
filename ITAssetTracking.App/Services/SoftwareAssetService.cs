@@ -32,11 +32,11 @@ public class SoftwareAssetService : ISoftwareAssetService
         }
     }
 
-    public Result<List<SoftwareAsset>> GetSoftwareAssets(bool includeExpired = true)
+    public Result<List<SoftwareAsset>> GetSoftwareAssets(int licenseTypeId = 0, int assetStatusId = 0, int manufacturerId = 0, bool includeExpired = false)
     {
         try
         {
-            var assets = _softwareAssetRepo.GetSoftwareAssets(includeExpired);
+            var assets = _softwareAssetRepo.GetSoftwareAssets(licenseTypeId, manufacturerId, assetStatusId, includeExpired);
             return ResultFactory.Success(assets);
         }
         catch (Exception ex)

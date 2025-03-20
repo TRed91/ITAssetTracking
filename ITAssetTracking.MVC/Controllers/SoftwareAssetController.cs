@@ -1,0 +1,254 @@
+﻿using ITAssetTracking.Core.Interfaces.Services;
+using ITAssetTracking.Data;
+using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace ITAssetTracking.MVC.Controllers;
+
+public class SoftwareAssetController : Controller
+{
+    private readonly ISoftwareAssetService _swaService;
+    private readonly IAssetService _assetService;
+    private readonly ISoftwareAssetAssignmentService _swaAssignmentService;
+    private readonly IEmployeeService _employeeService;
+    private readonly IDepartmentService _departmentService;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly Serilog.ILogger _logger;
+
+    public SoftwareAssetController(
+        ISoftwareAssetService softwareAssetService,
+        IAssetService assetService,
+        ISoftwareAssetAssignmentService softwareAssetAssignmentService,
+        IEmployeeService employeeService,
+        IDepartmentService departmentService,
+        UserManager<ApplicationUser> userManager,
+        Serilog.ILogger logger)
+    {
+        _swaService = softwareAssetService;
+        _assetService = assetService;
+        _swaAssignmentService = softwareAssetAssignmentService;
+        _employeeService = employeeService;
+        _departmentService = departmentService;
+        _userManager = userManager;
+        _logger = logger;
+    }
+
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult Filter()
+    {
+        var licenseTypes = _swaService.GetLicenseTypes();
+        var statuses = _assetService.GetAssetStatuses();
+        var manufacturers = _assetService.GetManufacturers();
+
+        if (licenseTypes.Ok && statuses.Ok && statuses.Ok && manufacturers.Ok)
+        {
+            var model = new SoftwareFilterModel
+            {
+                LicenseTypes = new SelectList(licenseTypes.Data, "LicenseTypeID", "LicenseTypeName"),
+                AssetStatuses = new SelectList(statuses.Data, "AssetStatusID", "AssetStatusName"),
+                Manufacturers = new SelectList(manufacturers.Data, "ManufacturerID", "ManufacturerName"),
+            };
+            
+            return View(model);
+        }
+        
+        var errMsg = licenseTypes.Message ?? statuses.Message ?? manufacturers.Message ?? "Unknown Error";
+        var ex = licenseTypes.Exception ?? statuses.Exception ?? manufacturers.Exception;
+        _logger.Error($"Filter failed to fetch data: {errMsg} => {ex}");
+        ViewData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+        return RedirectToAction("Index");
+    }
+    
+    public IActionResult All(SoftwareFilterModel model)
+    {
+        // fetch data
+        var assetsResult = _swaService.GetSoftwareAssets(model.LicenseTypeId, model.AssetStatusId, model.ManufacturerId, model.IncludeExpired);
+        
+        if (!assetsResult.Ok)
+        {
+            _logger.Error("Error retrieving data: " + assetsResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(
+                new TempDataMsg(false, "There was an error retrieving data"));
+            return RedirectToAction("Index");
+        }
+
+        var licenseTypes = _swaService.GetLicenseTypes();
+        var manufacturers = _assetService.GetManufacturers();
+        var statuses = _assetService.GetAssetStatuses();
+        if (!licenseTypes.Ok || !manufacturers.Ok || !statuses.Ok)
+        {
+            string errMsg = licenseTypes.Message ?? manufacturers.Message ?? statuses.Message ?? "Unknown Error";
+            var ex = licenseTypes.Exception ?? statuses.Exception ?? manufacturers.Exception;
+            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
+            TempData["msg"] = TempDataExtension.Serialize(
+                new TempDataMsg(false, "There was an error retrieving data"));
+            return RedirectToAction("Index", "Home");
+        }
+
+        var assets = assetsResult.Data;
+
+        // filter by search string
+        if (!string.IsNullOrEmpty(model.Search))
+        {
+            assets = assets
+                .Where(a => a.LicenseType.LicenseTypeName.ToLower().Contains(model.Search.ToLower()))
+                .ToList();
+        }
+
+        // order the result
+        switch (model.Order)
+        {
+            case SoftwareAssetsOrder.Manufacturer:
+                assets = assets.OrderBy(a => a.Manufacturer.ManufacturerName).ToList();
+                break;
+            case SoftwareAssetsOrder.AssetStatus:
+                assets = assets.OrderBy(a => a.AssetStatus.AssetStatusName).ToList();
+                break;
+            case SoftwareAssetsOrder.ExpirationDate:
+                assets = assets.OrderBy(a => a.ExpirationDate).ToList();
+                break;
+            default:
+                assets = assets.OrderBy(a => a.LicenseType.LicenseTypeName).ToList();
+                break;
+        }
+        
+        model.Assets = assets;
+        model.LicenseTypes = new SelectList(licenseTypes.Data, "LicenseTypeID", "LicenseTypeName");
+        model.Manufacturers = new SelectList(manufacturers.Data, "ManufacturerID", "ManufacturerName");
+        model.AssetStatuses = new SelectList(statuses.Data, "AssetStatusID", "AssetStatusName");
+        
+        return View(model);
+    }
+    
+    public async Task<IActionResult> DepartmentAssets(DepartmentSoftwareAssetsModel model)
+    {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        int departmentId;
+        model.EnableDepSelectList = roles.Any(r => r == "Admin" || r == "Auditor");
+        if (!model.EnableDepSelectList)
+        {
+            // if access to one department, department id becomes the logged in employee's department id
+            var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
+            if (!employeeResult.Ok)
+            {
+                var errMsg = employeeResult.Message;
+                _logger.Error("Error retrieving data: " + errMsg);
+                TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+                return RedirectToAction("Index", "Asset");
+            }
+            departmentId = employeeResult.Data.DepartmentID;
+        }
+        else
+        {
+            // if access to all departments default to department id 1
+            departmentId = model.DepartmentId;
+        }
+        var assetsResult = _swaAssignmentService.GetAssignmentsByDepartment(departmentId, false);
+        var licenseTypesRes = _swaService.GetLicenseTypes();
+        var manufacturersRes = _assetService.GetManufacturers();
+        var statusesRes = _assetService.GetAssetStatuses();
+        var departmentsRes = _departmentService.GetDepartments();
+
+        // handle data fetching errors
+        if (!assetsResult.Ok || !licenseTypesRes.Ok || !manufacturersRes.Ok || !statusesRes.Ok || !departmentsRes.Ok)
+        {
+            var errMsg = assetsResult.Message ?? 
+                         licenseTypesRes.Message ?? 
+                         manufacturersRes.Message ?? 
+                         statusesRes.Message ?? 
+                         departmentsRes.Message ?? "Unknown Error";
+            
+            var ex = assetsResult.Exception ?? licenseTypesRes.Exception ?? 
+                manufacturersRes.Exception ?? statusesRes.Exception ?? departmentsRes.Exception;
+            
+            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+            return RedirectToAction("Index", "SoftwareAsset");
+        }
+        
+        // populate model
+        model.DepartmentId = departmentId;
+        model.AssignedAssets = assetsResult.Data;
+        model.DepartmentSelectList = new SelectList(departmentsRes.Data, "DepartmentID", "DepartmentName");
+        model.ManufacturerSelectList = new SelectList(manufacturersRes.Data, "ManufacturerID", "ManufacturerName");
+        model.LicenseTypeSelectList = new SelectList(licenseTypesRes.Data, "LicenseTypeID", "LicenseTypeName");
+        model.AssetStatusSelectList = new SelectList(statusesRes.Data, "AssetStatusID", "AssetStatusName");
+
+        // filter assets
+        if (model.ManufacturerId != 0)
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.SoftwareAsset.ManufacturerID == model.ManufacturerId)
+                .ToList();
+        }
+        if (model.LicenseTypeId != 0)
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.SoftwareAssetID == model.LicenseTypeId)
+                .ToList();
+        }
+        if (model.AssetStatusId != 0)
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => a.SoftwareAsset.AssetStatusID == model.AssetStatusId)
+                .ToList();
+        }
+        if (!string.IsNullOrEmpty(model.SearchString))
+        {
+            model.AssignedAssets = model.AssignedAssets
+                .Where(a => 
+                    a.SoftwareAsset.LicenseType.LicenseTypeName.ToLower().Contains(model.SearchString.ToLower()))
+                .ToList();
+        }
+        
+        // order the result
+        switch (model.Order)
+        {
+            case SoftwareAssetsOrder.Manufacturer:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.SoftwareAsset.Manufacturer.ManufacturerName)
+                    .ToList();
+                break;
+            case SoftwareAssetsOrder.AssetStatus:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.SoftwareAsset.AssetStatus.AssetStatusName)
+                    .ToList();
+                break;
+            case SoftwareAssetsOrder.ExpirationDate:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderByDescending(a => a.SoftwareAsset.ExpirationDate)
+                    .ToList();
+                break;
+            default:
+                model.AssignedAssets = model.AssignedAssets
+                    .OrderBy(a => a.SoftwareAsset.LicenseType.LicenseTypeName)
+                    .ToList();
+                break;
+        }
+        
+        return View(model);
+    }
+    
+    public IActionResult Details(int assetId)
+    {
+        var assetResult = _swaService.GetSoftwareAsset(assetId);
+        
+        if (!assetResult.Ok)
+        {
+            _logger.Error("Error retrieving data: " + assetResult.Message + " => " + assetResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
+            return RedirectToAction("Index", "Asset");
+        }
+        
+        var model = new SoftwareAssetDetailsModel(assetResult.Data);
+        return View(model);
+    }
+}

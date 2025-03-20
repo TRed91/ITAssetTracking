@@ -1,0 +1,114 @@
+﻿@model SoftwareAssetDetailsModel
+
+@{
+    ViewData["Title"] = "Software Asset Details";
+}
+
+<section class="card p-4">
+    <h1 class="display-4">Asset Details</h1>
+    <div class="d-flex gap-5">
+        <div class="d-flex flex-column gap-3">
+            <div>
+                <p>License</p>
+                <p class="fs-5">@Model.LicenseType</p>
+            </div>
+            <div>
+                <p>Version</p>
+                <p class="fs-5">@Model.Version</p>
+            </div>
+            <div>
+                <p>Status</p>
+                <p class="fs-5">@Model.Status</p>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-3">
+            <div>
+                <p>Manufacturer</p>
+                <p class="fs-5">@Model.Manufacturer</p>
+            </div>
+            <div>
+                <p>Key</p>
+                <p class="fs-5">@Model.LicenseKey</p>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-3">
+            <div>
+                <p>Nr. of Licenses</p>
+                <p class="fs-5">@Model.NumberOfLicenses</p>
+            </div>
+            <div>
+                <p>Expiration Date</p>
+                <p class="fs-5">@Model.ExpirationDate.Date.ToShortDateString()</p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="d-flex align-items-center gap-5">
+            <a asp-action="Edit" asp-route-assetId="@Model.SoftwareAssetId">
+                <button class="btn btn-primary">Edit</button>
+            </a>
+            <a onclick="history.back()" style="cursor: pointer" class="link-primary text-decoration-none">Go Back</a>
+        </div>
+        <a asp-action="Delete" asp-route-assetId="@Model.SoftwareAssetId">
+            <button class="btn btn-danger">Delete</button>
+        </a>
+    </div>
+</section>
+<section class="p-3 bg-dark-subtle d-flex gap-3 flex-column flex-fill flex-md-row justify-content-center align-items-center">
+    <a asp-controller="SoftwareAssetAssignment" asp-action="AssignEmployee" asp-route-assetId="@Model.SoftwareAssetId"
+       class="p-2 card text-decoration-none">
+        Assign To Employee
+    </a>
+    <a asp-controller="SoftwareAssetAssignment" asp-action="AssignAsset" asp-route-assetId="@Model.SoftwareAssetId" class="p-2 card text-decoration-none">Assign To Asset</a>
+    <a class="p-2 card text-decoration-none">
+        <form asp-controller="SoftwareAssetAssignment" asp-action="Return" asp-route-assetId="@Model.SoftwareAssetId" method="post">
+            <button class="btn btn-link text-black text-decoration-none p-0">Return Asset</button>
+        </form>
+    </a>
+    <a asp-controller="SoftwareAssetRequest" asp-action="RequestReassignment" asp-route-assetId="@Model.SoftwareAssetId" class="p-2 card text-decoration-none">Request Reassignment</a>
+</section>
+<section class="card p-4">
+    <h2 class="fs-4">Assignment History</h2>
+    @if (Model.Assignments.Count > 0)
+    {
+        <table class="table table-bordered mb-3">
+            <thead class="table-primary">
+            <tr>
+                <th>Employee</th>
+                <th>Asset</th>
+                <th>Assignment Date</th>
+                <th>Return Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var a in Model.Assignments)
+            {
+                string returnDate = "", employeeName = "", asset = "";
+                if (a.ReturnDate != null)
+                {
+                    returnDate = a.ReturnDate.Value.ToShortDateString();
+                }
+                if (a.Employee != null)
+                {
+                    employeeName = a.Employee.LastName + ", " + a.Employee.FirstName;
+                }
+
+                if (a.Asset != null)
+                {
+                    asset = a.Asset.SerialNumber;
+                }
+                <tr>
+                    <td>@employeeName</td>
+                    <td>@asset</td>
+                    <td>@a.AssignmentDate.Date.ToShortDateString()</td>
+                    <td>@returnDate</td>
+                </tr>
+            }
+            </tbody>
+        </table>   
+    }
+    else
+    {
+        <p class="fs-5">No Assignment found</p>
+    }
+</section>

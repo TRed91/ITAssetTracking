@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -14,17 +15,27 @@ public class SoftwareAssetRepository : ISoftwareAssetRepository
     
     public SoftwareAsset? GetSoftwareAsset(int softwareAssetId)
     {
-        return _context.SoftwareAsset.FirstOrDefault(s => s.SoftwareAssetID == softwareAssetId);
+        return _context.SoftwareAsset
+            .Include(s => s.Manufacturer)
+            .Include(s => s.AssetStatus)
+            .Include(s => s.LicenseType)
+            .Include(s => s.SoftwareAssetAssignments)
+            .ThenInclude(sa => sa.Asset)
+            .Include(s => s.SoftwareAssetAssignments)
+            .ThenInclude(sa => sa.Employee)
+            .FirstOrDefault(s => s.SoftwareAssetID == softwareAssetId);
     }
 
-    public List<SoftwareAsset> GetSoftwareAssets(bool includeExpired)
+    public List<SoftwareAsset> GetSoftwareAssets(int licenseTypeId, int manufacturerId, int assetStatusId, bool includeExpired)
     {
-        if (includeExpired)
-        {
-            return _context.SoftwareAsset.ToList();
-        }
         return _context.SoftwareAsset
-            .Where(s => s.ExpirationDate >= DateTime.Now)
+            .Include(s => s.Manufacturer)
+            .Include(s => s.AssetStatus)
+            .Include(s => s.LicenseType)
+            .Where(s => (includeExpired || s.ExpirationDate >= DateTime.Now) &&
+                        (licenseTypeId == 0 || s.LicenseTypeID == licenseTypeId) &&
+                        (assetStatusId == 0 || s.AssetStatusID == assetStatusId) &&
+                        (manufacturerId == 0 || s.ManufacturerID == manufacturerId))
             .ToList();
     }
 

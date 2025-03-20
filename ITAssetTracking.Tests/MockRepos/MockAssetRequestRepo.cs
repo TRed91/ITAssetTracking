@@ -100,4 +100,9 @@ public class MockAssetRequestRepo : IAssetRequestRepository
         var request = _db.AssetRequests.FirstOrDefault(a => a.AssetRequestID == assetRequestId);
         _db.AssetRequests.Remove(request);
     }
+
+    public RequestResult? GetAssetRequestResult(string resultName)
+    {
+        throw new NotImplementedException();
+    }
 }
