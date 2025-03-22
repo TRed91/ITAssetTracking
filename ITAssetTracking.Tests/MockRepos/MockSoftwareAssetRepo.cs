@@ -92,4 +92,14 @@ public class MockSoftwareAssetRepo : ISoftwareAssetRepository
             .Where(a => a.ManufacturerID == manufacturerId)
             .ToList();
     }
+
+    public LicenseType? GetLicenseTypeById(int licenseTypeId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Manufacturer> GetSoftwareManufacturers()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -17,4 +17,6 @@ public interface ISoftwareAssetRepository
     
     List<LicenseType> GetLicenseTypes();
     List<LicenseType> GetLicenseTypesByManufacturer(int manufacturerId);
+    LicenseType? GetLicenseTypeById(int licenseTypeId);
+    List<Manufacturer> GetSoftwareManufacturers();
 }

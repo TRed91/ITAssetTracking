@@ -115,4 +115,19 @@ public class SoftwareAssetRepository : ISoftwareAssetRepository
     {
         return _context.LicenseType.Where(l => l.ManufacturerID == manufacturerId).ToList();
     }
+
+    public LicenseType? GetLicenseTypeById(int licenseTypeId)
+    {
+        return _context.LicenseType
+            .Include(l => l.Manufacturer)
+            .FirstOrDefault(l => l.LicenseTypeID == licenseTypeId);
+    }
+
+    public List<Manufacturer> GetSoftwareManufacturers()
+    {
+        return _context.Manufacturer
+            .Include(m => m.LicenseTypes)
+            .Where(m => m.LicenseTypes.Count > 0)
+            .ToList();
+    }
 }

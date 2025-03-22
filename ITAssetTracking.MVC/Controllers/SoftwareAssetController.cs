@@ -236,6 +236,130 @@ public class SoftwareAssetController : Controller
         
         return View(model);
     }
+
+    public IActionResult SoftwareSelect(SoftwareSelectModel model)
+    {
+        var software = _swaService.GetLicenseTypesByManufacturers();
+        if (!software.Ok)
+        {
+            _logger.Error($"Error retrieving data: {software.Message} => {software.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, software.Message));
+            return RedirectToAction("Index", "SoftwareAsset");
+        }
+
+        var manufacturers = software.Data;
+        if (!string.IsNullOrEmpty(model.Search))
+        {
+            foreach (var m in manufacturers)
+            {
+                m.LicenseTypes = m.LicenseTypes
+                    .Where(l => l.LicenseTypeName.ToLower().Contains(model.Search.ToLower()))
+                    .ToList();
+            }
+            manufacturers = manufacturers
+                .Where(l => l.LicenseTypes.Count > 0)
+                .ToList();
+        }
+        
+        model.Manufacturers = manufacturers;
+        
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Add(int licenseTypeId)
+    {
+        var licenseType = _swaService.GetLicenseTypeById(licenseTypeId);
+        if (!licenseType.Ok)
+        {
+            _logger.Error($"Error retrieving data: {licenseType.Message} => {licenseType.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, licenseType.Message));
+            return RedirectToAction("Index", "SoftwareAsset");
+        }
+
+        var model = new SoftwareAssetFormModel();
+        model.LicenseTypeId = licenseTypeId;
+        model.LicenseName = licenseType.Data.LicenseTypeName;
+        model.ManufacturerId = licenseType.Data.ManufacturerID;
+        model.ManufacturerName = licenseType.Data.Manufacturer.ManufacturerName;
+        
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Add(SoftwareAssetFormModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            var licenseType = _swaService.GetLicenseTypeById(model.LicenseTypeId);
+            model.ManufacturerId = licenseType.Data.ManufacturerID;
+            model.ManufacturerName = licenseType.Data.Manufacturer.ManufacturerName;
+            model.LicenseTypeId = licenseType.Data.LicenseTypeID;
+            model.LicenseName = licenseType.Data.LicenseTypeName;
+            return View(model);
+        }
+
+        var softwareAsset = model.ToEntity();
+        
+        var addResult = _swaService.AddSoftwareAsset(softwareAsset);
+        if (!addResult.Ok)
+        {
+            _logger.Error($"Error adding software asset: {addResult.Message} => {addResult.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, addResult.Message));
+            return RedirectToAction("Add", new { licenseTypeId = model.LicenseTypeId });
+        }
+
+        var successMsg = $"Software asset added with id {softwareAsset.SoftwareAssetID}";
+        _logger.Information(successMsg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
+        return RedirectToAction("Details", new { assetId = softwareAsset.SoftwareAssetID });
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int assetId)
+    {
+        var asset = _swaService.GetSoftwareAsset(assetId);
+        if (!asset.Ok)
+        {
+            _logger.Error($"Error retrieving data: {asset.Message} => {asset.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, asset.Message));
+            return RedirectToAction("Details", new  { assetId });
+        }
+
+        var assetStatuses = _assetService.GetAssetStatuses();
+        
+        var model = new SoftwareAssetFormModel(asset.Data);
+        model.AssetStatuses = new SelectList(assetStatuses.Data, "AssetStatusID", "AssetStatusName");
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int assetId, SoftwareAssetFormModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            var assetStatuses = _assetService.GetAssetStatuses();
+            model.AssetStatuses = new SelectList(assetStatuses.Data, "AssetStatusID", "AssetStatusName");
+            return View(model);
+        }
+        var softwareAsset = model.ToEntity();
+        softwareAsset.SoftwareAssetID = assetId;
+        
+        var updateResult = _swaService.UpdateSoftwareAsset(softwareAsset);
+        if (!updateResult.Ok)
+        {
+            _logger.Error($"Error updating software asset: {updateResult.Message} => {updateResult.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, updateResult.Message));
+            return RedirectToAction("Details", new { assetId = softwareAsset.SoftwareAssetID });
+        }
+
+        var successMsg = $"Software asset with id {assetId} updated";
+        _logger.Information(successMsg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
+        return RedirectToAction("Details", new { assetId = softwareAsset.SoftwareAssetID });
+    }
     
     public IActionResult Details(int assetId)
     {

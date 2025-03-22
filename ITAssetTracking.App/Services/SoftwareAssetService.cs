@@ -8,10 +8,12 @@ namespace ITAssetTracking.App.Services;
 public class SoftwareAssetService : ISoftwareAssetService
 {
     private readonly ISoftwareAssetRepository _softwareAssetRepo;
+    private readonly IAssetRepository _assetRepo;
 
-    public SoftwareAssetService(ISoftwareAssetRepository softwareAssetRepository)
+    public SoftwareAssetService(ISoftwareAssetRepository softwareAssetRepository,  IAssetRepository assetRepository)
     {
         _softwareAssetRepo = softwareAssetRepository;        
+        _assetRepo = assetRepository;
     }
     
     public Result<SoftwareAsset> GetSoftwareAsset(int softwareAssetId)
@@ -97,6 +99,10 @@ public class SoftwareAssetService : ISoftwareAssetService
         }
         try
         {
+            // default asset status to 'Storage'
+            var status = _assetRepo.GetAssetStatusByName("Storage");
+            softwareAsset.AssetStatusID = status.AssetStatusID;
+            
             _softwareAssetRepo.AddSoftwareAsset(softwareAsset);
             return ResultFactory.Success();
         }
@@ -123,6 +129,11 @@ public class SoftwareAssetService : ISoftwareAssetService
             if (asset == null)
             {
                 return ResultFactory.Fail("Software asset not found");
+            }
+
+            if (softwareAsset.AssetStatusID == 0)
+            {
+                softwareAsset.AssetStatusID = asset.AssetStatusID;
             }
             
             _softwareAssetRepo.UpdateSoftwareAsset(softwareAsset);
@@ -176,6 +187,37 @@ public class SoftwareAssetService : ISoftwareAssetService
         catch (Exception ex)
         {
             return ResultFactory.Fail<List<LicenseType>>(ex.Message, ex);
+        }
+    }
+
+    public Result<LicenseType> GetLicenseTypeById(int licenseTypeId)
+    {
+        try
+        {
+            var licenseType = _softwareAssetRepo.GetLicenseTypeById(licenseTypeId);
+            if (licenseType == null)
+            {
+                return ResultFactory.Fail<LicenseType>("License type not found");
+            }
+
+            return ResultFactory.Success(licenseType);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<LicenseType>(ex.Message, ex);
+        }
+    }
+
+    public Result<List<Manufacturer>> GetLicenseTypesByManufacturers()
+    {
+        try
+        {
+            var manufacturers = _softwareAssetRepo.GetSoftwareManufacturers();
+            return ResultFactory.Success(manufacturers);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<Manufacturer>>(ex.Message, ex);
         }
     }
 }

@@ -18,4 +18,6 @@ public interface ISoftwareAssetService
     
     Result<List<LicenseType>> GetLicenseTypes();
     Result<List<LicenseType>> GetLicenseTypesByManufacturer(int manufacturerId);
+    Result<LicenseType> GetLicenseTypeById(int licenseTypeId);
+    Result<List<Manufacturer>> GetLicenseTypesByManufacturers();
 }
