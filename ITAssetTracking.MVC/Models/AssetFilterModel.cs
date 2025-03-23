@@ -27,6 +27,9 @@ public class AssetFilterModel
     public SelectList? Manufacturers { get; set; }
     public SelectList? Locations { get; set; }
     public SelectList? AssetStatuses { get; set; }
+    
+    public int? SoftwareAssetId { get; set; }
+    public int? AssetId { get; set; }
 
     private static SelectList GetOrderOptions()
     {

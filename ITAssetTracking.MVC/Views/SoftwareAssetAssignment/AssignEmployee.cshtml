@@ -1,0 +1,60 @@
+﻿@model AssignEmployeeModel
+
+@{
+    ViewData["Title"] = "Assign To Employee";
+}
+
+<h1 class="display-5">Assign To Employee Software Asset: @Model.LicenseTypeName</h1>
+<form asp-action="AssignEmployee" asp-route-assetId="@Model.AssetID" method="get" class="card d-flex flex-column flex-md-row gap-5 p-3">
+    <input asp-for="AssetID" value="@Model.AssetID" hidden>
+    <div class="d-flex align-items-center flex-shrink-0 gap-2">
+        <label asp-for="StartsWith" class="form-label flex-shrink-0">Starts with:</label>
+        <select asp-for="StartsWith" asp-items="@Model.StartingLetter" class="form-select">
+            <option value="0">Any</option>
+        </select>
+    </div>
+    <div class="d-flex align-items-center flex-shrink-0 gap-2">
+        <label asp-for="DepartmentId" class="form-label">Department:</label>
+        <select asp-for="DepartmentId" asp-items="@Model.Departments" class="form-select">
+            <option value="0">Any</option>
+        </select>
+    </div>
+    <input asp-for="Search" class="form-control" placeholder="Search">
+    <button class="btn btn-primary" type="submit">Apply</button>
+</form>
+@if (Model.Employees.Count > 0)
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+        <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var e in Model.Employees)
+        {
+            <tr>
+                <td>@e.LastName, @e.FirstName</td>
+                <td>@e.Department.DepartmentName</td>
+                <td>
+                    <form asp-action="AssignEmployee" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="AssetID" value="@Model.AssetID" hidden>
+                        <input asp-for="EmployeeID" value="@e.EmployeeID" hidden>
+                        <button type="submit" class="btn btn-link text-decoration-none p-0">
+                            Assign
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="fs-5">No Employee found.</p>
+}
+

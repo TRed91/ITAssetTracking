@@ -140,6 +140,12 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
             {
                 return ResultFactory.Fail("Software asset not found");
             }
+
+            // update status to 'In Use'
+            var status = _assetRepo.GetAssetStatusByName("In Use");
+            swAsset.AssetStatusID = status.AssetStatusID;
+            _softwareRepo.UpdateSoftwareAsset(swAsset);
+            
             // check if there are open assignment
             var assignments = _swaaRepository.GetAssignmentsBySoftwareAssetId(
                 softwareAssetAssignment.SoftwareAssetID, false);

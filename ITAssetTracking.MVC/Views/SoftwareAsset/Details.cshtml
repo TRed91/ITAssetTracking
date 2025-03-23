@@ -5,7 +5,7 @@
 }
 
 <section class="card p-4">
-    <h1 class="display-4">Asset Details</h1>
+    <h1 class="display-4">Software Asset Details</h1>
     <div class="d-flex gap-5">
         <div class="d-flex flex-column gap-3">
             <div>
@@ -59,7 +59,7 @@
        class="p-2 card text-decoration-none">
         Assign To Employee
     </a>
-    <a asp-controller="SoftwareAssetAssignment" asp-action="AssignAsset" asp-route-assetId="@Model.SoftwareAssetId" class="p-2 card text-decoration-none">Assign To Asset</a>
+    <a asp-controller="SoftwareAssetAssignment" asp-action="FilterAssets" asp-route-softwareAssetId="@Model.SoftwareAssetId" class="p-2 card text-decoration-none">Assign To Asset</a>
     <a class="p-2 card text-decoration-none">
         <form asp-controller="SoftwareAssetAssignment" asp-action="Return" asp-route-assetId="@Model.SoftwareAssetId" method="post">
             <button class="btn btn-link text-black text-decoration-none p-0">Return Asset</button>

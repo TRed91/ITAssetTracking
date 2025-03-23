@@ -1,0 +1,38 @@
+﻿@model AssetFilterModel
+
+@{
+    ViewData["Title"] = "Filter Assets";
+}
+
+<h1>View Assets</h1>
+<form asp-controller="SoftwareAssetAssignment" asp-action="AssignAsset" method="get" class="col-md-6 col-lg-3">
+    @Html.HiddenFor(m => m.SoftwareAssetId)
+    <div class="mb-3">
+        <label asp-for="AssetTypeId" class="form-label"></label>
+        <select asp-for="AssetTypeId" asp-items="@Model.AssetTypes" class="form-select">
+            <option value="0">- Any -</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ManufacturerId" class="form-label"></label>
+        <select asp-for="ManufacturerId" asp-items="@Model.Manufacturers" class="form-select">
+            <option value="0">- Any -</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="LocationId" class="form-label"></label>
+        <select asp-for="LocationId" asp-items="@Model.Locations" class="form-select">
+            <option value="0">- Any -</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="AssetStatusId" class="form-label"></label>
+        <select asp-for="AssetStatusId" asp-items="@Model.AssetStatuses" class="form-select">
+            <option value="0">- Any -</option>
+        </select>
+    </div>
+    <div class="d-flex gap-5">
+        <button class="btn btn-primary" type="submit">Go</button>
+        <a asp-action="Details" asp-controller="SoftwareAsset" asp-route-assetId="@Model.SoftwareAssetId">Go Back</a>
+    </div>
+</form>
