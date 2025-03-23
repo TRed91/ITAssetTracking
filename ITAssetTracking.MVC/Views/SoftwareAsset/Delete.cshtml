@@ -1,0 +1,12 @@
+﻿@model SoftwareAsset
+
+@{
+    ViewData["Title"] = "Delete Software Asset";
+}
+
+<p class="fs-3">Delete this Software Asset for @Model.LicenseType.LicenseTypeName</p>
+<form asp-controller="SoftwareAsset" asp-action="DeleteAsset" asp-route-assetId="@Model.SoftwareAssetID" method="post" class="d-flex gap-5">
+    @Html.AntiForgeryToken()
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a asp-action="Details" asp-route-assetId="@Model.SoftwareAssetID" class="link-primary text-decoration-none">Go Back</a>
+</form>

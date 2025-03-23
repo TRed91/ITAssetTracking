@@ -466,7 +466,7 @@ public class AssetController : Controller
         var assetResult = _assetService.GetAssetById(assetId);
         if (!assetResult.Ok)
         {
-            _logger.Error("Error retrieving asset: " + assetResult.Exception);
+            _logger.Error($"Error retrieving asset: {assetResult.Message} => {assetResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
             return RedirectToAction("Details", new { assetId });
         }
@@ -480,7 +480,7 @@ public class AssetController : Controller
         var deleteResult = _assetService.DeleteAsset(assetId);
         if (!deleteResult.Ok)
         {
-            _logger.Error("Error deleting asset: " + deleteResult.Exception);
+            _logger.Error($"Error deleting asset: {deleteResult.Message}  => {deleteResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, deleteResult.Message));
             return RedirectToAction("Details", new { assetId });
         }

@@ -361,6 +361,37 @@ public class SoftwareAssetController : Controller
         return RedirectToAction("Details", new { assetId = softwareAsset.SoftwareAssetID });
     }
     
+    [HttpGet]
+    public IActionResult Delete(int assetId)
+    {
+        var assetResult = _swaService.GetSoftwareAsset(assetId);
+        if (!assetResult.Ok)
+        {
+            _logger.Error($"Error retrieving asset: {assetResult.Message} => {assetResult.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
+            return RedirectToAction("Details", new { assetId });
+        }
+        return View(assetResult.Data);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteAsset(int assetId)
+    {
+        var deleteResult = _swaService.DeleteSoftwareAsset(assetId);
+        if (!deleteResult.Ok)
+        {
+            _logger.Error($"Error deleting asset: {deleteResult.Message}  => {deleteResult.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, deleteResult.Message));
+            return RedirectToAction("Details", new { assetId });
+        }
+        
+        var msg = $"Software Asset with id {assetId} deleted successfully";
+        _logger.Information(msg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, msg));
+        return RedirectToAction("Index");
+    }
+    
     public IActionResult Details(int assetId)
     {
         var assetResult = _swaService.GetSoftwareAsset(assetId);
