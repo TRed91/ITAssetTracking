@@ -18,4 +18,5 @@ public interface ISoftwareAssetAssignmentService
     Result AddSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
     Result UpdateSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
     Result DeleteSoftwareAssetAssignment(int softwareAssetAssignmentId);
+    Result Return(int softwareAssetId);
 }

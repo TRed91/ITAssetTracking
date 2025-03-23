@@ -161,7 +161,7 @@ public class AssetAssignmentController : Controller
         var returnResult = _assignmentService.Return(assetId);
         if (!returnResult.Ok)
         {
-            _logger.Error("Error returning asset: " + returnResult.Message + returnResult.Exception);
+            _logger.Error($"Error returning asset: {returnResult.Message} => {returnResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, returnResult.Message));
             return RedirectToAction("Details", "Asset", new { assetId = assetId });
         }

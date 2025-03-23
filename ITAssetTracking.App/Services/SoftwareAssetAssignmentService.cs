@@ -259,4 +259,44 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
             return ResultFactory.Fail(ex.Message, ex);
         }
     }
+    
+    public Result Return(int softwareAssetId)
+    {
+        try
+        {
+            var asset = _softwareRepo.GetSoftwareAsset(softwareAssetId);
+            if (asset == null)
+            {
+                return ResultFactory.Fail("Asset not found");
+            }
+
+            var openAssignment = _swaaRepository.GetAssignmentsBySoftwareAssetId(softwareAssetId, false);
+            if (openAssignment.Count == 0)
+            {
+                return ResultFactory.Fail($"No open assignments for asset with id {softwareAssetId} found");
+            }
+            if (openAssignment.Count > 1)
+            {
+                return ResultFactory.Fail($"Multiple open assignments for asset with id {softwareAssetId} found. Please contact support.");
+            }
+            var status = _assetRepo.GetAssetStatusByName("Storage");
+            if (status == null)
+            {
+                return ResultFactory.Fail("Asset status not found");
+            }
+            
+            // update asset status to storage
+            asset.AssetStatusID = status.AssetStatusID;
+            _softwareRepo.UpdateSoftwareAsset(asset);
+            // update assignment
+            openAssignment[0].ReturnDate = DateTime.Now;
+            _swaaRepository.UpdateSoftwareAssetAssignment(openAssignment[0]);
+            
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
+    }
 }

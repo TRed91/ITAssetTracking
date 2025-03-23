@@ -265,4 +265,21 @@ public class SoftwareAssetAssignmentController : Controller
                 a.AssetTypeName == "Tablet")
             .ToList();
     }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Return(int assetId)
+    {
+        var returnResult = _swAssignmentService.Return(assetId);
+        if (!returnResult.Ok)
+        {
+            _logger.Error($"Error returning asset: {returnResult.Message} => {returnResult.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, returnResult.Message));
+            return RedirectToAction("Details", "SoftwareAsset", new { assetId });
+        }
+        var msg = $"Returned Asset with ID {assetId}";
+        _logger.Information(msg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true , msg));
+        return RedirectToAction("Details", "SoftwareAsset", new { assetId });
+    }
 }
