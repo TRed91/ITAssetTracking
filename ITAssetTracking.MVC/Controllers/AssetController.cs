@@ -18,8 +18,8 @@ public class AssetController : Controller
     private readonly IAssetService _assetService;
     private readonly IAssetAssignmentService _assignmentService;
     private readonly IEmployeeService _employeeService;
-    private readonly IAssetRequestService _assetRequestService;
     private readonly IDepartmentService _departmentService;
+    private readonly ISoftwareAssetAssignmentService _swaAssignmentService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
 
@@ -28,39 +28,21 @@ public class AssetController : Controller
         IAssetAssignmentService assetAssignmentService,
         IEmployeeService employeeService,
         IDepartmentService departmentService,
-        IAssetRequestService assetRequestService,
+        ISoftwareAssetAssignmentService _softwareAssetAssignmentService,
         UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
         _assetService = assetService;
         _assignmentService = assetAssignmentService;
-        _assetRequestService = assetRequestService;
         _employeeService = employeeService;
         _departmentService = departmentService;
+        _swaAssignmentService = _softwareAssetAssignmentService;
         _userManager = userManager;
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var user = await _userManager.GetUserAsync(HttpContext.User);
-        var roles = await _userManager.GetRolesAsync(user);
-
-        if (roles.Contains("Admin") ||
-            roles.Contains("AssetManager") ||
-            roles.Contains("SoftwareLicenseManager"))
-        {
-            var requests = _assetRequestService.GetOpenAssetRequests();
-            if (!requests.Ok)
-            {
-                _logger.Error("Error retrieving asset requests: " + requests.Message + requests.Exception);
-                TempData["msg"] = TempDataExtension.Serialize(
-                    new TempDataMsg(false, requests.Message));
-                return View();
-            }
-            ViewData["Requests"] = requests.Data.Count;
-        }
-        
         return View();
     }
 
@@ -76,8 +58,8 @@ public class AssetController : Controller
                             manufacturersRes.Message ?? 
                             locationsRes.Message ?? 
                             statusesRes.Message ?? "Unknown Error";
-            
-            _logger.Error("Error retrieving data: " + errMsg);
+            var ex = assetTypesRes.Exception ?? manufacturersRes.Exception ?? locationsRes.Exception ?? statusesRes.Exception;
+            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Index", "Home");
@@ -120,8 +102,8 @@ public class AssetController : Controller
                             manufacturersRes.Message ?? 
                             locationsRes.Message ?? 
                             statusesRes.Message ?? "Unknown Error";
-            
-            _logger.Error("Error retrieving data: " + errMsg);
+            var ex = assetTypesRes.Exception ?? manufacturersRes.Exception ?? locationsRes.Exception ?? statusesRes.Exception;
+            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Index", "Home");
@@ -141,7 +123,8 @@ public class AssetController : Controller
         if (!string.IsNullOrEmpty(model.Search))
         {
             assets = assets
-                .Where(a => a.SerialNumber.Contains(model.Search) || a.Model.ModelNumber.Contains(model.Search))
+                .Where(a => a.SerialNumber.ToLower().Contains(model.Search.ToLower()) || 
+                            a.Model.ModelNumber.ToLower().Contains(model.Search.ToLower()))
                 .ToList();
         }
 
@@ -188,22 +171,23 @@ public class AssetController : Controller
             return RedirectToAction("Index", "Home");
         }
         var assetsResult = _assignmentService.GetAssetAssignmentsByEmployee(user.EmployeeID, false);
+        var softwareAssetsResult = _swaAssignmentService.GetAssignmentsByEmployee(user.EmployeeID, false);
         var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
 
         if (!assetsResult.Ok)
         {
-            var errMsg = assetsResult.Message ?? employeeResult.Message;
-            var ex = assetsResult.Exception ?? employeeResult.Exception;
+            var errMsg = assetsResult.Message ?? softwareAssetsResult.Message ?? employeeResult.Message ?? "Unknown Error";
+            var ex = assetsResult.Exception ?? softwareAssetsResult.Exception ?? employeeResult.Exception;
             _logger.Error("Error retrieving data: " + errMsg + ex );
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index");
         }
         
         var model = new MyAssetsModel
         {
             EmployeeName = employeeResult.Data.LastName + ", " + employeeResult.Data.FirstName,
             Assets = assetsResult.Data,
-            SoftwareAssets = new List<SoftwareAssetAssignment>()
+            SoftwareAssets = softwareAssetsResult.Data,
         };
         return View(model);
     }
@@ -247,7 +231,11 @@ public class AssetController : Controller
                          manufacturersRes.Message ?? 
                          statusesRes.Message ?? 
                          departmentsRes.Message ?? "Unknown Error";
-            _logger.Error("Error retrieving data: " + errMsg);
+            
+            var ex  = assetsResult.Exception ?? assetTypesRes.Exception ?? 
+                manufacturersRes.Exception ?? statusesRes.Exception ?? departmentsRes.Exception;
+            
+            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("Index", "Asset");
         }
@@ -398,18 +386,17 @@ public class AssetController : Controller
         var result = _assetService.AddAsset(asset);
         if (!result.Ok)
         {
-            _logger.Error("Error adding asset: " + result.Exception);
+            _logger.Error("Error adding asset: " + result.Message + ": " + result.Exception);
             TempData["msg"] = TempDataExtension.Serialize(
-                new TempDataMsg(false, result.Message));
+                new TempDataMsg(false, "Error adding asset: " + result.Message));
             
-            RedirectToAction("Add", new { manufacturerId = formModel.ManufacturerId });
+            return RedirectToAction("Add", new { manufacturerId = formModel.ManufacturerId });
         }
         
         _logger.Information($"Asset with id {asset.AssetID} added successfully");
         TempData["msg"] = TempDataExtension.Serialize(
             new TempDataMsg(true, $"Asset with id {asset.AssetID} added successfully"));
-       
-        //TODO redirect to details instead
+        
         return RedirectToAction("Details", new { assetId = asset.AssetID });
     }
 
@@ -479,7 +466,7 @@ public class AssetController : Controller
         var assetResult = _assetService.GetAssetById(assetId);
         if (!assetResult.Ok)
         {
-            _logger.Error("Error retrieving asset: " + assetResult.Exception);
+            _logger.Error($"Error retrieving asset: {assetResult.Message} => {assetResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
             return RedirectToAction("Details", new { assetId });
         }
@@ -493,7 +480,7 @@ public class AssetController : Controller
         var deleteResult = _assetService.DeleteAsset(assetId);
         if (!deleteResult.Ok)
         {
-            _logger.Error("Error deleting asset: " + deleteResult.Exception);
+            _logger.Error($"Error deleting asset: {deleteResult.Message}  => {deleteResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, deleteResult.Message));
             return RedirectToAction("Details", new { assetId });
         }
@@ -510,7 +497,7 @@ public class AssetController : Controller
         
         if (!assetResult.Ok)
         {
-            _logger.Error("Error retrieving data: " + assetResult.Exception);
+            _logger.Error("Error retrieving data: " + assetResult.Message + ": " + assetResult.Exception);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
             return RedirectToAction("Index", "Asset");
         }

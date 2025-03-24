@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -30,27 +31,42 @@ public class SoftwareAssetAssignmentRepository : ISoftwareAssetAssignmentReposit
 
     public List<SoftwareAssetAssignment> GetAssignmentsBySoftwareAssetId(int softwareAssetId, bool includeReturned)
     {
-        if (includeReturned)
-        {
-            return _context.SoftwareAssetAssignment
-                .Where(s => s.SoftwareAssetID == softwareAssetId)
-                .ToList();
-        }
         return _context.SoftwareAssetAssignment
-            .Where(s => s.SoftwareAssetID == softwareAssetId && s.ReturnDate == null)
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(sa => sa.Manufacturer)
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(sa => sa.LicenseType)
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(sa => sa.AssetStatus)
+            .Include(s => s.Asset)
+            .Include(s => s.Employee)
+            .Where(s => (includeReturned || s.ReturnDate == null) && s.SoftwareAssetID == softwareAssetId)
             .ToList();
     }
 
     public List<SoftwareAssetAssignment> GetAssignmentsByEmployeeId(int employeeId, bool includeReturned)
     {
-        if (includeReturned)
-        {
-            return _context.SoftwareAssetAssignment
-                .Where(s => s.EmployeeID == employeeId)
-                .ToList();
-        }
         return _context.SoftwareAssetAssignment
-            .Where(s => s.EmployeeID == employeeId && s.ReturnDate == null)
+            .Include(s => s.SoftwareAsset)
+                .ThenInclude(sa => sa.LicenseType)
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(sa => sa.AssetStatus)
+            .Where(s => s.EmployeeID == employeeId && (includeReturned || s.ReturnDate == null))
+            .ToList();
+    }
+
+    public List<SoftwareAssetAssignment> GetAssignmentsByDepartmentId(int departmentId, bool includeReturned)
+    {
+        return  _context.SoftwareAssetAssignment
+            .Include(a => a.Employee)
+            .Include(a => a.Asset)
+            .Include(a => a.SoftwareAsset)
+                .ThenInclude(sa => sa.LicenseType)
+            .Include(a => a.SoftwareAsset)
+                .ThenInclude(sa => sa.AssetStatus)
+            .Include(a => a.SoftwareAsset)
+                .ThenInclude(sa => sa.Manufacturer)
+            .Where(a => a.Employee.DepartmentID == departmentId && (includeReturned || a.ReturnDate == null))
             .ToList();
     }
 

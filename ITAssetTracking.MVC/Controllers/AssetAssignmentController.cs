@@ -99,12 +99,10 @@ public class AssetAssignmentController : Controller
         var assignmentResult = _assignmentService.AddAssetAssignment(assetAssignment);
         if (!assignmentResult.Ok)
         {
-            _logger.Error("Error assigning asset: " + 
-                          assignmentResult.Message + 
-                          assignmentResult.Exception);
+            _logger.Error($"Error assigning asset: {assignmentResult.Message} => {assignmentResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false , assignmentResult.Message));
-            return View(model);
+            return RedirectToAction("AssignEmployee",  new { assetId = model.AssetID });
         }
         var msg = $"Assigned Asset with ID {model.AssetID} to Employee with ID {model.EmployeeID}";
         _logger.Information(msg);
@@ -163,7 +161,7 @@ public class AssetAssignmentController : Controller
         var returnResult = _assignmentService.Return(assetId);
         if (!returnResult.Ok)
         {
-            _logger.Error("Error returning asset: " + returnResult.Message + returnResult.Exception);
+            _logger.Error($"Error returning asset: {returnResult.Message} => {returnResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, returnResult.Message));
             return RedirectToAction("Details", "Asset", new { assetId = assetId });
         }

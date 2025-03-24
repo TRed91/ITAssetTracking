@@ -27,10 +27,13 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Asset" asp-action="Index">Assets</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="SoftwareAsset" asp-action="Index">Licenses</a>
+                    </li>
                     @if (requests != null)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area=""><span class="text-danger">@requests</span> Requests</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AssetRequest" asp-action="Index"><span class="text-danger">@requests</span> Requests</a>
                         </li>
                     }
                     <li class="nav-item">

@@ -36,6 +36,7 @@ public class ServiceFactory
     {
         return new AssetRequestService(
             _appConfig.GetAssetRequestRepository(), 
+            _appConfig.GetAssetAssignmentRepository(),
             _appConfig.GetAssetRepository(), 
             _appConfig.GetEmployeeRepository(), 
             _appConfig.GetDepartmentRepository());
@@ -64,7 +65,9 @@ public class ServiceFactory
 
     public ISoftwareAssetService GetSoftwareAssetService()
     {
-        return new SoftwareAssetService(_appConfig.GetSoftwareAssetRepository());
+        return new SoftwareAssetService(
+            _appConfig.GetSoftwareAssetRepository(),
+            _appConfig.GetAssetRepository());
     }
 
     public ISoftwareRequestService GetSoftwareRequestService()

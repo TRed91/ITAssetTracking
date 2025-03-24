@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -25,6 +26,12 @@ public class AssetRequestRepository : IAssetRequestRepository
     public List<AssetRequest> GetOpenAssetRequests()
     {
         return _context.AssetRequest
+            .Include(a => a.Asset)
+                .ThenInclude(a => a.Model)
+            .Include(a => a.Asset)
+                .ThenInclude(a => a.AssetType)
+            .Include(a => a.Department)
+            .Include(a => a.Employee)
             .Where(a => a.RequestResultID == null)
             .ToList();
     }
@@ -111,5 +118,10 @@ public class AssetRequestRepository : IAssetRequestRepository
             _context.AssetRequest.Remove(request);
             _context.SaveChanges();
         }
+    }
+
+    public RequestResult? GetAssetRequestResult(string resultName)
+    {
+        return _context.RequestResult.FirstOrDefault(r => r.RequestResultName == resultName);
     }
 }

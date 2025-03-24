@@ -6,7 +6,8 @@ namespace ITAssetTracking.MVC.Models;
 public class AssignEmployeeModel
 {
     public long AssetID { get; set; }
-    public string SerialNumber { get; set; }
+    public string? SerialNumber { get; set; }
+    public string? LicenseTypeName { get; set; }
     public int EmployeeID { get; set; }
     
     public char? StartsWith { get; set; } = 'A';

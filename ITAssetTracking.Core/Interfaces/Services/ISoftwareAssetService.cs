@@ -7,7 +7,7 @@ public interface ISoftwareAssetService
 {
     Result<SoftwareAsset> GetSoftwareAsset(int softwareAssetId);
     
-    Result<List<SoftwareAsset>> GetSoftwareAssets(bool includeExpired = true);
+    Result<List<SoftwareAsset>> GetSoftwareAssets(int licenseTypeId, int assetStatusId, int manufacturerId, bool includeExpired = true);
     Result<List<SoftwareAsset>> GetSoftwareAssetsByManufacturer(int manufacturerId, bool includeExpired = true);
     Result<List<SoftwareAsset>> GetSoftwareAssetsByType(int licenseTypeId, bool includeExpired = true);
     Result<List<SoftwareAsset>> GetSoftwareAssetsByStatus(int statusId);
@@ -18,4 +18,6 @@ public interface ISoftwareAssetService
     
     Result<List<LicenseType>> GetLicenseTypes();
     Result<List<LicenseType>> GetLicenseTypesByManufacturer(int manufacturerId);
+    Result<LicenseType> GetLicenseTypeById(int licenseTypeId);
+    Result<List<Manufacturer>> GetLicenseTypesByManufacturers();
 }

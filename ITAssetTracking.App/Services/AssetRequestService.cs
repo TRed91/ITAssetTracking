@@ -1,4 +1,5 @@
 ﻿using ITAssetTracking.Core.Entities;
+using ITAssetTracking.Core.Enums;
 using ITAssetTracking.Core.Interfaces.Repositories;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Core.Utility;
@@ -8,17 +9,20 @@ namespace ITAssetTracking.App.Services;
 public class AssetRequestService : IAssetRequestService
 {
     private readonly IAssetRequestRepository _assetRequestRepo;
+    private readonly IAssetAssignmentRepository _assetAssignmentRepo;
     private readonly IAssetRepository _assetRepo;
     private readonly IEmployeeRepository _employeeRepo;
     private readonly IDepartmentRepository _departmentRepo;
 
     public AssetRequestService(
         IAssetRequestRepository assetRequestRepository, 
+        IAssetAssignmentRepository assetAssignmentRepository,
         IAssetRepository assetRepository, 
         IEmployeeRepository employeeRepository, 
         IDepartmentRepository departmentRepository)
     {
         _assetRequestRepo = assetRequestRepository;
+        _assetAssignmentRepo = assetAssignmentRepository;
         _assetRepo = assetRepository;
         _employeeRepo = employeeRepository;
         _departmentRepo = departmentRepository;
@@ -65,6 +69,68 @@ public class AssetRequestService : IAssetRequestService
         catch (Exception ex)
         {
             return ResultFactory.Fail<List<AssetType>>(ex.Message, ex);
+        }
+    }
+
+    public Result ResolveRequest(int assetRequestId, RequestResultEnum requestResult, string? note)
+    {
+        try
+        {
+            var request = _assetRequestRepo.GetAssetRequestById(assetRequestId);
+            if (request == null)
+            {
+                return ResultFactory.Fail<AssetRequest>("Asset Request Not Found");
+            }
+
+            var result = new RequestResult();
+            switch (requestResult)
+            {
+                case RequestResultEnum.Confirmed: 
+                    var assignment = new AssetAssignment
+                    {
+                        AssetID = request.AssetID,
+                        EmployeeID = request.EmployeeID,
+                        DepartmentID = request.DepartmentID,
+                        AssignmentDate = DateTime.Now,
+                    };
+                    
+                    var currentAssignments = _assetAssignmentRepo.GetAssetAssignmentsByAssetId(request.AssetID, false);
+                    if (currentAssignments.Count > 0)
+                    {
+                        currentAssignments[0].ReturnDate = DateTime.Now;
+                        _assetAssignmentRepo.UpdateAssetAssignment(currentAssignments[0]);
+                    }
+            
+                    _assetAssignmentRepo.AddAssetAssignment(assignment);
+                    
+                    var asset = _assetRepo.GetAssetById(request.AssetID);
+                    var assetStatus = _assetRepo.GetAssetStatusByName("In Use");
+                    
+                    asset.AssetStatusID = assetStatus.AssetStatusID;
+                    _assetRepo.UpdateAsset(asset);
+
+                    result = _assetRequestRepo.GetAssetRequestResult("Confirmed");
+                    break;
+                
+                case RequestResultEnum.Denied:
+                    result = _assetRequestRepo.GetAssetRequestResult("Denied");
+                    break;
+                
+                case RequestResultEnum.Incompatible:
+                    result = _assetRequestRepo.GetAssetRequestResult("Incompatible");
+                    break;
+            }
+            
+            request.RequestResultID = result.RequestResultID;
+            request.RequestNote = note;
+                    
+            _assetRequestRepo.UpdateAssetRequest(request);
+            
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<AssetRequest>(ex.Message, ex);
         }
     }
 

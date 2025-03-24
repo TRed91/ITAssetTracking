@@ -1,4 +1,5 @@
 ﻿using ITAssetTracking.Core.Entities;
+using ITAssetTracking.Core.Enums;
 using ITAssetTracking.Core.Utility;
 
 namespace ITAssetTracking.Core.Interfaces.Services;
@@ -19,4 +20,6 @@ public interface IAssetRequestService
     Result UpdateAssetRequest(AssetRequest assetRequest);
     Result DeleteAssetRequest(int assetRequestId);
     Result<List<AssetType>> GetAvailableAssets();
+
+    Result ResolveRequest(int assetRequestId, RequestResultEnum requestResult, string? note);
 }

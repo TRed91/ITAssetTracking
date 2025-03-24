@@ -7,7 +7,7 @@ public interface IAssetService
 {
     Result<Asset> GetAssetById(long assetId);
     
-    Result<List<Asset>> GetAllAssets(int assetTypeId = 0, int locationId = 0, int assetStatusId = 0, int manufacturerId = 0);
+    Result<List<Asset>> GetAllAssets(int assetTypeId, int locationId, int assetStatusId, int manufacturerId);
     Result<List<Asset>> GetAssetsByType(int assetTypeId);
     Result<List<Asset>> GetAssetsByLocation(int locationId);
     Result<List<Asset>> GetAssetsByModel(int modelId);

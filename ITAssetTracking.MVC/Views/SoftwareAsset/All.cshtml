@@ -1,0 +1,79 @@
+﻿@model SoftwareFilterModel
+
+@{
+    ViewData["Title"] = "All Software Assets";
+}
+
+<div class="d-flex flex-column flex-md-row">
+    <form asp-controller="SoftwareAsset" asp-action="All" method="get" class="card p-3 col-md-3">
+        <div class="mb-5">
+            <label asp-for="Order" class="form-label"></label>
+            <select asp-for="Order" asp-items="@Model.OrderOptions" class="form-select"></select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="LicenseTypeId" class="form-label"></label>
+            <select asp-for="LicenseTypeId" asp-items="@Model.LicenseTypes" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ManufacturerId" class="form-label"></label>
+            <select asp-for="ManufacturerId" asp-items="@Model.Manufacturers" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="AssetStatusId" class="form-label"></label>
+            <select asp-for="AssetStatusId" asp-items="@Model.AssetStatuses" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-5 d-flex gap-1 align-items-center">
+            <input asp-for="IncludeExpired" class="form-check form-check-inline">
+            <label asp-for="IncludeExpired">Include Expired</label>
+        </div>
+        <div class="mb-5">
+            <input asp-for="Search" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+    <div class="flex-grow-1">
+        <div class="d-flex justify-content-between align-items-center m-2">
+            <div class="d-flex align-items-center gap-3">
+                <a asp-controller="Asset" asp-action="Filter" class="p2 text-decoration-none text-black">Hardware Assets</a>
+                <a asp-controller="SoftwareAsset" asp-action="Filter" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">Software Assets</a>
+            </div>
+            <a asp-action="SoftwareSelect" class="btn btn-primary">Add</a>
+        </div>
+        @if (Model.Assets.Count == 0)
+        {
+            <h3 class="display-6 m-3">No Results</h3>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                <tr>
+                    <th>License Type</th>
+                    <th>Manufacturer</th>
+                    <th>Status</th>
+                    <th>Expiration Date</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var asset in Model.Assets)
+                {
+                    <tr>
+                        <td>@asset.LicenseType.LicenseTypeName</td>
+                        <td>@asset.Manufacturer.ManufacturerName</td>
+                        <td>@asset.AssetStatus.AssetStatusName</td>
+                        <td>@asset.ExpirationDate.Date.ToShortDateString()</td>
+                        <td><a asp-action="Details" asp-route-assetId="@asset.SoftwareAssetID">Details</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

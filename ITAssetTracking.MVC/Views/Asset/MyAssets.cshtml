@@ -66,7 +66,10 @@ else
                 <td>@s.SoftwareAsset.LicenseType.LicenseTypeName</td>
                 <td>@s.SoftwareAsset.Version</td>
                 <td>@s.SoftwareAsset.AssetStatus.AssetStatusName</td>
-                <td>Details</td>
+                <td><a asp-controller="SoftwareAsset" asp-action="Details" asp-route-assetId="@s.SoftwareAsset.SoftwareAssetID"
+                       class="link-primary text-decoration-none">
+                        Details
+                    </a></td>
             </tr>
         }
         </tbody>

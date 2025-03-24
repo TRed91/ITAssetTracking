@@ -50,6 +50,11 @@ public class MockSoftwareAssignmentRepo : ISoftwareAssetAssignmentRepository
             .ToList();
     }
 
+    public List<SoftwareAssetAssignment> GetAssignmentsByDepartmentId(int departmentId, bool includeReturned)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<SoftwareAssetAssignment> GetAssignmentByAssetId(long assetId, bool includeReturned)
     {
         if (includeReturned)

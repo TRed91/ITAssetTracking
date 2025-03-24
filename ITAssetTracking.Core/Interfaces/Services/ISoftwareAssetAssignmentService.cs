@@ -11,10 +11,12 @@ public interface ISoftwareAssetAssignmentService
     Result<List<SoftwareAssetAssignment>> GetAssignmentsBySoftwareAssetId(
         int softwareAssetId, bool includeReturned = true);
     Result<List<SoftwareAssetAssignment>> GetAssignmentsByEmployee(int employeeId, bool includeReturned = true);
+    Result<List<SoftwareAssetAssignment>> GetAssignmentsByDepartment(int departmentId, bool includeReturned = true);
     Result<List<SoftwareAssetAssignment>> GetAssignmentByAsset(long assetId, bool includeReturned = true);
     Result<List<SoftwareAssetAssignment>> GetAssignmentInDateRange(DateTime startDate, DateTime endDate);
     
     Result AddSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
     Result UpdateSoftwareAssetAssignment(SoftwareAssetAssignment softwareAssetAssignment);
     Result DeleteSoftwareAssetAssignment(int softwareAssetAssignmentId);
+    Result Return(int softwareAssetId);
 }

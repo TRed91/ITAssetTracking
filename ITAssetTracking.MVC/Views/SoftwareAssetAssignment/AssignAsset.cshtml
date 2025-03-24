@@ -1,0 +1,89 @@
+﻿@model AssetFilterModel
+
+@{
+    ViewData["Title"] = "Assign Software Asset to Hardware Asset";
+}
+<h1 class="display-6">Choose an Asset @Model.SoftwareAssetId</h1>
+<div class="d-flex flex-column flex-md-row">
+    <form asp-controller="SoftwareAssetAssignment" asp-action="AssignAsset" method="get" class="card p-3 col-md-3">
+        @Html.HiddenFor(m => m.SoftwareAssetId)
+        <div class="mb-5">
+            <label asp-for="Order" class="form-label"></label>
+            <select asp-for="Order" asp-items="@Model.OrderOptions" class="form-select"></select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="AssetTypeId" class="form-label"></label>
+            <select asp-for="AssetTypeId" asp-items="@Model.AssetTypes" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ManufacturerId" class="form-label"></label>
+            <select asp-for="ManufacturerId" asp-items="@Model.Manufacturers" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="LocationId" class="form-label"></label>
+            <select asp-for="LocationId" asp-items="@Model.Locations" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="AssetStatusId" class="form-label"></label>
+            <select asp-for="AssetStatusId" asp-items="@Model.AssetStatuses" class="form-select">
+                <option value="0">- Any -</option>
+            </select>
+        </div>
+        <div class="mb-5">
+            <input asp-for="Search" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+    <div class="flex-grow-1">
+        @if (Model.Assets.Count == 0)
+        {
+            <h3 class="display-6 m-3">No Results</h3>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                <tr>
+                    <th>Serial Nr.</th>
+                    <th>Model</th>
+                    <th>Type</th>
+                    <th>Manufacturer</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var asset in Model.Assets)
+                {
+                    <tr>
+                        <td>@asset.SerialNumber</td>
+                        <td>@(asset.Model != null ? asset.Model.ModelNumber : "")</td>
+                        <td>@asset.AssetType.AssetTypeName</td>
+                        <td>@(asset.Manufacturer != null ? asset.Manufacturer.ManufacturerName : "")</td>
+                        <td>@asset.AssetStatus.AssetStatusName</td>
+                        <td>@asset.Location.LocationName</td>
+                        <td>
+                            <form asp-action="AssignAsset" asp-route-assetId="@asset.AssetID" method="post">
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.SoftwareAssetId)
+                                @Html.HiddenFor(m => m.LocationId)
+                                @Html.HiddenFor(m => m.AssetTypeId)
+                                @Html.HiddenFor(m => m.AssetStatusId)
+                                @Html.HiddenFor(m => m.ManufacturerId)
+                                <input asp-for="AssetId" value="@asset.AssetID" hidden>
+                                <button type="submit" class="btn btn-link p-0">Assign</button>
+                            </form></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

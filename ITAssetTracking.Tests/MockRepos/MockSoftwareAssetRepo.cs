@@ -16,7 +16,7 @@ public class MockSoftwareAssetRepo : ISoftwareAssetRepository
         return _db.SoftwareAssets.FirstOrDefault(a => a.SoftwareAssetID == softwareAssetId);
     }
 
-    public List<SoftwareAsset> GetSoftwareAssets(bool includeExpired)
+    public List<SoftwareAsset> GetSoftwareAssets(int licenseTypeId, int manufacturerId, int assetStatusId, bool includeExpired)
     {
         return includeExpired ? _db.SoftwareAssets : _db.SoftwareAssets
             .Where(a => a.ExpirationDate < DateTime.Now)
@@ -91,5 +91,15 @@ public class MockSoftwareAssetRepo : ISoftwareAssetRepository
         return _db.LicenseTypes
             .Where(a => a.ManufacturerID == manufacturerId)
             .ToList();
+    }
+
+    public LicenseType? GetLicenseTypeById(int licenseTypeId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Manufacturer> GetSoftwareManufacturers()
+    {
+        throw new NotImplementedException();
     }
 }

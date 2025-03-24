@@ -9,6 +9,7 @@ public interface ISoftwareAssetAssignmentRepository
     List<SoftwareAssetAssignment> GetSoftwareAssetAssignments(bool includeReturned);
     List<SoftwareAssetAssignment> GetAssignmentsBySoftwareAssetId(int softwareAssetId, bool includeReturned);
     List<SoftwareAssetAssignment> GetAssignmentsByEmployeeId(int employeeId, bool includeReturned);
+    List<SoftwareAssetAssignment> GetAssignmentsByDepartmentId(int departmentId, bool includeReturned);
     List<SoftwareAssetAssignment> GetAssignmentByAssetId(long assetId, bool includeReturned);
     List<SoftwareAssetAssignment> GetAssignmentsInDateRange(DateTime startDate, DateTime endDate);
     
