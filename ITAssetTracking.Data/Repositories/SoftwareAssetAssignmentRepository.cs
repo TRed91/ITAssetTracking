@@ -67,7 +67,9 @@ public class SoftwareAssetAssignmentRepository : ISoftwareAssetAssignmentReposit
                 .ThenInclude(sa => sa.AssetStatus)
             .Include(a => a.SoftwareAsset)
                 .ThenInclude(sa => sa.Manufacturer)
-            .Where(a => a.Employee.DepartmentID == departmentId && (includeReturned || a.ReturnDate == null))
+            .Where(a => (a.Employee.DepartmentID == departmentId ||
+                        a.Asset.AssetAssignments.Any(aa => aa.ReturnDate == null && aa.DepartmentID == departmentId)) && 
+                        (includeReturned || a.ReturnDate == null))
             .ToList();
     }
 
