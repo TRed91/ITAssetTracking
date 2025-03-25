@@ -1,0 +1,53 @@
+@model AvailableLicensesModel
+
+@{
+    ViewData["Title"] = "Available Assets";
+}
+
+<form asp-action="AvailableLicenses" 
+      method="get"
+      class="d-flex gap-3 gap-md-5 p-3">
+    <div class="d-flex gap-3">
+        <label asp-for="SelectedLicenseTypeId" class="form-label">Type</label>
+        <select asp-for="SelectedLicenseTypeId" asp-items="@Model.LicenseTypesSelectList" class="form-select">
+            <option value="0">Any</option>
+        </select>
+    </div>
+    <input type="text" name="departmentId" value="@Model.RequestingDepartmentId" hidden>
+    <button type="submit" class="btn btn-primary">Apply</button>
+</form>
+@if (Model.AvailableLicenses.Count == 0)
+{
+    <p class="lead">No available software assets</p>
+}
+else
+{
+    foreach (var type in Model.AvailableLicenses)
+    {
+        <table class="table table-bordered">
+            <thead class="table-primary">
+            <tr>
+                <th colspan="4">@type.LicenseTypeName</th>
+            </tr>
+            <tr>
+                <th class="col-3">Version</th>
+                <th class="col-2">Expiration Date</th>
+                <th class="col-3">N. Licenses</th>
+                <th class="col-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var asset in type.SoftwareAssets)
+            {
+                <tr>
+                    <td>@asset.Version</td>
+                    <td>@asset.ExpirationDate.Date.ToShortDateString()</td>
+                    <td>@asset.NumberOfLicenses</td>
+                    <td><a asp-action="RequestLicense" asp-route-departmentId="@Model.RequestingDepartmentId"
+                           asp-route-softwareAssetId="@asset.SoftwareAssetID">Request</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }   
+}

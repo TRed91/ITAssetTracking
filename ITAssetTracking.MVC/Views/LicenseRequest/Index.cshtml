@@ -1,14 +1,14 @@
-﻿@model RequestsIndexModel
+@model SwRequestsIndexModel
 
 @{
     ViewData["Title"] = "Open Requests";
 }
 <h1 class="display-6">Open Requests</h1>
 <div class="d-flex align-items-center gap-3">
-    <a asp-controller="AssetRequest" asp-action="Index" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">
+    <a asp-controller="AssetRequest" asp-action="Index" class="p2 text-decoration-none text-black">
         (<span>@Model.AssetRequestsCount</span>) Hardware Assets
     </a>
-    <a asp-controller="LicenseRequest" asp-action="Index" class="p2 text-decoration-none text-black">
+    <a asp-controller="LicenseRequest" asp-action="Index" class="bg-primary-subtle pt-2 pb-2 ps-4 pe-4 text-decoration-none text-black">
         (<span>@Model.SoftwareAssetRequestsCount</span>) Software Assets
     </a>
 </div>
@@ -21,10 +21,9 @@ else
     <table class="table table-bordered table-striped">
         <thead class="table-primary">
         <tr>
-            <th>Model</th>
             <th>Type</th>
-            <th>Department</th>
             <th>Employee</th>
+            <th>Asset</th>
             <th>Request Date</th>
             <th></th>
             <th></th>
@@ -38,24 +37,29 @@ else
             {
                 employeeName = r.Employee.LastName + ", " + r.Employee.FirstName;
             }
+
+            string assetNumber = "";
+            if (r.AssetID != null)
+            {
+                assetNumber = r.Asset.Model.ModelNumber;
+            }
             <tr>
-                <td>@r.Asset.Model.ModelNumber</td>
-                <td>@r.Asset.AssetType.AssetTypeName</td>
-                <td>@r.Department.DepartmentName</td>
+                <td>@r.SoftwareAsset.LicenseType.LicenseTypeName</td>
                 <td>@employeeName</td>
+                <td>@assetNumber</td>
                 <td>@r.RequestDate.Date.ToShortDateString()</td>
                 <td>
-                    <a asp-controller="AssetRequest"
+                    <a asp-controller="LicenseRequest"
                        asp-action="Assign"
-                       asp-route-requestId="@r.AssetRequestID"
+                       asp-route-requestId="@r.SoftwareAssetRequestID"
                        class="text-decoration-none">
                         Assign
                     </a>
                 </td>
                 <td>
-                    <a asp-controller="AssetRequest"
+                    <a asp-controller="LicenseRequest"
                        asp-action="Deny"
-                       asp-route-requestId="@r.AssetRequestID"
+                       asp-route-requestId="@r.SoftwareAssetRequestID"
                        class="text-danger text-decoration-none">
                         Deny
                     </a>

@@ -1,39 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.MVC\\ITAssetTracking.MVC.csproj": {}
+    "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/ITAssetTracking.MVC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.App\\ITAssetTracking.App.csproj": {
+    "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.App/ITAssetTracking.App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.App\\ITAssetTracking.App.csproj",
+        "projectUniqueName": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.App/ITAssetTracking.App.csproj",
         "projectName": "ITAssetTracking.App",
-        "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.App\\ITAssetTracking.App.csproj",
-        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.App\\obj\\",
+        "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.App/ITAssetTracking.App.csproj",
+        "packagesPath": "/Users/thomasroth/.nuget/packages/",
+        "outputPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.App/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/thomasroth/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Data\\ITAssetTracking.Data.csproj": {
-                "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Data\\ITAssetTracking.Data.csproj"
+              "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Data/ITAssetTracking.Data.csproj": {
+                "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Data/ITAssetTracking.Data.csproj"
               }
             }
           }
@@ -46,7 +40,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -69,32 +63,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Core\\ITAssetTracking.Core.csproj": {
+    "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Core/ITAssetTracking.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Core\\ITAssetTracking.Core.csproj",
+        "projectUniqueName": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Core/ITAssetTracking.Core.csproj",
         "projectName": "ITAssetTracking.Core",
-        "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Core\\ITAssetTracking.Core.csproj",
-        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Core\\obj\\",
+        "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Core/ITAssetTracking.Core.csproj",
+        "packagesPath": "/Users/thomasroth/.nuget/packages/",
+        "outputPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Core/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/thomasroth/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -111,7 +99,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -134,40 +122,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Data\\ITAssetTracking.Data.csproj": {
+    "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Data/ITAssetTracking.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Data\\ITAssetTracking.Data.csproj",
+        "projectUniqueName": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Data/ITAssetTracking.Data.csproj",
         "projectName": "ITAssetTracking.Data",
-        "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Data\\ITAssetTracking.Data.csproj",
-        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Data\\obj\\",
+        "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Data/ITAssetTracking.Data.csproj",
+        "packagesPath": "/Users/thomasroth/.nuget/packages/",
+        "outputPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Data/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/thomasroth/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Core\\ITAssetTracking.Core.csproj": {
-                "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.Core\\ITAssetTracking.Core.csproj"
+              "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Core/ITAssetTracking.Core.csproj": {
+                "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.Core/ITAssetTracking.Core.csproj"
               }
             }
           }
@@ -180,7 +162,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -219,40 +201,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.MVC\\ITAssetTracking.MVC.csproj": {
+    "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/ITAssetTracking.MVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.MVC\\ITAssetTracking.MVC.csproj",
+        "projectUniqueName": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/ITAssetTracking.MVC.csproj",
         "projectName": "ITAssetTracking.MVC",
-        "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.MVC\\ITAssetTracking.MVC.csproj",
-        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.MVC\\obj\\",
+        "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/ITAssetTracking.MVC.csproj",
+        "packagesPath": "/Users/thomasroth/.nuget/packages/",
+        "outputPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/thomasroth/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.App\\ITAssetTracking.App.csproj": {
-                "projectPath": "C:\\Users\\thoma\\source\\repos\\CS400\\ITAssetTracking\\ITAssetTracking.App\\ITAssetTracking.App.csproj"
+              "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.App/ITAssetTracking.App.csproj": {
+                "projectPath": "/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.App/ITAssetTracking.App.csproj"
               }
             }
           }
@@ -265,7 +241,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -321,7 +297,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

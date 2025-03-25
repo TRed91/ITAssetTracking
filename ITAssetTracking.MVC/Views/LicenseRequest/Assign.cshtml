@@ -1,0 +1,59 @@
+@model SwAssetRequestModel
+
+@{
+    ViewData["Title"] = "Confirm Assignment";
+}
+
+<h1 class="display-5 bg-primary-subtle p-2">Confirm Assignment</h1>
+<p>License: @Model.LicenseTypeName<p>
+@if (Model.CurrentAssignment == null)
+{
+    <p class="bg-primary-subtle p-2">Assign To: </p>
+    if (Model.EmployeeId != null)
+    {
+        <p>Employee: @Model.EmployeeName</p> 
+    }
+    else
+    {
+        <p>Asset: @Model.ModelNumber</p> 
+    }
+}
+else
+{
+    <p class="bg-primary-subtle p-2">Currently Assigned To: </p>
+    if (Model.CurrentAssignment.EmployeeID != null)
+    {
+        <p>Employee: @Model.CurrentAssignment.Employee.LastName, @Model.CurrentAssignment.Employee.FirstName</p>
+    }
+    else
+    {
+        <p>Asset: @Model.CurrentAssignment.Asset.SerialNumber</p>
+        <p>Model: @Model.CurrentAssignment.Asset.Model.ModelNumber</p>
+    }
+    <p class="bg-primary-subtle p-2">Reassign To: </p>
+    if (Model.EmployeeId != null)
+    {
+        <p>Employee: @Model.EmployeeName</p> 
+    }
+    else
+    {
+        <p>Asset: @Model.ModelNumber</p> 
+    }
+}
+<form asp-controller="LicenseRequest" asp-action="Assign" method="post">
+    <input asp-for="SoftwareAssetRequestId" value="@Model.SoftwareAssetRequestId" hidden>
+    <input asp-for="SoftwareAssetId" value="@Model.SoftwareAssetId" hidden>
+    <input asp-for="AssetId" value="@Model.AssetId" hidden>
+    <input asp-for="EmployeeId" value="@Model.EmployeeId" hidden>
+    <input asp-for="LicenseTypeName" value="@Model.LicenseTypeName" hidden>
+    <input asp-for="SerialNumber" value="@Model.SerialNumber" hidden>
+    <input asp-for="ModelNumber" value="@Model.ModelNumber" hidden>
+    <input asp-for="AssetTypeName" value="@Model.AssetTypeName" hidden>
+    <input asp-for="EmployeeName" value="@Model.EmployeeName" hidden>
+    <div class="bg-primary-subtle p-2">Add Note: </div>
+    <textarea asp-for="Note" cols="50" rows="10" class="form-text"></textarea>
+    <div class="d-flex gap-5">
+        <button class="btn btn-primary" type="submit">Confirm</button>
+        <a asp-action="Index">Go Back</a>
+    </div>
+</form>

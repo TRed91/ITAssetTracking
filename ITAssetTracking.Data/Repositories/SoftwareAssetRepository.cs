@@ -130,4 +130,14 @@ public class SoftwareAssetRepository : ISoftwareAssetRepository
             .Where(m => m.LicenseTypes.Count > 0)
             .ToList();
     }
+
+    public List<SoftwareAsset> GetAvailableAssets()
+    {
+        return _context.SoftwareAsset
+            .Include(a => a.LicenseType)
+            .Include(a => a.Manufacturer)
+            .Where(a => a.SoftwareAssetAssignments
+                .All(sa => sa.ReturnDate != null))
+            .ToList();
+    }
 }

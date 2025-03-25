@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -15,6 +16,13 @@ public class SoftwareAssetRequestRepository : ISoftwareAssetRequestRepository
     public SoftwareAssetRequest? GetSoftwareAssetRequestById(int softwareAssetRequestId)
     {
         return _context.SoftwareAssetRequest
+            .Include(s => s.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(s => s.Asset)
+            .ThenInclude(a => a.AssetType)
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(sa => sa.LicenseType)
+            .Include(s => s.Employee)
             .FirstOrDefault(s => s.SoftwareAssetRequestID == softwareAssetRequestId);
     }
 
@@ -26,6 +34,11 @@ public class SoftwareAssetRequestRepository : ISoftwareAssetRequestRepository
     public List<SoftwareAssetRequest> GetOpenSoftwareAssetRequests()
     {
         return _context.SoftwareAssetRequest
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(sa => sa.LicenseType)
+            .Include(s => s.Employee)
+            .Include(s => s.Asset)
+            .ThenInclude(a => a.Model)
             .Where(s => s.RequestResultID == null)
             .ToList();
     }

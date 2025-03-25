@@ -11,3 +11,12 @@ public class AvailableAssetsModel
     public SelectList? AssetTypesSelectList { get; set; }
     public List<AssetType> AvailableAssets { get; set; } = new List<AssetType>();
 }
+
+public class AvailableLicensesModel
+{
+    public int? SelectedLicenseTypeId { get; set; }
+    
+    public int RequestingDepartmentId { get; set; }
+    public SelectList? LicenseTypesSelectList { get; set; }
+    public List<LicenseType> AvailableLicenses { get; set; } = new List<LicenseType>();
+}

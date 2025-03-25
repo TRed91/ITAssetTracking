@@ -102,4 +102,9 @@ public class MockSoftwareAssetRepo : ISoftwareAssetRepository
     {
         throw new NotImplementedException();
     }
+
+    public List<SoftwareAsset> GetAvailableAssets()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using ITAssetTracking.Core.Entities;
+using ITAssetTracking.Core.Enums;
 using ITAssetTracking.Core.Utility;
 
 namespace ITAssetTracking.Core.Interfaces.Services;
@@ -18,4 +19,8 @@ public interface ISoftwareRequestService
     Result AddSoftwareRequest(SoftwareAssetRequest softwareAssetRequest);
     Result UpdateSoftwareRequest(SoftwareAssetRequest softwareAssetRequest);
     Result DeleteSoftwareRequest(int softwareRequestId);
+    
+    Result<List<LicenseType>> GetAvailableAssets();
+
+    Result ResolveRequest(int softwareAssetRequestId, RequestResultEnum requestResult, string? note);
 }

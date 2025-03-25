@@ -48,3 +48,50 @@ public class AssetRequestModel
         };
     }
 }
+
+public class SwAssetRequestModel
+{
+    public int SoftwareAssetRequestId { get; set; }
+    public string? Note { get; set; }
+    public int SoftwareAssetId { get; set; }
+    public long? AssetId { get; set; }
+    public int? EmployeeId { get; set; }
+    public DateTime? RequestDate { get; set; }
+    
+    public string LicenseTypeName { get; set; }
+    public string? SerialNumber { get; set; }
+    public string? ModelNumber { get; set; }
+    public string? AssetTypeName { get; set; }
+    public string? EmployeeName { get; set; }
+
+    public SoftwareAssetAssignment? CurrentAssignment { get; set; }
+
+    public SwAssetRequestModel() { }
+
+    public SwAssetRequestModel(SoftwareAssetRequest entity)
+    {
+        SoftwareAssetRequestId = entity.SoftwareAssetRequestID;
+        SoftwareAssetId = entity.SoftwareAssetID;
+        Note = entity.RequestNote;
+        AssetId = entity.AssetID;
+        EmployeeId = entity.EmployeeID;
+        RequestDate = entity.RequestDate;
+        LicenseTypeName = entity.SoftwareAsset.LicenseType.LicenseTypeName;
+        SerialNumber = entity.AssetID != null ? entity.Asset.SerialNumber : null;
+        ModelNumber = entity.AssetID != null ? entity.Asset.Model.ModelNumber : null;
+        AssetTypeName = entity.AssetID != null ? entity.Asset.AssetType.AssetTypeName : null;
+        EmployeeName = entity.EmployeeID != null ? (entity.Employee.LastName + ", " + entity.Employee.FirstName) : null;
+    }
+
+    public SoftwareAssetRequest ToEntity()
+    {
+        return new SoftwareAssetRequest
+        {
+            SoftwareAssetRequestID = SoftwareAssetRequestId,
+            SoftwareAssetID = SoftwareAssetId,
+            RequestNote = Note,
+            AssetID = AssetId,
+            EmployeeID = EmployeeId,
+        };
+    }
+}

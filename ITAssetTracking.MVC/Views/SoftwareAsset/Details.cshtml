@@ -65,7 +65,7 @@
             <button class="btn btn-link text-black text-decoration-none p-0">Return Asset</button>
         </form>
     </a>
-    <a asp-controller="SoftwareAssetRequest" asp-action="RequestReassignment" asp-route-assetId="@Model.SoftwareAssetId" class="p-2 card text-decoration-none">Request Reassignment</a>
+    <a asp-controller="LicenseRequest" asp-action="RequestReassignment" asp-route-softwareAssetId="@Model.SoftwareAssetId" class="p-2 card text-decoration-none">Request Reassignment</a>
 </section>
 <section class="card p-4">
     <h2 class="fs-4">Assignment History</h2>

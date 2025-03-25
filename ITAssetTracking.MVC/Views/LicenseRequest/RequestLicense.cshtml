@@ -1,0 +1,68 @@
+@model SwAssetRequestAssignmentModel
+
+@{
+    ViewData["Title"] = "Request Software Asset";
+}
+
+<h6 class="display-6">Request License: @Model.LicenseTypeName</h6>
+<p class="fs-3 mb-5">For Department: @Model.DepartmentName</p>
+<h3 class="p-2 bg-primary text-white">Assign To Employee</h3>
+@if (Model.Employees.Count == 0)
+{
+    <p class="lead">No Employees found</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <tbody>
+        @foreach (var e in Model.Employees)
+        {
+            <tr>
+                <td>@e.LastName, @e.FirstName </td>
+                <td>
+                    <form asp-action="RequestLicense" method="post">
+                        <input asp-for="SoftwareAssetId" value="@Model.SoftwareAssetId" hidden>
+                        <input asp-for="DepartmentID" value="@Model.DepartmentID" hidden>
+                        <input asp-for="EmployeeId" value="@e.EmployeeID" hidden>
+                        <button class="btn btn-link text-decoration-none p-0" type="submit">Select</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+<h3 class="p-2 bg-primary text-white mt-3">Assign To Asset</h3>
+@if (Model.Assets.Count == 0)
+{
+    <p class="lead">No Assets found</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+        <tr>
+            <th>Model</th>
+            <th>Serial Number</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var a in Model.Assets)
+        {
+            <tr>
+                <td>@a.Model.ModelNumber</td>
+                <td>@a.SerialNumber</td>
+                <td>
+                    <form asp-action="RequestLicense" method="post">
+                        <input asp-for="SoftwareAssetId" value="@Model.SoftwareAssetId" hidden>
+                        <input asp-for="AssetId" value="@a.AssetID" hidden>
+                        <input asp-for="DepartmentID" value="@Model.DepartmentID" hidden>
+                        <button class="btn btn-link text-decoration-none p-0" type="submit">Select</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

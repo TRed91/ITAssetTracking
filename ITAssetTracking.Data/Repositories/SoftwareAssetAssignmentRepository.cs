@@ -39,6 +39,7 @@ public class SoftwareAssetAssignmentRepository : ISoftwareAssetAssignmentReposit
             .Include(s => s.SoftwareAsset)
             .ThenInclude(sa => sa.AssetStatus)
             .Include(s => s.Asset)
+            .ThenInclude(a => a.Model)
             .Include(s => s.Employee)
             .Where(s => (includeReturned || s.ReturnDate == null) && s.SoftwareAssetID == softwareAssetId)
             .ToList();

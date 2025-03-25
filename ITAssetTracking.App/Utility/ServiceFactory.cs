@@ -77,6 +77,7 @@ public class ServiceFactory
             _appConfig.GetSoftwareAssetRepository(),
             _appConfig.GetSoftwareAssetAssignmentRepository(),
             _appConfig.GetAssetRepository(),
+            _appConfig.GetAssetRequestRepository(),
             _appConfig.GetEmployeeRepository());
     }
 

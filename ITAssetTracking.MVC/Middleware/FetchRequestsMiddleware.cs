@@ -21,6 +21,7 @@ public class FetchRequestsMiddleware
     {
         var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
         var assetRequestService = context.RequestServices.GetRequiredService<IAssetRequestService>();
+        var softwareRequestService = context.RequestServices.GetRequiredService<ISoftwareRequestService>();
         var logger = context.RequestServices.GetRequiredService<Serilog.ILogger>();
         var user = await userManager.GetUserAsync(context.User);
         IList<string> roles = new List<string>();
@@ -33,12 +34,17 @@ public class FetchRequestsMiddleware
             roles.Contains("AssetManager") ||
             roles.Contains("SoftwareLicenseManager"))
         {
-            var requests = assetRequestService.GetOpenAssetRequests();
-            if (!requests.Ok)
+            var assetRequests = assetRequestService.GetOpenAssetRequests();
+            if (!assetRequests.Ok)
             {
-                logger.Error("Error retrieving asset requests: " + requests.Message + requests.Exception);
+                logger.Error($"Error retrieving asset requests: {assetRequests.Message} => {assetRequests.Exception}");
             }
-            context.Items.Add("Requests", requests.Data.Count);
+            var softwareRequests = softwareRequestService.GetOpenSoftwareRequests();
+            if (!softwareRequests.Ok)
+            {
+                logger.Error($"Error retrieving asset requests: {softwareRequests.Message} => {softwareRequests.Exception}");
+            }
+            context.Items.Add("Requests", assetRequests.Data.Count + softwareRequests.Data.Count);
         }
     
         await _next(context);

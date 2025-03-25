@@ -10,33 +10,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Controllers;
 
-public class AssetRequestController : Controller
+public class LicenseRequestController : Controller
 {
-    private readonly IDepartmentService _departmentService;
-    private readonly IEmployeeService _employeeService;
-    private readonly IAssetService _assetService;
-    private readonly IAssetRequestService _assetRequestService;
     private readonly ISoftwareRequestService _softwareRequestService;
+    private readonly IAssetRequestService _assetRequestService;
+    private readonly ISoftwareAssetService _softwareAssetService;
+    private readonly IAssetService _assetService;
+    private readonly IEmployeeService _employeeService;
     private readonly IAssetAssignmentService _assetAssignmentService;
+    private readonly IDepartmentService _departmentService;
+    private readonly ISoftwareAssetAssignmentService _swAssignmentService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
 
-    public AssetRequestController(
-        IDepartmentService departmentService,
-        IEmployeeService employeeService,
-        IAssetService assetService,
-        IAssetRequestService assetRequestService,
+    public LicenseRequestController(
         ISoftwareRequestService softwareRequestService,
+        IAssetRequestService assetRequestService,
+        ISoftwareAssetService softwareAssetService,
+        IAssetService assetService,
+        IEmployeeService employeeService,
         IAssetAssignmentService assetAssignmentService,
+        IDepartmentService departmentService,
+        ISoftwareAssetAssignmentService softwareAssetAssignmentService,
         UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
-        _departmentService = departmentService;
-        _employeeService = employeeService;
-        _assetService = assetService;
-        _assetRequestService = assetRequestService;
         _softwareRequestService = softwareRequestService;
+        _assetRequestService = assetRequestService;
+        _softwareAssetService = softwareAssetService;
+        _assetService = assetService;
+        _employeeService = employeeService;
         _assetAssignmentService = assetAssignmentService;
+        _departmentService = departmentService;
+        _swAssignmentService = softwareAssetAssignmentService;
         _userManager = userManager;
         _logger = logger;
     }
@@ -54,22 +60,22 @@ public class AssetRequestController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        var model = new RequestsIndexModel
+        var model = new SwRequestsIndexModel
         {
-            Requests = requestsResult.Data,
+            Requests = swRequestsResult.Data,
             AssetRequestsCount = requestsResult.Data.Count,
             SoftwareAssetRequestsCount = swRequestsResult.Data.Count,
         };
         
         return View(model);
     }
-
+    
     [HttpGet]
     public IActionResult Assign(int requestId)
     {
-        var requestResult = _assetRequestService.GetAssetRequestById(requestId);
-        var openAssignmentsResult = _assetAssignmentService
-            .GetAssetAssignmentsByAsset(requestResult.Data.AssetID, false);
+        var requestResult = _softwareRequestService.GetSoftwareRequestById(requestId);
+        var openAssignmentsResult = _swAssignmentService
+            .GetAssignmentsBySoftwareAssetId(requestResult.Data.SoftwareAssetID, false);
         if (!requestResult.Ok || !openAssignmentsResult.Ok)
         {
             var errMsg = requestResult.Message ?? openAssignmentsResult.Message ?? "Unknown Error";
@@ -79,7 +85,7 @@ public class AssetRequestController : Controller
             return RedirectToAction("Index");
         }
 
-        var model = new AssetRequestModel(requestResult.Data);
+        var model = new SwAssetRequestModel(requestResult.Data);
         
         if (openAssignmentsResult.Data.Count > 0)
         {
@@ -91,27 +97,27 @@ public class AssetRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Assign(AssetRequestModel model)
+    public IActionResult Assign(SwAssetRequestModel model)
     {
         if (!ModelState.IsValid)
         {
-            var msg = "Invalid model state while confirming asset assignment request";
+            var msg = "Invalid model state while confirming software asset assignment request";
             _logger.Warning(msg);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, msg));
-            return RedirectToAction("Assign", new { requestId = model.AssetRequestId });
+            return RedirectToAction("Assign", new { requestId = model.SoftwareAssetRequestId });
         }
         
-        var result = _assetRequestService.ResolveRequest(model.AssetRequestId, RequestResultEnum.Confirmed, model.Note);
+        var result = _softwareRequestService.ResolveRequest(model.SoftwareAssetRequestId, RequestResultEnum.Confirmed, model.Note);
         if (!result.Ok)
         {
-            _logger.Error($"Failed to add asset assignment: {result.Message} => {result.Exception}");
+            _logger.Error($"Failed to add software asset assignment: {result.Message} => {result.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
-            return RedirectToAction("Assign", new { requestId = model.AssetRequestId });
+            return RedirectToAction("Assign", new { requestId = model.SoftwareAssetRequestId });
         }
         
-        var successMsg =  $"Asset with Id {model.AssetId} assigned to {(model.EmployeeId != null 
+        var successMsg =  $"Software Asset with Id {model.SoftwareAssetId} assigned to {(model.EmployeeId != null 
             ? $"Employee with Id {model.EmployeeId}" 
-            : $"Department with Id {model.DepartmentId}")}";
+            : $"Asset with Id {model.AssetId}")}";
         _logger.Information(successMsg);
         TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
         return RedirectToAction("Index");
@@ -120,7 +126,7 @@ public class AssetRequestController : Controller
     [HttpGet]
     public IActionResult Deny(int requestId)
     {
-        var requestResult = _assetRequestService.GetAssetRequestById(requestId);
+        var requestResult = _softwareRequestService.GetSoftwareRequestById(requestId);
         if (!requestResult.Ok)
         {
             _logger.Error($"Failed to get asset request with id: {requestId}:  {requestResult.Message} => {requestResult.Exception}");
@@ -128,42 +134,42 @@ public class AssetRequestController : Controller
             return RedirectToAction("Index");
         }
 
-        var model = new AssetRequestModel(requestResult.Data);
+        var model = new SwAssetRequestModel(requestResult.Data);
         
         return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Deny(AssetRequestModel model)
+    public IActionResult Deny(SwAssetRequestModel model)
     {
         if (!ModelState.IsValid)
         {
-            var msg = "Invalid model state while confirming asset assignment request";
+            var msg = "Invalid model state while denying software asset assignment request";
             _logger.Warning(msg);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, msg));
-            return RedirectToAction("Deny", new { requestId = model.AssetRequestId });
+            return RedirectToAction("Deny", new { requestId = model.SoftwareAssetRequestId });
         }
         
-        var result = _assetRequestService.ResolveRequest(model.AssetRequestId, RequestResultEnum.Denied, model.Note);
+        var result = _softwareRequestService.ResolveRequest(model.SoftwareAssetRequestId, RequestResultEnum.Denied, model.Note);
         if (!result.Ok)
         {
             _logger.Error($"Failed to deny request: {result.Message} => {result.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
-            return RedirectToAction("Deny", new { requestId = model.AssetRequestId });
+            return RedirectToAction("Deny", new { requestId = model.SoftwareAssetRequestId });
         }
         
-        var successMsg =  $"Assignment for Asset with Id {model.AssetId} to {(model.EmployeeId != null 
+        var successMsg =  $"Assignment for Software Asset with Id {model.SoftwareAssetId} to {(model.EmployeeId != null 
             ? $"Employee with Id {model.EmployeeId}" 
-            : $"Department with Id {model.DepartmentId}")} was denied";
+            : $"Asset with Id {model.AssetId}")} was denied";
         _logger.Information(successMsg);
         TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
         return RedirectToAction("Index");
     }
-
-    public IActionResult AvailableAssets(int departmentId, AvailableAssetsModel model)
+    
+    public IActionResult AvailableLicenses(int departmentId, AvailableLicensesModel model)
     {
-        var assetsResult = _assetRequestService.GetAvailableAssets();
+        var assetsResult = _softwareRequestService.GetAvailableAssets();
         if (!assetsResult.Ok)
         {
             _logger.Error($"Failed to get available assets: {assetsResult.Message} => {assetsResult.Exception}");
@@ -172,76 +178,79 @@ public class AssetRequestController : Controller
             return RedirectToAction("Index", "Asset");
         }
 
-        var assetTypes = assetsResult.Data;
-        model.AssetTypesSelectList = new SelectList(assetTypes, "AssetTypeID", "AssetTypeName");
+        var licenseTypes = assetsResult.Data;
+        model.LicenseTypesSelectList = new SelectList(licenseTypes, "LicenseTypeID", "LicenseTypeName");
 
-        if (model.SelectedAssetTypeId != null && model.SelectedAssetTypeId > 0)
+        if (model.SelectedLicenseTypeId != null && model.SelectedLicenseTypeId > 0)
         {
-            model.AvailableAssets = assetTypes
-                .Where(a => a.AssetTypeID == model.SelectedAssetTypeId)
+            model.AvailableLicenses = licenseTypes
+                .Where(a => a.LicenseTypeID == model.SelectedLicenseTypeId)
                 .ToList();
         }
         else
         {
-            model.AvailableAssets = assetTypes;
+            model.AvailableLicenses = licenseTypes;
         }
 
         model.RequestingDepartmentId = departmentId;
         
         return View(model);
     }
-
+    
     [HttpGet]
-    public IActionResult RequestAsset(int departmentId, long assetId, AssetRequestEmployeesModel employeesModel)
+    public IActionResult RequestLicense(int departmentId, int softwareAssetId, SwAssetRequestAssignmentModel assignmentModel)
     {
         var departmentResult = _departmentService.GetDepartmentById(departmentId);
-        var assetResult = _assetService.GetAssetById(assetId);
+        var softwareResult = _softwareAssetService.GetSoftwareAsset(softwareAssetId);
+        var assetsResult = _assetAssignmentService.GetAssetAssignmentsByDepartment(departmentId, false);
         
-        if (!departmentResult.Ok || !assetResult.Ok)
+        if (!departmentResult.Ok || !softwareResult.Ok || !assetsResult.Ok)
         {
-            var ex = departmentResult.Exception ?? assetResult.Exception;
+            var ex = departmentResult.Exception ?? softwareResult.Exception ?? assetsResult.Exception;
             string errMsg = "There was an error retrieving data: " + 
-                            (departmentResult.Message ?? assetResult.Message ?? "Unknown Error");
+                            (departmentResult.Message ?? softwareResult.Message ?? assetsResult.Message ?? "Unknown Error");
             _logger.Error($"Failed to get employees for department {departmentId}: {errMsg} => {ex}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
-            return RedirectToAction("AvailableAssets", new { departmentId });
+            return RedirectToAction("AvailableLicenses", new { departmentId });
         }
         
-        employeesModel.DepartmentID = departmentId;
-        employeesModel.DepartmentName = departmentResult.Data.DepartmentName;
-        employeesModel.AssetId = assetId;
-        employeesModel.SerialNumber = assetResult.Data.SerialNumber;
+        assignmentModel.DepartmentID = departmentId;
+        assignmentModel.DepartmentName = departmentResult.Data.DepartmentName;
+        assignmentModel.SoftwareAssetId = softwareAssetId;
+        assignmentModel.LicenseTypeName = softwareResult.Data.LicenseType.LicenseTypeName;
 
-        if (employeesModel.StartingLetter == null || !char.IsLetter((char)employeesModel.StartingLetter))
+        if (assignmentModel.StartingLetter == null || !char.IsLetter((char)assignmentModel.StartingLetter))
         {
-            employeesModel.Employees = departmentResult.Data.Employees;
+            assignmentModel.Employees = departmentResult.Data.Employees;
         }
         else
         {
-            employeesModel.Employees = departmentResult.Data.Employees
-                .Where(e => e.LastName.StartsWith((char)employeesModel.StartingLetter))
+            assignmentModel.Employees = departmentResult.Data.Employees
+                .Where(e => e.LastName.StartsWith((char)assignmentModel.StartingLetter))
                 .ToList();
         }
         
-        return View(employeesModel);
+        assignmentModel.Assets = assetsResult.Data.Select(a => a.Asset).ToList();
+        
+        return View(assignmentModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult RequestAsset(AssetRequestEmployeesModel employeesModel)
+    public IActionResult RequestLicense(SwAssetRequestAssignmentModel assignmentModel)
     {
-        var request = new AssetRequest
+        var request = new SoftwareAssetRequest
         {
-            AssetID = employeesModel.AssetId,
-            DepartmentID = (byte)employeesModel.DepartmentID,
-            EmployeeID = employeesModel.EmployeeId,
+            SoftwareAssetID = assignmentModel.SoftwareAssetId,
+            EmployeeID = assignmentModel.EmployeeId,
+            AssetID = assignmentModel.AssetId,
         };
-        var addRequestResult = _assetRequestService.AddAssetRequest(request);
+        var addRequestResult = _softwareRequestService.AddSoftwareRequest(request);
         if (!addRequestResult.Ok)
         {
             _logger.Error($"Failed to create asset request: {addRequestResult.Message} => {addRequestResult.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, addRequestResult.Message));
-            return RedirectToAction("AvailableAssets", new { departmentId = employeesModel.DepartmentID });
+            return RedirectToAction("AvailableLicenses", new { departmentId = assignmentModel.DepartmentID });
         }
 
         var msg = "Successfully created asset request";
@@ -249,9 +258,9 @@ public class AssetRequestController : Controller
         TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, msg));
         return RedirectToAction("DepartmentAssets", "Asset");
     }
-
+    
     [Authorize(Roles = "DepartmentManager")]
-    public async Task<IActionResult> RequestReassignment(long assetId)
+    public async Task<IActionResult> RequestReassignment(int softwareAssetId)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var employee = _employeeService.GetEmployeeById(user.EmployeeID);
@@ -259,9 +268,9 @@ public class AssetRequestController : Controller
         {
             _logger.Error($"Failed to get employee with id {user.EmployeeID}: {employee.Message} => {employee.Exception}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, employee.Message));
-            return RedirectToAction("Details", "Asset", new { assetId });
+            return RedirectToAction("Details", "SoftwareAsset", new { assetId = softwareAssetId });
         }
 
-        return RedirectToAction("RequestAsset", new { departmentId = employee.Data.DepartmentID, assetId });
+        return RedirectToAction("RequestLicense", new { departmentId = employee.Data.DepartmentID, softwareAssetId });
     }
 }

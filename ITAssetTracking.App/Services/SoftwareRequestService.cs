@@ -1,4 +1,5 @@
 ﻿using ITAssetTracking.Core.Entities;
+using ITAssetTracking.Core.Enums;
 using ITAssetTracking.Core.Interfaces.Repositories;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Core.Utility;
@@ -11,6 +12,7 @@ public class SoftwareRequestService : ISoftwareRequestService
     private readonly ISoftwareAssetRepository _softwareRepo;
     private readonly ISoftwareAssetAssignmentRepository _softwareAssignmentRepo;
     private readonly IAssetRepository _assetRepo;
+    private readonly IAssetRequestRepository _assetRequestRepo;
     private readonly IEmployeeRepository _employeeRepo;
 
     public SoftwareRequestService(
@@ -18,12 +20,14 @@ public class SoftwareRequestService : ISoftwareRequestService
         ISoftwareAssetRepository softwareAssetRepository,
         ISoftwareAssetAssignmentRepository softwareAssetAssignmentRepository,
         IAssetRepository assetRepository,
+        IAssetRequestRepository assetRequestRepository,
         IEmployeeRepository employeeRepository)
     {
         _sarRepo = softwareAssetRequestRepository;
         _softwareRepo = softwareAssetRepository;
         _softwareAssignmentRepo = softwareAssetAssignmentRepository;
         _assetRepo = assetRepository;
+        _assetRequestRepo = assetRequestRepository;
         _employeeRepo = employeeRepository;
     }
     public Result<SoftwareAssetRequest> GetSoftwareRequestById(int softwareRequestId)
@@ -151,14 +155,6 @@ public class SoftwareRequestService : ISoftwareRequestService
                 return ResultFactory.Fail("Software asset not found");
             }
 
-            //check if software is already assigned
-            var assignments = _softwareAssignmentRepo
-                .GetAssignmentsBySoftwareAssetId(softwareAssetRequest.SoftwareAssetID, false);
-            if (assignments.Count > 0)
-            {
-                return ResultFactory.Fail("Software asset already assigned");
-            }
-
             //check if employee exists
             if (softwareAssetRequest.EmployeeID != null)
             {
@@ -251,6 +247,87 @@ public class SoftwareRequestService : ISoftwareRequestService
         catch (Exception ex)
         {
             return ResultFactory.Fail(ex.Message, ex);
+        }
+    }
+
+    public Result<List<LicenseType>> GetAvailableAssets()
+    {
+        try
+        {
+            var assets = _softwareRepo.GetAvailableAssets();
+            
+            var types = assets
+                .Select(a => a.LicenseType)
+                .Distinct()
+                .ToList();
+            
+            return ResultFactory.Success(types);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<LicenseType>>(ex.Message, ex);
+        }
+    }
+
+    public Result ResolveRequest(int softwareAssetRequestId, RequestResultEnum requestResult, string? note)
+    {
+        try
+        {
+            var request = _sarRepo.GetSoftwareAssetRequestById(softwareAssetRequestId);
+            if (request == null)
+            {
+                return ResultFactory.Fail<AssetRequest>("Asset Request Not Found");
+            }
+
+            var result = new RequestResult();
+            switch (requestResult)
+            {
+                case RequestResultEnum.Confirmed: 
+                    var assignment = new SoftwareAssetAssignment
+                    {
+                        SoftwareAssetID = request.SoftwareAssetID,
+                        AssetID = request.AssetID,
+                        EmployeeID = request.EmployeeID,
+                        AssignmentDate = DateTime.Now,
+                    };
+                    
+                    var currentAssignments = _softwareAssignmentRepo.GetAssignmentsBySoftwareAssetId(request.SoftwareAssetID, false);
+                    if (currentAssignments.Count > 0)
+                    {
+                        currentAssignments[0].ReturnDate = DateTime.Now;
+                        _softwareAssignmentRepo.UpdateSoftwareAssetAssignment(currentAssignments[0]);
+                    }
+            
+                    _softwareAssignmentRepo.AddSoftwareAssetAssignment(assignment);
+                    
+                    var swAsset = _softwareRepo.GetSoftwareAsset(request.SoftwareAssetID);
+                    var assetStatus = _assetRepo.GetAssetStatusByName("In Use");
+                    
+                    swAsset.AssetStatusID = assetStatus.AssetStatusID;
+                    _softwareRepo.UpdateSoftwareAsset(swAsset);
+
+                    result = _assetRequestRepo.GetAssetRequestResult("Confirmed");
+                    break;
+                
+                case RequestResultEnum.Denied:
+                    result = _assetRequestRepo.GetAssetRequestResult("Denied");
+                    break;
+                
+                case RequestResultEnum.Incompatible:
+                    result = _assetRequestRepo.GetAssetRequestResult("Incompatible");
+                    break;
+            }
+            
+            request.RequestResultID = result.RequestResultID;
+            request.RequestNote = note;
+                    
+            _sarRepo.UpdateRequest(request);
+            
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<AssetRequest>(ex.Message, ex);
         }
     }
 }
