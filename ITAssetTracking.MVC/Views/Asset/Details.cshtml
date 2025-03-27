@@ -68,7 +68,7 @@
         </form>
     </a>
     <a asp-controller="AssetRequest" asp-action="RequestReassignment" asp-route-assetId="@Model.AssetId" class="p-2 card text-decoration-none">Request Reassignment</a>
-    <a asp-action="CreateTicket" class="p-2 card text-decoration-none">Support Ticket</a>
+    <a asp-controller="Ticket" asp-action="Add" asp-route-assetId="@Model.AssetId" class="p-2 card text-decoration-none">Support Ticket</a>
 </section>
 <section class="card p-4">
     <h2 class="fs-4">Assignment History</h2>
@@ -126,11 +126,16 @@
             <tbody>
             @foreach (var t in Model.SupportTickets)
             {
+                var employee = "";
+                if (t.AssignedToEmployeeID != null)
+                {
+                    employee = t.AssignedToEmployee.LastName + ", " + t.AssignedToEmployee.FirstName;
+                }
                 <tr>
                     <td>@t.TicketStatus.TicketStatusName</td>
                     <td>@t.TicketType.TicketTypeName</td>
                     <td>@t.TicketPriority.TicketPriorityName</td>
-                    <td>@t.AssignedToEmployee.LastName, @t.AssignedToEmployee.FirstName</td>
+                    <td>@employee</td>
                     <td>@t.DateReported.Date.ToShortDateString()</td>
                 </tr>
             }

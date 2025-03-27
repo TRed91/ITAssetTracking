@@ -1,5 +1,6 @@
 ﻿using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITAssetTracking.Data.Repositories;
 
@@ -14,17 +15,39 @@ public class TicketRepository : ITicketRepository
     
     public Ticket? GetTicketById(int ticketId)
     {
-        return _context.Ticket.FirstOrDefault(t => t.TicketID == ticketId);
+        return _context.Ticket
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.AssetType)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
+            .FirstOrDefault(t => t.TicketID == ticketId);
     }
 
-    public List<Ticket> GetTickets()
+    public List<Ticket> GetTickets(int page)
     {
-        return _context.Ticket.ToList();
+        return _context.Ticket
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
+            .OrderByDescending(t => t.DateReported)
+            .Skip((page - 1) * 20)
+            .Take(20)
+            .ToList();
     }
 
     public List<Ticket> GetUnassignedTickets()
     {
         return _context.Ticket
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
             .Where(t => t.AssignedToEmployeeID == null)
             .ToList();
     }
@@ -32,6 +55,11 @@ public class TicketRepository : ITicketRepository
     public List<Ticket> GetOpenTickets()
     {
         return _context.Ticket
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
             .Where(t => t.DateClosed == null)
             .ToList();
     }
@@ -39,60 +67,60 @@ public class TicketRepository : ITicketRepository
     public List<Ticket> GetTicketsInDateRange(DateTime startDate, DateTime endDate)
     {
         return _context.Ticket
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
             .Where(t => t.DateReported >= startDate && t.DateReported <= endDate)
             .ToList();
     }
 
     public List<Ticket> GetTicketsByStatus(int ticketStatusId, bool includeClosed)
     {
-        if (includeClosed)
-        {
-            return _context.Ticket
-                .Where(t => t.TicketStatusID == ticketStatusId)
-                .ToList();
-        }
         return _context.Ticket
-            .Where(t => t.TicketStatusID == ticketStatusId && t.DateClosed == null)
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
+            .Where(t => t.TicketStatusID == ticketStatusId && (includeClosed || t.DateClosed == null))
             .ToList();
     }
 
     public List<Ticket> GetTicketsByType(int ticketTypeId, bool includeClosed)
     {
-        if (includeClosed)
-        {
-            return _context.Ticket
-                .Where(t => t.TicketTypeID == ticketTypeId)
-                .ToList();
-        }
         return _context.Ticket
-            .Where(t => t.TicketTypeID == ticketTypeId && t.DateClosed == null)
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
+            .Where(t => t.TicketTypeID == ticketTypeId && (includeClosed || t.DateClosed == null))
             .ToList();
     }
 
     public List<Ticket> GetTicketsByPriority(int ticketPriorityId, bool includeClosed)
     {
-        if (includeClosed)
-        {
-            return _context.Ticket
-                .Where(t => t.TicketPriorityID == ticketPriorityId)
-                .ToList();
-        }
         return _context.Ticket
-            .Where(t => t.TicketPriorityID == ticketPriorityId && t.DateClosed == null)
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
+            .Where(t => t.TicketPriorityID == ticketPriorityId && (includeClosed || t.DateClosed == null))
             .ToList();
     }
 
     public List<Ticket> GetTicketsByAsset(long assetId, bool includeClosed)
     {
-        if (includeClosed)
-        {
-            return _context.Ticket
-                .Where(t => t.AssetID == assetId)
-                .ToList();
-        }
-
         return _context.Ticket
-            .Where(t => t.AssetID == assetId && t.DateClosed == null)
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Model)
+            .Include(t => t.TicketStatus)
+            .Include(t => t.TicketPriority)
+            .Include(t => t.TicketType)
+            .Where(t => t.AssetID == assetId && (includeClosed || t.DateClosed == null))
             .ToList();
     }
 

@@ -7,7 +7,7 @@ public interface ITicketService
 {
     Result<Ticket> GetTicket(int ticketId);
     
-    Result<List<Ticket>> GetTickets();
+    Result<List<Ticket>> GetTickets(int page);
     Result<List<Ticket>> GetUnassignedTickets();
     Result<List<Ticket>> GetOpenTickets();
     Result<List<Ticket>> GetTicketsInDateRange(DateTime startDate, DateTime endDate);

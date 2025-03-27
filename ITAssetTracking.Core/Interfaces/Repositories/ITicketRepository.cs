@@ -6,7 +6,7 @@ public interface ITicketRepository
 {
     Ticket? GetTicketById(int ticketId);
     
-    List<Ticket> GetTickets();
+    List<Ticket> GetTickets(int page);
     List<Ticket> GetUnassignedTickets();
     List<Ticket> GetOpenTickets();
     List<Ticket> GetTicketsInDateRange(DateTime startDate, DateTime endDate);

@@ -17,7 +17,7 @@ public class MockTicketRepo : ITicketRepository
         return _db.Tickets.FirstOrDefault(t => t.TicketID == ticketId);
     }
 
-    public List<Ticket> GetTickets()
+    public List<Ticket> GetTickets(int page)
     {
         return _db.Tickets;
     }

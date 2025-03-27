@@ -1,0 +1,78 @@
+@model TicketsIndexModel
+
+@{
+    ViewData["Title"] = "Tickets Index";
+}
+
+<div class="d-flex flex-column flex-md-row">
+    <form asp-action="Index" method="get" class="card p-3 col-md-3">
+        <div class="mb-4">
+            <label asp-for="Order" class="form-label"></label>
+            <select asp-for="Order" asp-items="@Model.OrderList" class="form-select"></select>
+        </div>
+        <div class="mb-2">
+            <label asp-for="TicketStatusId" class="form-label"></label>
+            <select asp-for="TicketStatusId" asp-items="@Model.TicketStatusList" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+        <div class="mb-2">
+            <label asp-for="TicketTypeId" class="form-label"></label>
+            <select asp-for="TicketTypeId" asp-items="@Model.TicketTypeList" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label asp-for="TicketPriorityId" class="form-label"></label>
+            <select asp-for="TicketPriorityId" asp-items="@Model.TicketPriorityList" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <input asp-for="OnlyUnassigned" class="form-check">
+            <label asp-for="OnlyUnassigned" class="form-label">Only Unassigned</label>
+        </div>
+        <div class="mb-4">
+            <input asp-for="Search" placeholder="Search" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+    <div class="flex-grow-1 ms-2">
+        <div class="d-flex justify-content-between">
+            <h1 class="display-6">Tickets Overview</h1>
+            <a asp-controller="Asset" asp-action="Filter"><button class="btn btn-primary">Add</button></a>
+        </div>
+        @if (Model.Tickets.Count < 1)
+        {
+            <p class="fs-3">No tickets found.</p>
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                <tr>
+                    <th>Asset</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Priority</th>
+                    <th>Reported</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var t in Model.Tickets)
+                {
+                    <tr class="@(t.AssignedToEmployeeID != null ? "" : "table-danger")">
+                        <td>@t.Asset.Model.ModelNumber</td>
+                        <td>@t.TicketStatus.TicketStatusName</td>
+                        <td>@t.TicketType.TicketTypeName</td>
+                        <td>@t.TicketPriority.TicketPriorityName</td>
+                        <td>@t.DateReported.Date.ToShortDateString()</td>
+                        <td>Details</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

@@ -26,6 +26,14 @@ public class AssetRepository : IAssetRepository
             .Include(a => a.Model)
             .Include(a => a.Manufacturer)
             .Include(a => a.Location)
+            .Include(a => a.Tickets)
+            .ThenInclude(t => t.AssignedToEmployee)
+            .Include(a => a.Tickets)
+            .ThenInclude(t => t.TicketPriority)
+            .Include(a => a.Tickets)
+            .ThenInclude(t => t.TicketStatus)
+            .Include(a => a.Tickets)
+            .ThenInclude(t => t.TicketType)
             .FirstOrDefault(a => a.AssetID == assetId);
     }
 

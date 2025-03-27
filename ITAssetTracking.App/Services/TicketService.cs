@@ -40,11 +40,11 @@ public class TicketService : ITicketService
         }
     }
 
-    public Result<List<Ticket>> GetTickets()
+    public Result<List<Ticket>> GetTickets(int page)
     {
         try
         {
-            var tickets = _ticketRepo.GetTickets();
+            var tickets = _ticketRepo.GetTickets(page);
             return ResultFactory.Success(tickets);
         }
         catch (Exception ex)
@@ -168,6 +168,11 @@ public class TicketService : ITicketService
             {
                 return ResultFactory.Fail("Reporting employee not found");
             }
+
+            var statuses = _ticketRepo.GetTicketStatuses();
+            ticket.TicketStatusID = statuses
+                .First(t => t.TicketStatusName == "Open")
+                .TicketStatusID;
 
             _ticketRepo.AddTicket(ticket);
             return ResultFactory.Success();
