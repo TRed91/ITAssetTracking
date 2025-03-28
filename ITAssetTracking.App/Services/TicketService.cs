@@ -185,6 +185,11 @@ public class TicketService : ITicketService
 
     public Result UpdateTicket(Ticket ticket)
     {
+        // set 'DateClosed' to now if a resolution is provided
+        if (ticket.TicketResolutionID != null)
+        {
+            ticket.DateClosed = DateTime.Now;
+        }
         try
         {
             var ticketToUpdate = _ticketRepo.GetTicketById(ticket.TicketID);

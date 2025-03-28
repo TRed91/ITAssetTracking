@@ -143,6 +143,7 @@ public class TicketRepository : ITicketRepository
             ticketToUpdate.TicketPriorityID = ticket.TicketPriorityID;
             ticketToUpdate.TicketStatusID = ticket.TicketStatusID;
             ticketToUpdate.TicketResolutionID = ticket.TicketResolutionID;
+            ticketToUpdate.TicketTypeID = ticket.TicketTypeID;
             ticketToUpdate.DateClosed = ticket.DateClosed;
             ticketToUpdate.DateReported = ticket.DateReported;
             ticketToUpdate.AssignedToEmployeeID = ticket.AssignedToEmployeeID;

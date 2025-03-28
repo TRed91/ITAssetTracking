@@ -173,6 +173,62 @@ public class TicketController : Controller
         return RedirectToAction("Details", new {ticketId = ticket.TicketID});
     }
 
+    [HttpGet]
+    public IActionResult Edit(int ticketId)
+    {
+        var ticket = _ticketService.GetTicket(ticketId);
+        if (!ticket.Ok)
+        {
+            _logger.Error($"There was an error retrieving ticket details: {ticket.Message} => {ticket.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, ticket.Message));
+            return RedirectToAction("Details", new { ticketId });
+        }
+        var model = new TicketFormModel(ticket.Data);
+        var types = _ticketService.GetTicketTypes().Data;
+        var priorities = _ticketService.GetTicketPriorities().Data;
+        var statuses = _ticketService.GetTicketStatuses().Data;
+        var resolutions = _ticketService.GetTicketResolutions().Data;
+        model.TypeSelectList = new SelectList(types, "TicketTypeID", "TicketTypeName");
+        model.PrioritySelectList = new SelectList(priorities, "TicketPriorityID", "TicketPriorityName");
+        model.StatusSelectList = new SelectList(statuses, "TicketStatusID", "TicketStatusName");
+        model.ResolutionSelectList = new SelectList(resolutions, "TicketResolutionID", "TicketResolutionName");
+        
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int ticketId, TicketFormModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            var types = _ticketService.GetTicketTypes().Data;
+            var priorities = _ticketService.GetTicketPriorities().Data;
+            var statuses = _ticketService.GetTicketStatuses().Data;
+            var resolutions = _ticketService.GetTicketResolutions().Data;
+            model.TypeSelectList = new SelectList(types, "TicketTypeID", "TicketTypeName");
+            model.PrioritySelectList = new SelectList(priorities, "TicketPriorityID", "TicketPriorityName");
+            model.StatusSelectList = new SelectList(statuses, "TicketStatusID", "TicketStatusName");
+            model.ResolutionSelectList = new SelectList(resolutions, "TicketResolutionID", "TicketResolutionName");
+            return View(model);
+        }
+        var ticket = model.ToEntity();
+        Console.WriteLine("===model====> " + model.TicketTypeId);
+        Console.WriteLine("===entity===> " + ticket.TicketTypeID);
+        
+        var result = _ticketService.UpdateTicket(ticket);
+        if (!result.Ok)
+        {
+            _logger.Error($"There was an error editing ticket: {result.Message} => {result.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
+            return RedirectToAction("Edit", new { ticketId });
+        }
+        var successMsg = "Ticket updated successfully";
+        _logger.Information(successMsg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
+        return RedirectToAction("Details", new { ticketId });
+    }
+
     public IActionResult Details(int ticketId)
     {
         var ticket = _ticketService.GetTicket(ticketId);

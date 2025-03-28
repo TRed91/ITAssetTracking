@@ -8,6 +8,7 @@ public class TicketFormModel
 {
     public int? TicketId { get; set; }
     public long AssetId { get; set; }
+    [Display(Name = "Status")]
     public byte? TicketStatusId { get; set; }
     [Required]
     [Display(Name = "Type")]
@@ -15,6 +16,7 @@ public class TicketFormModel
     [Required]
     [Display(Name = "Priority")]
     public byte TicketPriorityId { get; set; }
+    [Display(Name = "Resolution")]
     public byte? TicketResolutionId { get; set; }
     public int ReportedByEmployeeId { get; set; }
     public int? AssignedToEmployeeId { get; set; }
@@ -30,6 +32,8 @@ public class TicketFormModel
     
     public SelectList? TypeSelectList { get; set; }
     public SelectList? PrioritySelectList { get; set; }
+    public SelectList? ResolutionSelectList { get; set; }
+    public SelectList? StatusSelectList { get; set; }
 
     public TicketFormModel() { }
 
@@ -55,7 +59,7 @@ public class TicketFormModel
 
     public Ticket ToEntity()
     {
-        return new Ticket
+        var ticket = new Ticket
         {
             AssetID = AssetId,
             TicketTypeID = TicketTypeId,
@@ -63,6 +67,24 @@ public class TicketFormModel
             ReportedByEmployeeID = ReportedByEmployeeId,
             AssignedToEmployeeID = AssignedToEmployeeId,
             IssueDescription = IssueDescription,
+            DateReported = DateReported,
         };
+        if (TicketId.HasValue)
+        {
+            ticket.TicketID = TicketId.Value;
+        }
+        if (TicketResolutionId.HasValue && TicketResolutionId.Value > 0)
+        {
+            ticket.TicketResolutionID = TicketResolutionId.Value;
+        }
+        if (TicketStatusId.HasValue)
+        {
+            ticket.TicketStatusID = TicketStatusId.Value;
+        }
+        if (DateClosed.HasValue)
+        {
+            ticket.DateClosed = DateClosed.Value;
+        }
+        return ticket;
     }
 }
