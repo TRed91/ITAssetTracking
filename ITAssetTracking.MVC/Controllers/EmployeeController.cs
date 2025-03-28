@@ -120,7 +120,7 @@ public class EmployeeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    public IActionResult Index(AssignEmployeeModel model)
+    public IActionResult Index(SelectEmployeeModel model)
     {
         Result<List<Employee>> employeesResult;
         List<Employee> employees;

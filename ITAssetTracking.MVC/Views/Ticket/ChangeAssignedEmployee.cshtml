@@ -1,0 +1,26 @@
+@model TicketAssignmentModel
+
+@{
+    ViewData["Title"] = "Select Assigned Employee";
+}
+
+<h4>Select Employee for Ticket Assignment</h4>
+<table class="table table-bordered table-striped">
+    <tbody>
+    @foreach (var e in Model.Employees)
+    {
+        <tr>
+            <td>@e.LastName, @e.FirstName</td>
+            <td>
+                <form asp-action="ChangeAssignedEmployee"
+                      asp-route-ticketId="@Model.TicketId"
+                      asp-route-employeeId="@e.EmployeeID"
+                      method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">Select</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

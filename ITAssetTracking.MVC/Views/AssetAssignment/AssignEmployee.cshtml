@@ -1,4 +1,4 @@
-@model AssignEmployeeModel
+@model SelectEmployeeAssignmentModel
 
 @{
     ViewData["Title"] = "Assign To Employee";
@@ -6,7 +6,7 @@
 
 <h1 class="display-5">Assign To Employee Asset: @Model.SerialNumber</h1>
 <form asp-action="AssignEmployee" asp-route-assetId="@Model.AssetID" method="get" class="card d-flex flex-column flex-md-row gap-5 p-3">
-    <input asp-for="AssetID" value="@Model.AssetID" hidden>
+    @Html.HiddenFor(m => m.AssetID)
     <div class="d-flex align-items-center flex-shrink-0 gap-2">
         <label asp-for="StartsWith" class="form-label flex-shrink-0">Starts with:</label>
         <select asp-for="StartsWith" asp-items="@Model.StartingLetter" class="form-select">

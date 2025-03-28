@@ -237,6 +237,58 @@ public class TicketService : ITicketService
         }
     }
 
+    public Result UpdateReportingEmployee(int ticketId, int employeeId)
+    {
+        try
+        {
+            var reportingEmployee = _employeeRepo.GetEmployee(employeeId);
+            var ticket = _ticketRepo.GetTicketById(ticketId);
+            if (ticket == null)
+            {
+                return ResultFactory.Fail("Ticket not found");
+            }
+
+            if (reportingEmployee == null)
+            {
+                return ResultFactory.Fail("Employee not found");
+            }
+
+            ticket.ReportedByEmployeeID = employeeId;
+            _ticketRepo.UpdateTicket(ticket);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
+    }
+    
+    public Result UpdateAssignedEmployee(int ticketId, int employeeId)
+    {
+        try
+        {
+            var assignedEmployee = _employeeRepo.GetEmployee(employeeId);
+            var ticket = _ticketRepo.GetTicketById(ticketId);
+            if (ticket == null)
+            {
+                return ResultFactory.Fail("Ticket not found");
+            }
+
+            if (assignedEmployee == null)
+            {
+                return ResultFactory.Fail("Employee not found");
+            }
+
+            ticket.AssignedToEmployeeID = employeeId;
+            _ticketRepo.UpdateTicket(ticket);
+            return ResultFactory.Success();
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail(ex.Message, ex);
+        }
+    }
+
     public Result DeleteTicket(int ticketId)
     {
         try

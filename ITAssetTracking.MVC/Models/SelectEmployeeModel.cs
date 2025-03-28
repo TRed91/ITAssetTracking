@@ -3,23 +3,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Models;
 
-public class AssignEmployeeModel
+public class SelectEmployeeModel
 {
-    public long AssetID { get; set; }
-    public string? SerialNumber { get; set; }
-    public string? LicenseTypeName { get; set; }
     public int EmployeeID { get; set; }
-    
     public char? StartsWith { get; set; } = 'A';
     public int? DepartmentId { get; set; }
     public string? Search { get; set; }
 
-    public SelectList StartingLetter { get; set; } = GetLetterSelectList();
+    public SelectList StartingLetter { get; set; } = SelectEmployeeUtilities.GetLetterSelectList();
     public SelectList? Departments { get; set; }
-    
     public List<Employee> Employees { get; set; } = new List<Employee>();
+    
+}
 
-    private static SelectList GetLetterSelectList()
+public class SelectEmployeeAssignmentModel : SelectEmployeeModel
+{
+    public long AssetID { get; set; }
+    public string? SerialNumber { get; set; }
+    public string? LicenseTypeName { get; set; }
+}
+
+public class SelectReportingEmployeeModel : SelectEmployeeModel
+{
+    public int? TicketID { get; set; }
+}
+
+public static class SelectEmployeeUtilities
+{
+    public static SelectList GetLetterSelectList()
     {
         var list = new List<SelectListItem>
         {

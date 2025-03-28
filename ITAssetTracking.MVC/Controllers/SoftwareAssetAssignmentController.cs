@@ -33,7 +33,7 @@ public class SoftwareAssetAssignmentController : Controller
     }
     
     [HttpGet]
-    public IActionResult AssignEmployee(int assetId, AssignEmployeeModel model)
+    public IActionResult AssignEmployee(int assetId, SelectEmployeeAssignmentModel model)
     {
         Result<List<Employee>> employeesResult;
         if (model.DepartmentId.HasValue && model.DepartmentId > 0)
@@ -83,7 +83,7 @@ public class SoftwareAssetAssignmentController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult AssignEmployee(AssignEmployeeModel model)
+    public IActionResult AssignEmployee(SelectEmployeeAssignmentModel model)
     {
         var employeeResult = _employeeService.GetEmployeeById(model.EmployeeID);
         if (!employeeResult.Ok)

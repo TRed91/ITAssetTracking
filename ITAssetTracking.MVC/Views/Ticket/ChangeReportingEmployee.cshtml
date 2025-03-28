@@ -1,12 +1,12 @@
-﻿@model SelectEmployeeAssignmentModel
+@model SelectReportingEmployeeModel
 
 @{
-    ViewData["Title"] = "Assign To Employee";
+    ViewData["Title"] = "Change Reporting Employee";
 }
 
-<h1 class="display-5">Assign To Employee Software Asset: @Model.LicenseTypeName</h1>
-<form asp-action="AssignEmployee" asp-route-assetId="@Model.AssetID" method="get" class="card d-flex flex-column flex-md-row gap-5 p-3">
-    @Html.HiddenFor(m => m.AssetID)
+<h4>Change Reporting Employee</h4>
+<form asp-action="ChangeReportingEmployee" asp-route-ticketId="@Model.TicketID" method="get" class="card d-flex flex-column flex-md-row gap-5 p-3">
+    @Html.HiddenFor(m => m.TicketID)
     <div class="d-flex align-items-center flex-shrink-0 gap-2">
         <label asp-for="StartsWith" class="form-label flex-shrink-0">Starts with:</label>
         <select asp-for="StartsWith" asp-items="@Model.StartingLetter" class="form-select">
@@ -39,12 +39,13 @@
                 <td>@e.LastName, @e.FirstName</td>
                 <td>@e.Department.DepartmentName</td>
                 <td>
-                    <form asp-action="AssignEmployee" method="post">
+                    <form asp-action="ChangeReportingEmployee" 
+                          asp-route-ticketId="@Model.TicketID"
+                          asp-route-employeeId="@e.EmployeeID"
+                          method="post">
                         @Html.AntiForgeryToken()
-                        <input asp-for="AssetID" value="@Model.AssetID" hidden>
-                        <input asp-for="EmployeeID" value="@e.EmployeeID" hidden>
                         <button type="submit" class="btn btn-link text-decoration-none p-0">
-                            Assign
+                            Select
                         </button>
                     </form>
                 </td>
@@ -57,4 +58,3 @@ else
 {
     <p class="fs-5">No Employee found.</p>
 }
-

@@ -14,6 +14,7 @@ public class TicketController : Controller
     private readonly ITicketService _ticketService;
     private readonly IAssetService _assetService;
     private readonly IEmployeeService _employeeService;
+    private readonly IDepartmentService _departmentService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly Serilog.ILogger _logger;
 
@@ -21,12 +22,14 @@ public class TicketController : Controller
         ITicketService ticketService,
         IAssetService assetService,
         IEmployeeService employeeService,
+        IDepartmentService departmentService,
         UserManager<ApplicationUser> userManager,
         Serilog.ILogger logger)
     {
         _ticketService = ticketService;
         _assetService = assetService;
         _employeeService = employeeService;
+        _departmentService = departmentService;
         _userManager = userManager;
         _logger = logger;
     }
@@ -224,6 +227,102 @@ public class TicketController : Controller
             return RedirectToAction("Edit", new { ticketId });
         }
         var successMsg = "Ticket updated successfully";
+        _logger.Information(successMsg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
+        return RedirectToAction("Details", new { ticketId });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ChangeAssignedEmployee(int ticketId)
+    {
+        var users = await _userManager.GetUsersInRoleAsync("HelpDescTechnician");
+        var helpDeskEmployees = new List<Employee>();
+        foreach (var user in users)
+        {
+            var employee = _employeeService.GetEmployeeById(user.EmployeeID).Data;
+            helpDeskEmployees.Add(employee);
+        }
+
+        var model = new TicketAssignmentModel
+        {
+            TicketId = ticketId,
+            Employees = helpDeskEmployees
+        };
+        return View(model);
+    }
+    
+    [HttpGet]
+    public IActionResult ChangeReportingEmployee(int ticketId, SelectReportingEmployeeModel model)
+    {
+        Result<List<Employee>> employeesResult;
+        List<Employee> employees;
+        if (model.DepartmentId.HasValue && model.DepartmentId > 0)
+        {
+            employeesResult = _employeeService.GetEmployeesByDepartment((int)model.DepartmentId);
+        }
+        else
+        {
+            employeesResult = _employeeService.GetEmployees();
+        }
+        if (!employeesResult.Ok)
+        {
+            _logger.Error("Error retrieving employees list: " + employeesResult.Exception);
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , employeesResult.Message));
+            return RedirectToAction("Index", "Home");
+        }
+        employees = employeesResult.Data;
+        var departments = _departmentService.GetDepartments().Data;
+        
+        if (model.StartsWith.HasValue && char.IsLetter((char)model.StartsWith))
+        {
+            employees = employees
+                .Where(e => e.LastName[0] == model.StartsWith)
+                .ToList();
+        }
+        if (!string.IsNullOrEmpty(model.Search))
+        {
+            employees = employees
+                .Where(e => e.LastName.ToLower().Contains(model.Search.ToLower()) ||
+                            e.FirstName.ToLower().Contains(model.Search.ToLower()))
+                .ToList();
+        }
+        
+        model.TicketID = ticketId;
+        model.Employees = employees;
+        model.Departments = new SelectList(departments, "DepartmentID", "DepartmentName");
+        
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult ChangeReportingEmployee(int employeeId, int ticketId)
+    {
+        var result = _ticketService.UpdateReportingEmployee(ticketId, employeeId);
+        if (!result.Ok)
+        {
+            _logger.Error($"There was an error updating reporting employee: {result.Message} => {result.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
+            return RedirectToAction("Details", new { ticketId });
+        }
+        var successMsg = "Reporting Employee updated successfully";
+        _logger.Information(successMsg);
+        TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
+        return RedirectToAction("Details", new { ticketId });
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult ChangeAssignedEmployee(int employeeId, int ticketId)
+    {
+        var result = _ticketService.UpdateAssignedEmployee(ticketId, employeeId);
+        if (!result.Ok)
+        {
+            _logger.Error($"There was an error updating ticket assignment: {result.Message} => {result.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
+            return RedirectToAction("Details", new { ticketId });
+        }
+        var successMsg = "Ticket assigned successfully";
         _logger.Information(successMsg);
         TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(true, successMsg));
         return RedirectToAction("Details", new { ticketId });

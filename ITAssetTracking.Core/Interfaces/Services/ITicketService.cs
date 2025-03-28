@@ -18,6 +18,8 @@ public interface ITicketService
     
     Result AddTicket(Ticket ticket);
     Result UpdateTicket(Ticket ticket);
+    Result UpdateReportingEmployee(int ticketId, int employeeId);
+    Result UpdateAssignedEmployee(int ticketId, int employeeId);
     Result DeleteTicket(int ticketId);
     
     Result<TicketNotes> GetTicketNotes(int ticketNoteId);

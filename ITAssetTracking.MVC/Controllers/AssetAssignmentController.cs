@@ -29,7 +29,7 @@ public class AssetAssignmentController : Controller
     }
 
     [HttpGet]
-    public IActionResult AssignEmployee(long assetId, AssignEmployeeModel model)
+    public IActionResult AssignEmployee(long assetId, SelectEmployeeAssignmentModel model)
     {
         Result<List<Employee>> employeesResult;
         List<Employee> employees;
@@ -80,7 +80,7 @@ public class AssetAssignmentController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult AssignEmployee(AssignEmployeeModel model)
+    public IActionResult AssignEmployee(SelectEmployeeAssignmentModel model)
     {
         var employeeResult = _employeeService.GetEmployeeById(model.EmployeeID);
         if (!employeeResult.Ok)

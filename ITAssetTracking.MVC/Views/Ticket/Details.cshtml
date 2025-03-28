@@ -67,7 +67,7 @@
         <p class="m-0">Reported By</p>
         <p class="lead">@Model.ReportedByEmployee.LastName, @Model.ReportedByEmployee.FirstName</p>
     </div>
-    <a href="">Change</a>
+    <a asp-action="ChangeReportingEmployee" asp-route-ticketId="@Model.TicketID">Change</a>
 </div>
 <div class="card p-3 d-flex justify-content-between flex-column flex-md-row align-items-center">
     <div>
@@ -81,14 +81,17 @@
             <p class="lead text-danger">Not assigned</p>
         }
     </div>
-    <a href="">Re/Assign</a>
+    <a asp-action="ChangeAssignedEmployee" asp-route-ticketId="@Model.TicketID">Re/Assign</a>
 </div>
 <div>
     <p class="m-0">Issue Description</p>
     <p class="lead">@Model.IssueDescription</p>
 </div>
 <div>
-    <h3 class="fs-3">Notes</h3>
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="fs-3">Notes</h3>
+        <a href="">Add Note</a>
+    </div>
     @if (Model.TicketNotes.Count > 0)
     {
         <table class="table table-bordered">
