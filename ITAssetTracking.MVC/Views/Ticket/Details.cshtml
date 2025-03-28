@@ -1,0 +1,122 @@
+@model Ticket
+
+@{
+    ViewData["Title"] = "Ticket Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row">
+    <h1 class="display-6">Ticket Details</h1>
+    <div class="d-flex align-items-center gap-5">
+        <a href=""><button class="btn btn-primary">Edit</button></a>
+        <a asp-action="Index" class="text-decoration-none">Go Back</a>
+    </div>
+</div>
+<div class="d-flex flex-column flex-md-row gap-2 gap-md-5">
+    <div>
+        <p class="m-0">Status</p>
+        <p class="lead">@Model.TicketStatus.TicketStatusName</p>
+    </div>
+    <div>
+        <p class="m-0">Resolution</p>
+        <p class="lead">@(Model.TicketResolutionID != null ? Model.TicketResolution.TicketResolutionName : "None")</p>
+    </div>
+    <div>
+        <p class="m-0">Type</p>
+        <p class="lead">@Model.TicketType.TicketTypeName</p>
+    </div>
+    <div>
+        <p class="m-0">Priority</p>
+        <p class="lead">@Model.TicketPriority.TicketPriorityName</p>
+    </div>
+    <div>
+        <p class="m-0">Report Date</p>
+        <p class="lead">@Model.DateReported.Date.ToShortDateString()</p>
+    </div>
+    <div>
+        <p class="m-0">Closed Date</p>
+        <p class="lead">@(Model.DateClosed != null ? Convert.ToDateTime(Model.DateClosed).Date.ToShortDateString() : "None")</p>
+    </div>
+</div>
+<div class="card p-3 m-3">
+    <h3 class="fs-3">Asset Information</h3>
+    <div class="d-flex flex-column flex-md-row gap-5">
+        <div>
+            <div>
+                <p class="m-0">Asset Type</p>
+                <p class="lead">@Model.Asset.AssetType.AssetTypeName</p>
+            </div>
+            <div>
+                <p class="m-0">Serial Nr.</p>
+                <p class="lead">@Model.Asset.SerialNumber</p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <p class="m-0">Model Nr.</p>
+                <p class="lead">@Model.Asset.Model.ModelNumber</p>
+            </div>
+            <div>
+                <p class="m-0">Location</p>
+                <p class="lead">@Model.Asset.Location.LocationName</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card p-3 d-flex justify-content-between flex-column flex-md-row align-items-center">
+    <div>
+        <p class="m-0">Reported By</p>
+        <p class="lead">@Model.ReportedByEmployee.LastName, @Model.ReportedByEmployee.FirstName</p>
+    </div>
+    <a href="">Change</a>
+</div>
+<div class="card p-3 d-flex justify-content-between flex-column flex-md-row align-items-center">
+    <div>
+        <p class="m-0">Assigned Technician</p>
+        @if (Model.AssignedToEmployeeID != null)
+        {
+            <p class="lead">@Model.AssignedToEmployee.LastName, @Model.AssignedToEmployee.FirstName</p>
+        }
+        else
+        {
+            <p class="lead text-danger">Not assigned</p>
+        }
+    </div>
+    <a href="">Re/Assign</a>
+</div>
+<div>
+    <p class="m-0">Issue Description</p>
+    <p class="fs-2">@Model.IssueDescription</p>
+</div>
+<div>
+    <h3 class="fs-3">Notes</h3>
+    @if (Model.TicketNotes.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="table-primary">
+            <tr>
+                <th>Note</th>
+                <th>Employee</th>
+                <th>Date</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var n in Model.TicketNotes)
+            {
+                <tr>
+                    <td>@n.Note</td>
+                    <td>@n.Employee.LastName, @n.Employee.FirstName</td>
+                    <td>@n.CreatedDate.Date.ToShortDateString()</td>
+                    <td><a href="">Edit</a></td>
+                    <td><a href="" class="text-danger">Delete</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No notes for this ticket</p>
+    }
+</div>

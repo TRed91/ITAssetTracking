@@ -20,9 +20,14 @@ public class TicketRepository : ITicketRepository
             .ThenInclude(a => a.Model)
             .Include(t => t.Asset)
             .ThenInclude(a => a.AssetType)
+            .Include(t => t.Asset)
+            .ThenInclude(a => a.Location)
             .Include(t => t.TicketStatus)
             .Include(t => t.TicketPriority)
             .Include(t => t.TicketType)
+            .Include(t => t.TicketResolution)
+            .Include(t => t.ReportedByEmployee)
+            .Include(t => t.AssignedToEmployee)
             .FirstOrDefault(t => t.TicketID == ticketId);
     }
 

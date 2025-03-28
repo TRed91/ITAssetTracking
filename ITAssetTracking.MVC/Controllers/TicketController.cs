@@ -175,6 +175,14 @@ public class TicketController : Controller
 
     public IActionResult Details(int ticketId)
     {
-        return View();
+        var ticket = _ticketService.GetTicket(ticketId);
+        if (!ticket.Ok)
+        {
+            _logger.Error($"There was an error getting ticket details: {ticket.Message} => {ticket.Exception}");
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, ticket.Message));
+            return RedirectToAction("Index", "Home");
+        }
+        
+        return View(ticket.Data);
     }
 }

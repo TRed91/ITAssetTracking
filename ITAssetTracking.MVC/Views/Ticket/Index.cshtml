@@ -68,7 +68,7 @@
                         <td>@t.TicketType.TicketTypeName</td>
                         <td>@t.TicketPriority.TicketPriorityName</td>
                         <td>@t.DateReported.Date.ToShortDateString()</td>
-                        <td>Details</td>
+                        <td><a asp-action="Details" asp-route-ticketId="@t.TicketID">Details</a></td>
                     </tr>
                 }
                 </tbody>

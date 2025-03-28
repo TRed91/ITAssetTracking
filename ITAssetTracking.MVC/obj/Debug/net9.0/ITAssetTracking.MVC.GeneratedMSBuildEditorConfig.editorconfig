@@ -196,6 +196,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0FkZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
