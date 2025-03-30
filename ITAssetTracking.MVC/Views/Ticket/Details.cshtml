@@ -90,7 +90,7 @@
 <div>
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="fs-3">Notes</h3>
-        <a href="">Add Note</a>
+        <a asp-controller="TicketNotes" asp-action="Add" asp-route-ticketId="@Model.TicketID" class="link-primary text-decoration-none">Add Note</a>
     </div>
     @if (Model.TicketNotes.Count > 0)
     {
@@ -111,8 +111,18 @@
                     <td>@n.Note</td>
                     <td>@n.Employee.LastName, @n.Employee.FirstName</td>
                     <td>@n.CreatedDate.Date.ToShortDateString()</td>
-                    <td><a href="">Edit</a></td>
-                    <td><a href="" class="text-danger">Delete</a></td>
+                    <td><a asp-controller="TicketNotes"
+                           asp-action="Edit"
+                           asp-route-ticketNoteId="@n.TicketNoteID"
+                           class="link-primary text-decoration-none">
+                        Edit
+                    </a></td>
+                    <td><a asp-controller="TicketNotes"
+                           asp-action="Delete"
+                           asp-route-ticketNoteId="@n.TicketNoteID"
+                           class="link-danger text-decoration-none">
+                        Delete
+                    </a></td>
                 </tr>
             }
             </tbody>

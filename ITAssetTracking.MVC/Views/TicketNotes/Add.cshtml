@@ -1,0 +1,26 @@
+﻿@model TicketNoteModel
+
+@{
+    ViewData["Title"] = "Add Ticket Notes";
+}
+
+<h1 class="display-6 mb-3">Create Ticket Note</h1>
+<form asp-action="Add" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.TicketId)
+    @Html.HiddenFor(m => m.EmployeeId)
+    <div class="mb-3">
+        <label asp-for="Note" class="form-label"></label>
+        <textarea asp-for="Note" cols="30" rows="10" class="form-control form-text"></textarea>
+        <span asp-validation-for="Note" class="text-danger"></span>
+    </div>
+    <div class="d-flex gap-5 align-items-center">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-controller="Ticket"
+           asp-action="Details"
+           asp-route-ticketId="@Model.TicketId"
+           class="link-primary text-decoration-none">
+            Go Back
+        </a>
+    </div>
+</form>

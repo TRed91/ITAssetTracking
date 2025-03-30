@@ -1,0 +1,25 @@
+﻿@model TicketNoteModel
+
+@{
+    ViewData["Title"] = "Delete Ticket Notes";
+}
+
+<h1 class="display-6 mb-3 text-danger">Delete Ticket Note?</h1>
+<p>@Model.Note</p>
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.TicketId)
+    @Html.HiddenFor(m => m.EmployeeId)
+    @Html.HiddenFor(m => m.TicketNoteId)
+    @Html.HiddenFor(m => m.CreatedDate)
+    @Html.HiddenFor(m => m.Note)
+    <div class="d-flex gap-5 align-items-center">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-controller="Ticket"
+           asp-action="Details"
+           asp-route-ticketId="@Model.TicketId"
+           class="link-primary text-decoration-none">
+            Go Back
+        </a>
+    </div>
+</form>

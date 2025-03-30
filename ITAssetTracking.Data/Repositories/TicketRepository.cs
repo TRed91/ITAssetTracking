@@ -28,6 +28,8 @@ public class TicketRepository : ITicketRepository
             .Include(t => t.TicketResolution)
             .Include(t => t.ReportedByEmployee)
             .Include(t => t.AssignedToEmployee)
+            .Include(t => t.TicketNotes)
+            .ThenInclude(tn => tn.Employee)
             .FirstOrDefault(t => t.TicketID == ticketId);
     }
 
