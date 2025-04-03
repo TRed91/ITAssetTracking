@@ -18,7 +18,7 @@ public class MockDB
         },
         new Asset
         {
-            AssetID = 3, AssetStatusID = 1, AssetTypeID = 1, LocationID = 1, ManufacturerID = 3, ModelID = 3,
+            AssetID = 3, AssetStatusID = 3, AssetTypeID = 1, LocationID = 1, ManufacturerID = 3, ModelID = 3,
             PurchaseDate = new DateTime(2025, 01, 02), PurchasePrice = 300.00m, SerialNumber = "333-333"
         }
     };
@@ -120,6 +120,20 @@ public class MockDB
             SoftwareAssetRequestID = 3, AssetID = null, EmployeeID = 2, SoftwareAssetID = 2,
             RequestDate = new DateTime(2025, 02, 05), RequestResultID = 2, RequestNote = "Nope"
         },
+    };
+
+    public List<AssetType> AssetTypes = new List<AssetType>
+    {
+        new AssetType{ AssetTypeID = 1, AssetTypeName = "Monitor" },
+        new AssetType{ AssetTypeID = 2, AssetTypeName = "Keyboard" },
+        new AssetType{ AssetTypeID = 3, AssetTypeName = "Mouse" },
+    };
+    
+    public List<AssetStatus> AssetStatuses = new List<AssetStatus>
+    {
+        new AssetStatus{ AssetStatusID = 1, AssetStatusName = "In Use" },
+        new AssetStatus{ AssetStatusID = 2, AssetStatusName = "Storage" },
+        new AssetStatus{ AssetStatusID = 3, AssetStatusName = "Repair" },
     };
 
     public List<Department> Departments = new List<Department>

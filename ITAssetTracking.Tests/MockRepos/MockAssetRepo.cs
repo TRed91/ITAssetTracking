@@ -114,7 +114,7 @@ public class MockAssetRepo : IAssetRepository
 
     public List<AssetType> GetAssetTypes()
     {
-        throw new NotImplementedException();
+        return _db.AssetTypes.ToList();
     }
 
     public List<Location> GetLocations()
