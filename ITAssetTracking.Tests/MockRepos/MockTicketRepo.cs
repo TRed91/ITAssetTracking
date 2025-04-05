@@ -38,9 +38,21 @@ public class MockTicketRepo : ITicketRepository
 
     public List<Ticket> GetTicketsInDateRange(DateTime startDate, DateTime endDate)
     {
-        return _db.Tickets
+        var tickets = _db.Tickets
             .Where(t => t.DateReported >= startDate && t.DateReported <= endDate)
             .ToList();
+
+        foreach (var ticket in tickets)
+        {
+            ticket.TicketType = _db.TicketTypes
+                .First(t => t.TicketTypeID == ticket.TicketTypeID);
+            if (ticket.TicketResolutionID != null)
+            {
+                ticket.TicketResolution = _db.TicketResolutions
+                    .First(t => t.TicketResolutionID == ticket.TicketResolutionID);
+            }
+        }
+        return tickets;
     }
 
     public List<Ticket> GetTicketsByStatus(int ticketStatusId, bool includeClosed)
@@ -174,6 +186,6 @@ public class MockTicketRepo : ITicketRepository
 
     public List<TicketType> GetTicketTypes()
     {
-        throw new NotImplementedException();
+        return _db.TicketTypes.ToList();
     }
 }

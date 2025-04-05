@@ -11,4 +11,12 @@ public interface IReportsService
         byte? departmentId, byte? assetTypeId);
 
     Result<AssetValuesReport> GetAssetValuesReport(DateTime startDate, DateTime endDate);
+
+    Result<List<SoftwareAssetDistributionReport>> GetSoftwareAssetDistributionReport(DateTime startDate,
+        DateTime endDate, byte? departmentId, byte? licenseTypeId);
+    
+    Result<List<AssetStatusReport>> GetSoftwareAssetStatusReport(DateTime startDate, DateTime endDate, 
+        byte? departmentId, byte? licenseTypeId);
+    
+    Result<TicketsReport> GetTicketsReport(DateTime startDate, DateTime endDate, byte? ticketTypeId);
 }

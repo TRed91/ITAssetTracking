@@ -34,4 +34,18 @@ public class ReportsRepository : IReportsRepository
             .Where(a => a.PurchaseDate >= startDate && a.PurchaseDate <= endDate)
             .ToList();
     }
+
+    public List<SoftwareAssetAssignment> GetSoftwareAssetReports(DateTime startDate, DateTime endDate,
+        byte? departmentId, byte? licenseTypeId)
+    {
+        return _context.SoftwareAssetAssignment
+            .Include(s => s.SoftwareAsset)
+            .Include(s => s.Asset)
+            .Include(s => s.Employee)
+            .ThenInclude(e => e.Department)
+            .Where(s => (s.AssignmentDate >= startDate && s.AssignmentDate <= endDate) &&
+                        (departmentId == null || (s.Employee != null && s.Employee.Department != null && s.Employee.Department.DepartmentID == departmentId)) &&
+                        (licenseTypeId == null || s.SoftwareAsset.LicenseTypeID == licenseTypeId))
+            .ToList();
+    }
 }

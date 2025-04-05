@@ -185,6 +185,27 @@ public class MockDB
             AssignedToEmployeeID = null, ReportedByEmployeeID = 2, DateReported = new DateTime(2025, 02, 10),
             DateClosed = null, IssueDescription = "Some resolved Issue"
         },
+        new Ticket
+        {
+            TicketID = 4, AssetID = 2, TicketPriorityID = 1, TicketStatusID = 1, TicketResolutionID = 1,
+            TicketTypeID = 1,
+            AssignedToEmployeeID = 3, ReportedByEmployeeID = 1, DateReported = new DateTime(2025, 02, 10),
+            DateClosed = new DateTime(2025, 02, 19), IssueDescription = "Some resolved Issue"
+        },
+        new Ticket
+        {
+            TicketID = 5, AssetID = 2, TicketPriorityID = 1, TicketStatusID = 1, TicketResolutionID = 2,
+            TicketTypeID = 2,
+            AssignedToEmployeeID = 3, ReportedByEmployeeID = 1, DateReported = new DateTime(2025, 02, 10),
+            DateClosed = new DateTime(2025, 02, 16), IssueDescription = "Some resolved Issue"
+        },
+        new Ticket
+        {
+            TicketID = 6, AssetID = 2, TicketPriorityID = 1, TicketStatusID = 1, TicketResolutionID = 1,
+            TicketTypeID = 3,
+            AssignedToEmployeeID = 3, ReportedByEmployeeID = 1, DateReported = new DateTime(2025, 02, 10),
+            DateClosed = new DateTime(2025, 02, 16), IssueDescription = "Some resolved Issue"
+        },
     };
 
     public List<TicketNotes> TicketNotes = new List<TicketNotes>
@@ -204,5 +225,21 @@ public class MockDB
             TicketNoteID = 3, TicketID = 2, EmployeeID = 3, CreatedDate = new DateTime(2025, 02, 11),
             Note = "Some note 3"
         },
+    };
+
+    public List<TicketResolution> TicketResolutions = new List<TicketResolution>
+    {
+        new TicketResolution { TicketResolutionID = 1, TicketResolutionName = "Completed" },
+        new TicketResolution { TicketResolutionID = 2, TicketResolutionName = "Cancelled" },
+        new TicketResolution { TicketResolutionID = 3, TicketResolutionName = "User Error" },
+        new TicketResolution { TicketResolutionID = 3, TicketResolutionName = "Other" }
+    };
+
+    public List<TicketType> TicketTypes = new List<TicketType>
+    {
+        new TicketType { TicketTypeID = 1, TicketTypeName = "Issue" },
+        new TicketType { TicketTypeID = 2, TicketTypeName = "Maintenance" },
+        new TicketType { TicketTypeID = 3, TicketTypeName = "Request" },
+        new TicketType { TicketTypeID = 4, TicketTypeName = "Other" },
     };
 }

@@ -11,3 +11,15 @@ public class AssetDistributionReportItem
     public string AssetTypeName { get; set; }
     public int NumberOfAssets { get; set; }
 }
+
+public class SoftwareAssetDistributionReport
+{
+    public string DepartmentName { get; set; }
+    public List<SoftwareAssetDistributionReportItem> Items { get; set; }
+}
+
+public class SoftwareAssetDistributionReportItem
+{
+    public string LicenseTypeName { get; set; }
+    public int NumberOfLicenses { get; set; }
+}

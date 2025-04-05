@@ -79,6 +79,7 @@ public class TicketRepository : ITicketRepository
             .Include(t => t.TicketStatus)
             .Include(t => t.TicketPriority)
             .Include(t => t.TicketType)
+            .Include(t => t.TicketResolution)
             .Where(t => t.DateReported >= startDate && t.DateReported <= endDate)
             .ToList();
     }

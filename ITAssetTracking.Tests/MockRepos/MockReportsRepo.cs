@@ -47,4 +47,40 @@ public class MockReportsRepo : IReportsRepository
         }
         return assets;
     }
+
+    public List<SoftwareAssetAssignment> GetSoftwareAssetReports(DateTime startDate, DateTime endDate, byte? departmentId, byte? licenseTypeId)
+    {
+        var assignments = _db.SoftwareAssetAssignments
+            .Where(aa => aa.AssignmentDate >= startDate && aa.AssignmentDate <= endDate)
+            .ToList();
+        foreach (var ass in assignments)
+        {
+            if (ass.AssetID != null)
+            {
+                ass.Asset = _db.Assets.First(a => a.AssetID == ass.AssetID);
+            }
+            ass.SoftwareAsset = _db.SoftwareAssets.First(a => a.SoftwareAssetID == ass.SoftwareAssetID);
+            ass.SoftwareAsset.LicenseType = _db.LicenseTypes.First(l => l.LicenseTypeID == ass.SoftwareAsset.LicenseTypeID);
+            if (ass.EmployeeID != null)
+            {
+                ass.Employee = _db.Employees.First(e => e.EmployeeID == ass.EmployeeID);
+                ass.Employee.Department = _db.Departments.First(d => d.DepartmentID == ass.Employee.DepartmentID);
+            }
+        }
+
+        if (licenseTypeId.HasValue)
+        {
+            assignments = assignments
+                .Where(a => a.SoftwareAsset.LicenseTypeID == licenseTypeId)
+                .ToList();
+        }
+
+        if (departmentId.HasValue)
+        {
+            assignments = assignments
+                .Where(a => a.Employee.DepartmentID == departmentId)
+                .ToList();
+        }
+        return assignments;
+    }
 }

@@ -11,4 +11,10 @@ public interface IReportsRepository
         byte? assetTypeId);
 
     List<Asset> GetAssetsInTimeFrame(DateTime startDate, DateTime endDate);
+
+    List<SoftwareAssetAssignment> GetSoftwareAssetReports(
+        DateTime startDate,
+        DateTime endDate,
+        byte? departmentId,
+        byte? licenseTypeId);
 }
