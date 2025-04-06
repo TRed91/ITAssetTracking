@@ -88,4 +88,14 @@ public class ServiceFactory
             _appConfig.GetEmployeeRepository(), 
             _appConfig.GetAssetRepository());
     }
+
+    public IReportsService GetReportsService()
+    {
+        return new ReportsService(
+            _appConfig.GetReportsRepository(), 
+            _appConfig.GetDepartmentRepository(), 
+            _appConfig.GetAssetRepository(), 
+            _appConfig.GetSoftwareAssetRepository(), 
+            _appConfig.GetTicketRepository());
+    }
 }

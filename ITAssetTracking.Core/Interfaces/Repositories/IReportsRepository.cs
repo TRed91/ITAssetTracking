@@ -7,14 +7,14 @@ public interface IReportsRepository
     List<AssetAssignment> GetAssetReports(
         DateTime startDate, 
         DateTime endDate,  
-        byte? departmentId, 
-        byte? assetTypeId);
+        byte departmentId, 
+        byte assetTypeId);
 
     List<Asset> GetAssetsInTimeFrame(DateTime startDate, DateTime endDate);
 
     List<SoftwareAssetAssignment> GetSoftwareAssetReports(
         DateTime startDate,
         DateTime endDate,
-        byte? departmentId,
-        byte? licenseTypeId);
+        byte departmentId,
+        byte licenseTypeId);
 }

@@ -13,7 +13,7 @@ public class ReportsRepository : IReportsRepository
         _context = context;
     }
     
-    public List<AssetAssignment> GetAssetReports(DateTime startDate, DateTime endDate, byte? departmentId, byte? assetTypeId)
+    public List<AssetAssignment> GetAssetReports(DateTime startDate, DateTime endDate, byte departmentId, byte assetTypeId)
     {
         return _context.AssetAssignment
             .Include(aa => aa.Department)
@@ -22,8 +22,8 @@ public class ReportsRepository : IReportsRepository
             .Include(aa => aa.Asset)
             .ThenInclude(a => a.AssetStatus)
             .Where(aa => (aa.AssignmentDate >= startDate && aa.AssignmentDate <= endDate) &&
-                         (departmentId == null || aa.DepartmentID == departmentId) && 
-                         (assetTypeId == null || (aa.Asset != null && aa.Asset.AssetTypeID == assetTypeId)))
+                         (departmentId == 0 || aa.DepartmentID == departmentId) && 
+                         (assetTypeId == 0 || (aa.Asset != null && aa.Asset.AssetTypeID == assetTypeId)))
             .ToList();
     }
 
@@ -36,16 +36,17 @@ public class ReportsRepository : IReportsRepository
     }
 
     public List<SoftwareAssetAssignment> GetSoftwareAssetReports(DateTime startDate, DateTime endDate,
-        byte? departmentId, byte? licenseTypeId)
+        byte departmentId, byte licenseTypeId)
     {
         return _context.SoftwareAssetAssignment
             .Include(s => s.SoftwareAsset)
             .Include(s => s.Asset)
+            .ThenInclude(a => a.AssetAssignments)
             .Include(s => s.Employee)
             .ThenInclude(e => e.Department)
             .Where(s => (s.AssignmentDate >= startDate && s.AssignmentDate <= endDate) &&
-                        (departmentId == null || (s.Employee != null && s.Employee.Department != null && s.Employee.Department.DepartmentID == departmentId)) &&
-                        (licenseTypeId == null || s.SoftwareAsset.LicenseTypeID == licenseTypeId))
+                        (departmentId == 0 || (s.Employee != null && s.Employee.Department != null && s.Employee.Department.DepartmentID == departmentId)) &&
+                        (licenseTypeId == 0 || s.SoftwareAsset.LicenseTypeID == licenseTypeId))
             .ToList();
     }
 }

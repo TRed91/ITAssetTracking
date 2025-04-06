@@ -24,7 +24,12 @@ public class ReportsServiceTests
         Assert.That(report[0].DepartmentName, Is.EqualTo("Department 1"));
         Assert.That(report[0].Items.Count(), Is.EqualTo(3));
         Assert.That(report[0].Items[0].AssetTypeName, Is.EqualTo("Monitor"));
+        Assert.That(report[0].Items[0].NumberOfAssets, Is.EqualTo(1));
         Assert.That(report[0].Items[1].NumberOfAssets, Is.EqualTo(1));
+        Assert.That(report[0].Items[2].NumberOfAssets, Is.EqualTo(0));
+        Assert.That(report[1].Items[0].NumberOfAssets, Is.EqualTo(1));
+        Assert.That(report[1].Items[1].NumberOfAssets, Is.EqualTo(0));
+        Assert.That(report[1].Items[2].NumberOfAssets, Is.EqualTo(0));
     }
 
     [Test]

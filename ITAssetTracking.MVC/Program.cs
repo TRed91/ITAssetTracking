@@ -54,6 +54,7 @@ builder.Services.AddScoped<ISoftwareAssetAssignmentService>(_ => sf.GetSoftwareA
 builder.Services.AddScoped<ISoftwareAssetService>(_ => sf.GetSoftwareAssetService());
 builder.Services.AddScoped<ISoftwareRequestService>(_ => sf.GetSoftwareRequestService());
 builder.Services.AddScoped<ITicketService>(_ => sf.GetTicketService());
+builder.Services.AddScoped<IReportsService>(_ => sf.GetReportsService());
 
 // configure logger
 builder.Logging.ClearProviders();

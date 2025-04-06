@@ -80,5 +80,9 @@ public class AppConfig : IAppConfig
     {
         return new TicketRepository(GetContext());
     }
-    
+
+    public IReportsRepository GetReportsRepository()
+    {
+        return new ReportsRepository(GetContext());
+    }
 }

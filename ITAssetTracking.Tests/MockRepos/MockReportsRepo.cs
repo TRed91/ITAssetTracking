@@ -12,11 +12,11 @@ public class MockReportsRepo : IReportsRepository
         _db = new MockDB();
     }
     
-    public List<AssetAssignment> GetAssetReports(DateTime startDate, DateTime endDate, byte? departmentId, byte? assetTypeId)
+    public List<AssetAssignment> GetAssetReports(DateTime startDate, DateTime endDate, byte departmentId, byte assetTypeId)
     {
         var assignments = _db.AssetAssignments
             .Where(aa => (aa.AssignmentDate >= startDate && aa.AssignmentDate <= endDate) &&
-                         (departmentId == null || aa.DepartmentID == departmentId))
+                         (departmentId == 0 || aa.DepartmentID == departmentId))
             .ToList();
         foreach (var ass in assignments)
         {
@@ -26,7 +26,7 @@ public class MockReportsRepo : IReportsRepository
             ass.Department = _db.Departments.First(d => d.DepartmentID == ass.DepartmentID);
         }
 
-        if (assetTypeId.HasValue)
+        if (assetTypeId > 0)
         {
             assignments = assignments
                 .Where(a => a.Asset.AssetTypeID == assetTypeId)
@@ -48,7 +48,7 @@ public class MockReportsRepo : IReportsRepository
         return assets;
     }
 
-    public List<SoftwareAssetAssignment> GetSoftwareAssetReports(DateTime startDate, DateTime endDate, byte? departmentId, byte? licenseTypeId)
+    public List<SoftwareAssetAssignment> GetSoftwareAssetReports(DateTime startDate, DateTime endDate, byte departmentId, byte licenseTypeId)
     {
         var assignments = _db.SoftwareAssetAssignments
             .Where(aa => aa.AssignmentDate >= startDate && aa.AssignmentDate <= endDate)
@@ -58,6 +58,9 @@ public class MockReportsRepo : IReportsRepository
             if (ass.AssetID != null)
             {
                 ass.Asset = _db.Assets.First(a => a.AssetID == ass.AssetID);
+                ass.Asset.AssetAssignments = _db.AssetAssignments
+                    .Where(a => a.AssetID == ass.AssetID)
+                    .ToList();
             }
             ass.SoftwareAsset = _db.SoftwareAssets.First(a => a.SoftwareAssetID == ass.SoftwareAssetID);
             ass.SoftwareAsset.LicenseType = _db.LicenseTypes.First(l => l.LicenseTypeID == ass.SoftwareAsset.LicenseTypeID);
@@ -68,14 +71,14 @@ public class MockReportsRepo : IReportsRepository
             }
         }
 
-        if (licenseTypeId.HasValue)
+        if (licenseTypeId > 0)
         {
             assignments = assignments
                 .Where(a => a.SoftwareAsset.LicenseTypeID == licenseTypeId)
                 .ToList();
         }
 
-        if (departmentId.HasValue)
+        if (departmentId > 0)
         {
             assignments = assignments
                 .Where(a => a.Employee.DepartmentID == departmentId)

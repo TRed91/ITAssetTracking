@@ -27,7 +27,7 @@ public class ReportsService : IReportsService
         _ticketRepo = ticketRepo;
     }
 
-    public Result<List<AssetDistributionReport>> GetAssetDistributionReport(DateTime startDate, DateTime endDate, byte? departmentId = null, byte? assetTypeId = null)
+    public Result<List<AssetDistributionReport>> GetAssetDistributionReport(DateTime startDate, DateTime endDate, byte departmentId = 0, byte assetTypeId = 0)
     {
         if (startDate > endDate)
         {
@@ -38,18 +38,18 @@ public class ReportsService : IReportsService
             var assignments = _repo.GetAssetReports(startDate, endDate, departmentId, assetTypeId);
             if (assignments.Count == 0)
             {
-                return ResultFactory.Fail<List<AssetDistributionReport>>("No asset reports found");
+                return ResultFactory.Success(new List<AssetDistributionReport>());
             }
             var types = _assetRepo.GetAssetTypes();
             var departments = _departmentRepo.GetDepartments();
-            if (departmentId.HasValue)
+            if (departmentId > 0)
             {
                 departments = departments
-                    .Where(d => d.DepartmentID == departmentId.Value)
+                    .Where(d => d.DepartmentID == departmentId)
                     .ToList();
             }
 
-            if (assetTypeId.HasValue)
+            if (assetTypeId > 0)
             {
                 types = types
                     .Where(t => t.AssetTypeID == assetTypeId)
@@ -68,7 +68,9 @@ public class ReportsService : IReportsService
                     var item = new AssetDistributionReportItem
                     {
                         AssetTypeName = t.AssetTypeName,
-                        NumberOfAssets = assignments.Count(a => a.Asset.AssetTypeID == t.AssetTypeID),
+                        NumberOfAssets = assignments.Count(a => 
+                            a.Asset.AssetTypeID == t.AssetTypeID && 
+                            a.DepartmentID == d.DepartmentID),
                     };
                     report.Items.Add(item);
                 }
@@ -82,7 +84,7 @@ public class ReportsService : IReportsService
         }
     }
 
-    public Result<List<AssetStatusReport>> GetAssetStatusReport(DateTime startDate, DateTime endDate, byte? departmentId = null, byte? assetTypeId = null)
+    public Result<List<AssetStatusReport>> GetAssetStatusReport(DateTime startDate, DateTime endDate, byte departmentId = 0, byte assetTypeId = 0)
     {
         if (startDate > endDate)
         {
@@ -93,11 +95,11 @@ public class ReportsService : IReportsService
             var assignments = _repo.GetAssetReports(startDate, endDate, departmentId, assetTypeId);
             if (assignments.Count == 0)
             {
-                return ResultFactory.Fail<List<AssetStatusReport>>("No asset reports found");
+                return ResultFactory.Success(new List<AssetStatusReport>());
             }
 
             var types = _assetRepo.GetAssetTypes();
-            if (assetTypeId.HasValue)
+            if (assetTypeId > 0)
             {
                 types = types
                     .Where(t => t.AssetTypeID == assetTypeId)
@@ -135,7 +137,10 @@ public class ReportsService : IReportsService
             var assets = _repo.GetAssetsInTimeFrame(startDate, endDate);
             if (assets.Count == 0)
             {
-                return ResultFactory.Fail<AssetValuesReport>("No assets found");
+                var emptyReport = new AssetValuesReport();
+                emptyReport.Items = new List<AssetValuesReportItem>();
+                emptyReport.TotalValue = 0;
+                return ResultFactory.Success(emptyReport);
             }
 
             var types = _assetRepo.GetAssetTypes();
@@ -164,7 +169,7 @@ public class ReportsService : IReportsService
     }
 
     public Result<List<SoftwareAssetDistributionReport>> GetSoftwareAssetDistributionReport(DateTime startDate,
-        DateTime endDate, byte? departmentId = null, byte? licenseTypeId = null)
+        DateTime endDate, byte departmentId = 0, byte licenseTypeId = 0)
     {
         if (startDate > endDate)
         {
@@ -175,19 +180,19 @@ public class ReportsService : IReportsService
             var assignments = _repo.GetSoftwareAssetReports(startDate, endDate, departmentId, licenseTypeId);
             if (assignments.Count == 0)
             {
-                return ResultFactory.Fail<List<SoftwareAssetDistributionReport>>("No software asset reports found");
+                return ResultFactory.Success(new List<SoftwareAssetDistributionReport>());
             }
 
             var types = _softwareAssetRepo.GetLicenseTypes();
             var departments = _departmentRepo.GetDepartments();
-            if (departmentId.HasValue)
+            if (departmentId > 0)
             {
                 departments = departments
-                    .Where(d => d.DepartmentID == departmentId.Value)
+                    .Where(d => d.DepartmentID == departmentId)
                     .ToList();
             }
 
-            if (licenseTypeId.HasValue)
+            if (licenseTypeId > 0)
             {
                 types = types
                     .Where(t => t.LicenseTypeID == licenseTypeId)
@@ -207,7 +212,11 @@ public class ReportsService : IReportsService
                     {
                         LicenseTypeName = t.LicenseTypeName,
                         NumberOfLicenses = assignments
-                            .Where(s => s.SoftwareAsset.LicenseTypeID == t.LicenseTypeID)
+                            .Where(s => 
+                                s.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
+                                ((s.EmployeeID != null && s.Employee.DepartmentID == d.DepartmentID) ||
+                                (s.AssetID != null && s.Asset.AssetAssignments.Any(a => 
+                                    a.DepartmentID == d.DepartmentID && a.AssignmentDate >= startDate && a.AssignmentDate <= endDate))))
                             .Sum(s => s.SoftwareAsset.NumberOfLicenses),
                     };
                     report.Items.Add(item);
@@ -222,7 +231,7 @@ public class ReportsService : IReportsService
         }
     }
 
-    public Result<List<AssetStatusReport>> GetSoftwareAssetStatusReport(DateTime startDate, DateTime endDate, byte? departmentId = null, byte? licenseTypeId = null)
+    public Result<List<AssetStatusReport>> GetSoftwareAssetStatusReport(DateTime startDate, DateTime endDate, byte departmentId = 0, byte licenseTypeId = 0)
     {
         if (startDate > endDate)
         {
@@ -233,11 +242,11 @@ public class ReportsService : IReportsService
             var assignments = _repo.GetSoftwareAssetReports(startDate, endDate, departmentId, licenseTypeId);
             if (assignments.Count == 0)
             {
-                return ResultFactory.Fail<List<AssetStatusReport>>("No asset reports found");
+                return ResultFactory.Success(new List<AssetStatusReport>());
             }
 
             var types = _softwareAssetRepo.GetLicenseTypes();
-            if (licenseTypeId.HasValue)
+            if (licenseTypeId > 0)
             {
                 types = types
                     .Where(t => t.LicenseTypeID == licenseTypeId)
@@ -263,7 +272,7 @@ public class ReportsService : IReportsService
         }
     }
 
-    public Result<TicketsReport> GetTicketsReport(DateTime startDate, DateTime endDate, byte? ticketTypeId = null)
+    public Result<TicketsReport> GetTicketsReport(DateTime startDate, DateTime endDate, byte ticketTypeId = 0)
     {
         if (startDate > endDate)
         {
@@ -275,10 +284,10 @@ public class ReportsService : IReportsService
             var tickets = _ticketRepo.GetTicketsInDateRange(startDate, endDate);
             if (tickets.Count == 0)
             {
-                return ResultFactory.Fail<TicketsReport>("No tickets found");
+                return ResultFactory.Success(new TicketsReport());
             }
             var types = _ticketRepo.GetTicketTypes();
-            if (ticketTypeId.HasValue)
+            if (ticketTypeId > 0)
             {
                 types = types
                     .Where(t => t.TicketTypeID == ticketTypeId)

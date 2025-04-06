@@ -13,4 +13,5 @@ public interface IAppConfig
     ISoftwareAssetRepository GetSoftwareAssetRepository();
     ISoftwareAssetRequestRepository GetSoftwareAssetRequestRepository();
     ITicketRepository GetTicketRepository();
+    IReportsRepository GetReportsRepository();
 }
