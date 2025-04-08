@@ -40,13 +40,23 @@ public class ReportsRepository : IReportsRepository
     {
         return _context.SoftwareAssetAssignment
             .Include(s => s.SoftwareAsset)
+            .ThenInclude(s => s.AssetStatus)
+            .Include(s => s.SoftwareAsset)
+            .ThenInclude(s => s.LicenseType)
             .Include(s => s.Asset)
-            .ThenInclude(a => a.AssetAssignments)
+            .ThenInclude(a => a.AssetAssignments.Where(ass => 
+                ass.AssignmentDate >= startDate && ass.AssignmentDate <= endDate &&
+                (departmentId == 0 || ass.DepartmentID == departmentId)))
             .Include(s => s.Employee)
             .ThenInclude(e => e.Department)
-            .Where(s => (s.AssignmentDate >= startDate && s.AssignmentDate <= endDate) &&
-                        (departmentId == 0 || (s.Employee != null && s.Employee.Department != null && s.Employee.Department.DepartmentID == departmentId)) &&
-                        (licenseTypeId == 0 || s.SoftwareAsset.LicenseTypeID == licenseTypeId))
+            .Where(s => 
+                s.AssignmentDate >= startDate && s.AssignmentDate <= endDate &&
+                s.ReturnDate == null &&
+                (departmentId == 0 || (s.EmployeeID == null || s.Employee.DepartmentID == departmentId) && 
+                    (s.AssetID == null || s.Asset.AssetAssignments.Any(a => 
+                        a.DepartmentID == departmentId && 
+                        a.AssignmentDate >= startDate && a.AssignmentDate <= endDate))) &&
+                (licenseTypeId == 0 || s.SoftwareAsset.LicenseTypeID == licenseTypeId))
             .ToList();
     }
 }

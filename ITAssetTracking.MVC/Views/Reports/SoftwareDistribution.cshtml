@@ -1,0 +1,67 @@
+@model SoftwareDistributionReportModel
+
+@{
+    ViewData["Title"] = "Software Asset Distribution";
+}
+
+<form asp-action="SoftwareDistribution" method="get" class="card p-3 d-flex flex-column flex-md-row gap-3 mb-3 align-items-center">
+    <div>
+        <div class="mb-3">
+            <label asp-for="FromDate" class="form-label"></label>
+            <input asp-for="FromDate" class="form-control">
+        </div>
+        <div>
+            <label asp-for="ToDate" class="form-label"></label>
+            <input asp-for="ToDate" class="form-control">
+        </div>
+    </div>
+    <div>
+        <div class="mb-3">
+            <label asp-for="DepartmentId" class="form-label"></label>
+            <select asp-for="DepartmentId" asp-items="@Model.Departments" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+        <div>
+            <label asp-for="LicenseTypeId" class="form-label"></label>
+            <select asp-for="LicenseTypeId" asp-items="@Model.LicenseTypes" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label asp-for="Order"></label>
+        <select asp-for="Order" asp-items="@Model.OrderSelectList" class="form-select"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply</button>
+</form>
+@if (Model.SoftwareDistributionReports == null || Model.SoftwareDistributionReports.Count == 0)
+{
+    <p class="lead">No Reports found</p>
+}
+else
+{
+    foreach (var r in Model.SoftwareDistributionReports)
+    {
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2" class="table-primary fs-2">@r.DepartmentName</th>
+            </tr>
+            <tr>
+                <th>License Type</th>
+                <th>Number Of Licenses</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var i in r.Items)
+            {
+                <tr>
+                    <td>@i.LicenseTypeName</td>
+                    <td>@i.NumberOfLicenses</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    } 
+}

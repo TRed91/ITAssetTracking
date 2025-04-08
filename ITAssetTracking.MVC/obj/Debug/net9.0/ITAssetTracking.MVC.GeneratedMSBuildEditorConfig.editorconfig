@@ -152,6 +152,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/SoftwareDistribution.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Tb2Z0d2FyZURpc3RyaWJ1dGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/SoftwareStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Tb2Z0d2FyZVN0YXR1cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/Tickets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9UaWNrZXRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

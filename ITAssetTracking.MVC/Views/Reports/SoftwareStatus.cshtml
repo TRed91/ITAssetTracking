@@ -1,0 +1,67 @@
+@model SoftwareStatusReportModel
+
+@{
+    ViewData["Title"] = "Software Asset Status";
+}
+
+<form asp-action="SoftwareStatus" method="get" class="card p-3 d-flex flex-column flex-md-row gap-3 mb-3 align-items-center">
+    <div>
+        <div class="mb-3">
+            <label asp-for="FromDate" class="form-label"></label>
+            <input asp-for="FromDate" class="form-control">
+        </div>
+        <div>
+            <label asp-for="ToDate" class="form-label"></label>
+            <input asp-for="ToDate" class="form-control">
+        </div>
+    </div>
+    <div>
+        <div class="mb-3">
+            <label asp-for="DepartmentId" class="form-label"></label>
+            <select asp-for="DepartmentId" asp-items="@Model.Departments" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+        <div>
+            <label asp-for="LicenseTypeId" class="form-label"></label>
+            <select asp-for="LicenseTypeId" asp-items="@Model.LicenseTypes" class="form-select">
+                <option value="0">Any</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label asp-for="Order"></label>
+        <select asp-for="Order" asp-items="@Model.OrderSelectList" class="form-select"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply</button>
+</form>
+@if (Model.SoftwareStatusReports == null || Model.SoftwareStatusReports.Count == 0)
+{
+    <p class="lead">No Reports found</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+        <tr class="table-primary">
+            <th>License Type</th>
+            <th>Total Licenses</th>
+            <th>In Use</th>
+            <th>Storage</th>
+            <th>Repair</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.SoftwareStatusReports)
+        {
+            <tr>
+                <td>@r.AssetTypeName</td>
+                <td>@r.NumberOfAssetsTotal</td>
+                <td>@r.NumberOfAssetsInUse</td>
+                <td>@r.NumberOfAssetsStorage</td>
+                <td>@r.NumberOfAssetsRepair</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+} 

@@ -1,3 +1,4 @@
+using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Repositories;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Core.Models;
@@ -213,10 +214,10 @@ public class ReportsService : IReportsService
                         LicenseTypeName = t.LicenseTypeName,
                         NumberOfLicenses = assignments
                             .Where(s => 
-                                s.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
-                                ((s.EmployeeID != null && s.Employee.DepartmentID == d.DepartmentID) ||
-                                (s.AssetID != null && s.Asset.AssetAssignments.Any(a => 
-                                    a.DepartmentID == d.DepartmentID && a.AssignmentDate >= startDate && a.AssignmentDate <= endDate))))
+                                s.SoftwareAsset.LicenseTypeID == t.LicenseTypeID && 
+                                    (s.EmployeeID == null || s.Employee.DepartmentID == d.DepartmentID) &&
+                                    (s.AssetID == null || s.Asset.AssetAssignments.Any(a =>
+                                        a.DepartmentID == d.DepartmentID)))
                             .Sum(s => s.SoftwareAsset.NumberOfLicenses),
                     };
                     report.Items.Add(item);
@@ -255,13 +256,25 @@ public class ReportsService : IReportsService
             var reports = types.Select(t => new AssetStatusReport
             {
                 AssetTypeName = t.LicenseTypeName,
-                NumberOfAssetsTotal = assignments.Count(a => a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID),
-                NumberOfAssetsStorage = assignments.Count(a => a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
-                                                               a.Asset.AssetStatus.AssetStatusName == "Storage"),
-                NumberOfAssetsInUse = assignments.Count(a => a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
-                                                             a.Asset.AssetStatus.AssetStatusName == "In Use"),
-                NumberOfAssetsRepair = assignments.Count(a => a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
-                                                              a.Asset.AssetStatus.AssetStatusName == "Repair"),
+                
+                NumberOfAssetsTotal = assignments.Where(a => 
+                        a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID)
+                    .Sum(a => a.SoftwareAsset.NumberOfLicenses),
+                
+                NumberOfAssetsStorage = assignments.Where(a => 
+                    a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
+                    a.SoftwareAsset.AssetStatus.AssetStatusName == "Storage")
+                    .Sum(a => a.SoftwareAsset.NumberOfLicenses),
+                
+                NumberOfAssetsInUse = assignments.Where(a => 
+                    a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
+                    a.SoftwareAsset.AssetStatus.AssetStatusName == "In Use")
+                    .Sum(a => a.SoftwareAsset.NumberOfLicenses),
+                
+                NumberOfAssetsRepair = assignments.Where(a => 
+                    a.SoftwareAsset.LicenseTypeID == t.LicenseTypeID &&
+                    a.SoftwareAsset.AssetStatus.AssetStatusName == "Repair")
+                    .Sum(a => a.SoftwareAsset.NumberOfLicenses),
             }).ToList();
 
             return ResultFactory.Success(reports);
@@ -312,7 +325,9 @@ public class ReportsService : IReportsService
                 {
                     TicketTypeName = type.TicketTypeName,
                     NumberOfTickets = tickets.Count(t => t.TicketTypeID == type.TicketTypeID),
-                    AvgResolutionTimeInDays = (int)tickets.Average(t => t.DateClosed.Value.Subtract(t.DateReported).Days),
+                    AvgResolutionTimeInDays = CalculateAverageTicketResolutionTime(tickets
+                            .Where(t => t.TicketTypeID == type.TicketTypeID)
+                            .ToList()),
                     CancelledTickets = tickets
                         .Count(t => t.TicketTypeID == type.TicketTypeID && 
                                     t.TicketResolution.TicketResolutionName == "Cancelled"),
@@ -334,5 +349,16 @@ public class ReportsService : IReportsService
         {
             return ResultFactory.Fail<TicketsReport>(ex.Message, ex);
         }
+    }
+
+    private int CalculateAverageTicketResolutionTime(List<Ticket> tickets)
+    {
+        if (tickets.Count == 0)
+        {
+            return 0;
+        }
+
+        return (int)tickets
+            .Average(t => t.DateClosed.Value.Subtract(t.DateReported).Days);
     }
 }

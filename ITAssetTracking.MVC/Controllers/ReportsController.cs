@@ -10,17 +10,23 @@ public class ReportsController : Controller
     private readonly IReportsService _reportsService;
     private readonly IDepartmentService _departmentService;
     private readonly IAssetService _assetService;
+    private readonly ISoftwareAssetService _softwareAssetService;
+    private readonly ITicketService _ticketService;
     private readonly Serilog.ILogger _logger;
 
     public ReportsController(
         IReportsService reportsService, 
         IDepartmentService departmentService,
         IAssetService assetService,
+        ISoftwareAssetService softwareAssetService,
+        ITicketService ticketService,
         Serilog.ILogger logger)
     {
         _reportsService = reportsService;
         _departmentService = departmentService;
         _assetService = assetService;
+        _softwareAssetService = softwareAssetService;
+        _ticketService = ticketService;
         _logger = logger;
     }
     
@@ -159,6 +165,121 @@ public class ReportsController : Controller
         }
         
         model.AssetValuesReport = report;
+        
+        return View(model);
+    }
+
+    public IActionResult SoftwareDistribution(SoftwareDistributionReportModel model)
+    {
+        var reportData = _reportsService.GetSoftwareAssetDistributionReport(
+            model.FromDate, model.ToDate, model.DepartmentId, model.LicenseTypeId);
+
+        if (!reportData.Ok)
+        {
+            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
+            return RedirectToAction("Index");
+        }
+
+        var licenseTypes = _softwareAssetService.GetLicenseTypes().Data;
+        var departments = _departmentService.GetDepartments().Data;
+
+        var reports = reportData.Data;
+        switch (model.Order)
+        {
+            case SoftwareDistributionOrder.NumberOfLicenses:
+                foreach (var r in reports)
+                {
+                    r.Items = r.Items
+                        .OrderByDescending(i => i.NumberOfLicenses)
+                        .ToList();
+                }
+                break;
+            default:
+                foreach (var r in reports)
+                {
+                    r.Items = r.Items
+                        .OrderBy(i => i.LicenseTypeName)
+                        .ToList();
+                }
+                break;
+        }
+        
+        model.SoftwareDistributionReports = reports;
+        model.Departments = new SelectList(departments, "DepartmentID", "DepartmentName");
+        model.LicenseTypes = new SelectList(licenseTypes, "LicenseTypeID", "LicenseTypeName");
+        
+        return View(model);
+    }
+
+    public IActionResult SoftwareStatus(SoftwareStatusReportModel model)
+    {
+        var reportData = _reportsService.GetSoftwareAssetStatusReport(
+            model.FromDate, model.ToDate, model.DepartmentId, model.LicenseTypeId);
+
+        if (!reportData.Ok)
+        {
+            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
+            return RedirectToAction("Index");
+        }
+
+        var licenseTypes = _softwareAssetService.GetLicenseTypes().Data;
+        var departments = _departmentService.GetDepartments().Data;
+
+        var reports = reportData.Data;
+        switch (model.Order)
+        {
+            case SoftwareStatusOrder.TotalLicenses:
+                reports = reports
+                    .OrderByDescending(r => r.NumberOfAssetsTotal)
+                    .ToList();
+                break;
+            case SoftwareStatusOrder.Storage:
+                reports = reports
+                    .OrderByDescending(r => r.NumberOfAssetsStorage)
+                    .ToList();
+                break;
+            case SoftwareStatusOrder.Repair:
+                reports = reports
+                    .OrderByDescending(r => r.NumberOfAssetsRepair)
+                    .ToList();
+                break;
+            case SoftwareStatusOrder.InUse:
+                reports = reports
+                    .OrderByDescending(r => r.NumberOfAssetsInUse)
+                    .ToList();
+                break;
+            default:
+                reports = reports
+                    .OrderBy(r => r.AssetTypeName)
+                    .ToList();
+                break;
+        }
+        
+        model.SoftwareStatusReports = reports;
+        model.Departments = new SelectList(departments, "DepartmentID", "DepartmentName");
+        model.LicenseTypes = new SelectList(licenseTypes, "LicenseTypeID", "LicenseTypeName");
+        
+        return View(model);
+    }
+
+    public IActionResult Tickets(TicketReportModel model)
+    {
+        var reportData = _reportsService.GetTicketsReport(
+            model.FromDate, model.ToDate, model.TicketTypeId);
+        
+        if (!reportData.Ok)
+        {
+            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
+            return RedirectToAction("Index");
+        }
+        
+        var ticketTypes = _ticketService.GetTicketTypes().Data;
+        
+        model.TicketTypes = new SelectList(ticketTypes, "TicketTypeID", "TicketTypeName");
+        model.Report = reportData.Data;
         
         return View(model);
     }
