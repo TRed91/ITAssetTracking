@@ -41,6 +41,7 @@ public class AssetRequestController : Controller
         _logger = logger;
     }
     
+    [Authorize(Roles = "Admin, AssetManager, DepartmentManager")]
     public IActionResult Index()
     {
         var requestsResult = _assetRequestService.GetOpenAssetRequests();
@@ -65,6 +66,7 @@ public class AssetRequestController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Assign(int requestId)
     {
         var requestResult = _assetRequestService.GetAssetRequestById(requestId);
@@ -91,6 +93,7 @@ public class AssetRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Assign(AssetRequestModel model)
     {
         if (!ModelState.IsValid)
@@ -118,6 +121,7 @@ public class AssetRequestController : Controller
     }
     
     [HttpGet]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Deny(int requestId)
     {
         var requestResult = _assetRequestService.GetAssetRequestById(requestId);
@@ -135,6 +139,7 @@ public class AssetRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Deny(AssetRequestModel model)
     {
         if (!ModelState.IsValid)
@@ -161,6 +166,7 @@ public class AssetRequestController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Admin, AssetManager, DepartmentManager")]
     public IActionResult AvailableAssets(int departmentId, AvailableAssetsModel model)
     {
         var assetsResult = _assetRequestService.GetAvailableAssets();
@@ -192,6 +198,7 @@ public class AssetRequestController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     public IActionResult RequestAsset(int departmentId, long assetId, AssetRequestEmployeesModel employeesModel)
     {
         var departmentResult = _departmentService.GetDepartmentById(departmentId);
@@ -228,6 +235,7 @@ public class AssetRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     public IActionResult RequestAsset(AssetRequestEmployeesModel employeesModel)
     {
         var request = new AssetRequest
@@ -250,7 +258,7 @@ public class AssetRequestController : Controller
         return RedirectToAction("DepartmentAssets", "Asset");
     }
 
-    [Authorize(Roles = "DepartmentManager")]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     public async Task<IActionResult> RequestReassignment(long assetId)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);

@@ -3,12 +3,14 @@ using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Core.Utility;
 using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Controllers;
 
+[Authorize(Roles = "Admin, HelpDescTechnician")]
 public class TicketController : Controller
 {
     private readonly ITicketService _ticketService;
@@ -34,6 +36,7 @@ public class TicketController : Controller
         _logger = logger;
     }
     
+    [Authorize(Roles = "Admin, HelpDescTechnician, Auditor")]
     public IActionResult Index(TicketsIndexModel model, int page = 1)
     {
         Result<List<Ticket>> ticketsResult;
@@ -328,6 +331,7 @@ public class TicketController : Controller
         return RedirectToAction("Details", new { ticketId });
     }
 
+    [Authorize(Roles = "Admin, HelpDescTechnician, Auditor")]
     public IActionResult Details(int ticketId)
     {
         var ticket = _ticketService.GetTicket(ticketId);

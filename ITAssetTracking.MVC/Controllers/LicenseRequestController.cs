@@ -47,6 +47,7 @@ public class LicenseRequestController : Controller
         _logger = logger;
     }
     
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, DepartmentManager")]
     public IActionResult Index()
     {
         var requestsResult = _assetRequestService.GetOpenAssetRequests();
@@ -71,6 +72,7 @@ public class LicenseRequestController : Controller
     }
     
     [HttpGet]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Assign(int requestId)
     {
         var requestResult = _softwareRequestService.GetSoftwareRequestById(requestId);
@@ -97,6 +99,7 @@ public class LicenseRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Assign(SwAssetRequestModel model)
     {
         if (!ModelState.IsValid)
@@ -124,6 +127,7 @@ public class LicenseRequestController : Controller
     }
     
     [HttpGet]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Deny(int requestId)
     {
         var requestResult = _softwareRequestService.GetSoftwareRequestById(requestId);
@@ -141,6 +145,7 @@ public class LicenseRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Deny(SwAssetRequestModel model)
     {
         if (!ModelState.IsValid)
@@ -167,6 +172,7 @@ public class LicenseRequestController : Controller
         return RedirectToAction("Index");
     }
     
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, DepartmentManager")]
     public IActionResult AvailableLicenses(int departmentId, AvailableLicensesModel model)
     {
         var assetsResult = _softwareRequestService.GetAvailableAssets();
@@ -198,6 +204,7 @@ public class LicenseRequestController : Controller
     }
     
     [HttpGet]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     public IActionResult RequestLicense(int departmentId, int softwareAssetId, SwAssetRequestAssignmentModel assignmentModel)
     {
         var departmentResult = _departmentService.GetDepartmentById(departmentId);
@@ -237,6 +244,7 @@ public class LicenseRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     public IActionResult RequestLicense(SwAssetRequestAssignmentModel assignmentModel)
     {
         var request = new SoftwareAssetRequest
@@ -259,7 +267,7 @@ public class LicenseRequestController : Controller
         return RedirectToAction("DepartmentAssets", "Asset");
     }
     
-    [Authorize(Roles = "DepartmentManager")]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     public async Task<IActionResult> RequestReassignment(int softwareAssetId)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);

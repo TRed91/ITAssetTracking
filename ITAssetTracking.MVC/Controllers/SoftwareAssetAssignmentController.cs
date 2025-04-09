@@ -2,11 +2,13 @@
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Core.Utility;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Controllers;
 
+[Authorize(Roles = "Admin, SoftwareLicenseManager")]
 public class SoftwareAssetAssignmentController : Controller
 {
     private readonly ISoftwareAssetAssignmentService _swAssignmentService;

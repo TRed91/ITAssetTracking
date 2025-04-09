@@ -2,11 +2,13 @@
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITAssetTracking.MVC.Controllers;
 
+[Authorize(Roles = "Admin, HelpDescTechnician")]
 public class TicketNotesController : Controller
 {
     private readonly ITicketService _ticketService;

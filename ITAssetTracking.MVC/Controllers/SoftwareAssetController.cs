@@ -1,12 +1,14 @@
 ﻿using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Controllers;
 
+[Authorize]
 public class SoftwareAssetController : Controller
 {
     private readonly ISoftwareAssetService _swaService;
@@ -65,6 +67,7 @@ public class SoftwareAssetController : Controller
         return RedirectToAction("Index");
     }
     
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor")]
     public IActionResult All(SoftwareFilterModel model)
     {
         // fetch data
@@ -126,13 +129,18 @@ public class SoftwareAssetController : Controller
         return View(model);
     }
     
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor, DepartmentManager")]
     public async Task<IActionResult> DepartmentAssets(DepartmentSoftwareAssetsModel model)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var roles = await _userManager.GetRolesAsync(user);
 
         int departmentId;
-        model.EnableDepSelectList = roles.Any(r => r == "Admin" || r == "Auditor");
+        
+        // Enable the Department select list if the user has any of the roles "admin, auditor or softwarelicensemanager"
+        model.EnableDepSelectList = roles.Any(r => 
+            r == "Admin" || r == "Auditor" || r == "SoftwareLicenseManager");
+        
         if (!model.EnableDepSelectList)
         {
             // if access to one department, department id becomes the logged in employee's department id
@@ -237,6 +245,7 @@ public class SoftwareAssetController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult SoftwareSelect(SoftwareSelectModel model)
     {
         var software = _swaService.GetLicenseTypesByManufacturers();
@@ -267,6 +276,7 @@ public class SoftwareAssetController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Add(int licenseTypeId)
     {
         var licenseType = _swaService.GetLicenseTypeById(licenseTypeId);
@@ -288,6 +298,7 @@ public class SoftwareAssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Add(SoftwareAssetFormModel model)
     {
         if (!ModelState.IsValid)
@@ -317,6 +328,7 @@ public class SoftwareAssetController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Edit(int assetId)
     {
         var asset = _swaService.GetSoftwareAsset(assetId);
@@ -336,6 +348,7 @@ public class SoftwareAssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Edit(int assetId, SoftwareAssetFormModel model)
     {
         if (!ModelState.IsValid)
@@ -362,6 +375,7 @@ public class SoftwareAssetController : Controller
     }
     
     [HttpGet]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult Delete(int assetId)
     {
         var assetResult = _swaService.GetSoftwareAsset(assetId);
@@ -376,6 +390,7 @@ public class SoftwareAssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     public IActionResult DeleteAsset(int assetId)
     {
         var deleteResult = _swaService.DeleteSoftwareAsset(assetId);

@@ -120,6 +120,7 @@ public class EmployeeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, AssetManager, DepartmentManager, HelpDescTechnician, Auditor")]
     public IActionResult Index(SelectEmployeeModel model)
     {
         Result<List<Employee>> employeesResult;

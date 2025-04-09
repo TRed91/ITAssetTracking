@@ -1,5 +1,6 @@
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -30,11 +31,13 @@ public class ReportsController : Controller
         _logger = logger;
     }
     
+    [Authorize(Roles = "Admin, AssetManager, SoftwareLicenseManager, Auditor, HelpDescTechnician")]
     public IActionResult Index()
     {
         return View();
     }
 
+    [Authorize(Roles = "Admin, AssetManager, Auditor")]
     public IActionResult HardwareDistribution(AssetDistributionReportModel model)
     {
         var reportData = _reportsService.GetAssetDistributionReport(
@@ -78,6 +81,7 @@ public class ReportsController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, AssetManager, Auditor")]
     public IActionResult HardwareStatus(AssetStatusReportModel model)
     {
         var reportData = _reportsService.GetAssetStatusReport(
@@ -130,6 +134,7 @@ public class ReportsController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, AssetManager, Auditor")]
     public IActionResult HardwareValue(AssetValueReportModel model)
     {
         var reportData = _reportsService.GetAssetValuesReport(model.FromDate, model.ToDate);
@@ -169,6 +174,7 @@ public class ReportsController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor")]
     public IActionResult SoftwareDistribution(SoftwareDistributionReportModel model)
     {
         var reportData = _reportsService.GetSoftwareAssetDistributionReport(
@@ -212,6 +218,7 @@ public class ReportsController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor")]
     public IActionResult SoftwareStatus(SoftwareStatusReportModel model)
     {
         var reportData = _reportsService.GetSoftwareAssetStatusReport(
@@ -264,6 +271,7 @@ public class ReportsController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, HelpDescTechnician, Auditor")]
     public IActionResult Tickets(TicketReportModel model)
     {
         var reportData = _reportsService.GetTicketsReport(

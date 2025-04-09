@@ -13,6 +13,7 @@ using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace ITAssetTracking.MVC.Controllers;
 
+[Authorize]
 public class AssetController : Controller
 {
     private readonly IAssetService _assetService;
@@ -75,6 +76,7 @@ public class AssetController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, AssetManager, Auditor, HelpDescTechnician")]
     public IActionResult All(AssetFilterModel model)
     {
         // fetch data
@@ -192,13 +194,18 @@ public class AssetController : Controller
         return View(model);
     }
     
+    [Authorize(Roles = "Admin, AssetManager, Auditor, HelpDescTechnician, DepartmentManager")]
     public async Task<IActionResult> DepartmentAssets(DepartmentAssetsModel model)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var roles = await _userManager.GetRolesAsync(user);
 
         int departmentId;
-        model.EnableDepSelectList = roles.Any(r => r == "Admin" || r == "Auditor");
+        
+        // Enable the Department select list if the user has any of the roles "admin, auditor or assetmanager"
+        model.EnableDepSelectList = roles.Any(r => 
+            r == "Admin" || r == "Auditor" || r == "AssetManager");
+        
         if (!model.EnableDepSelectList)
         {
             // if access to one department, department id becomes the logged in employee's department id
@@ -313,6 +320,7 @@ public class AssetController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Manufacturers(ManufacturersModel model)
     {
         var manufacturersResult = _assetService.GetManufacturers();
@@ -334,6 +342,7 @@ public class AssetController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Add(int manufacturerId)
     {
         string? manufacturerName = null;
@@ -364,6 +373,7 @@ public class AssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Add(AssetFormModel formModel)
     {
         if (!ModelState.IsValid)
@@ -401,6 +411,7 @@ public class AssetController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Edit(long assetId)
     {
         var assetResult = _assetService.GetAssetById(assetId);
@@ -426,6 +437,7 @@ public class AssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Edit(long assetId, AssetFormModel model)
     {
         if (ModelState.IsValid)
@@ -461,6 +473,7 @@ public class AssetController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult Delete(long assetId)
     {
         var assetResult = _assetService.GetAssetById(assetId);
@@ -475,6 +488,7 @@ public class AssetController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, AssetManager")]
     public IActionResult DeleteAsset(long assetId)
     {
         var deleteResult = _assetService.DeleteAsset(assetId);
