@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITAssetTracking.MVC.Controllers;
 
-[Authorize(Roles = "Admin, HelpDescTechnician")]
 public class TicketController : Controller
 {
     private readonly ITicketService _ticketService;
@@ -124,6 +123,7 @@ public class TicketController : Controller
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Add(long assetId)
     {
         var asset = _assetService.GetAssetById(assetId);
@@ -155,6 +155,7 @@ public class TicketController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize]
     public IActionResult Add(TicketFormModel model)
     {
         if (!ModelState.IsValid)
@@ -180,6 +181,7 @@ public class TicketController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     public IActionResult Edit(int ticketId)
     {
         var ticket = _ticketService.GetTicket(ticketId);
@@ -204,6 +206,7 @@ public class TicketController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     public IActionResult Edit(int ticketId, TicketFormModel model)
     {
         if (!ModelState.IsValid)
@@ -236,6 +239,7 @@ public class TicketController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     public async Task<IActionResult> ChangeAssignedEmployee(int ticketId)
     {
         var users = await _userManager.GetUsersInRoleAsync("HelpDescTechnician");
@@ -255,6 +259,7 @@ public class TicketController : Controller
     }
     
     [HttpGet]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     public IActionResult ChangeReportingEmployee(int ticketId, SelectReportingEmployeeModel model)
     {
         Result<List<Employee>> employeesResult;
@@ -299,6 +304,7 @@ public class TicketController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     public IActionResult ChangeReportingEmployee(int employeeId, int ticketId)
     {
         var result = _ticketService.UpdateReportingEmployee(ticketId, employeeId);
@@ -316,6 +322,7 @@ public class TicketController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     public IActionResult ChangeAssignedEmployee(int employeeId, int ticketId)
     {
         var result = _ticketService.UpdateAssignedEmployee(ticketId, employeeId);
@@ -331,7 +338,7 @@ public class TicketController : Controller
         return RedirectToAction("Details", new { ticketId });
     }
 
-    [Authorize(Roles = "Admin, HelpDescTechnician, Auditor")]
+    [Authorize]
     public IActionResult Details(int ticketId)
     {
         var ticket = _ticketService.GetTicket(ticketId);
