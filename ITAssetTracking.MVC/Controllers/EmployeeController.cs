@@ -44,7 +44,7 @@ public class EmployeeController : Controller
         var departmentsResult = _departmentService.GetDepartments();
         if (!departmentsResult.Ok)
         {
-            _logger.Error(departmentsResult.Message);
+            _logger.Error(departmentsResult.Exception, departmentsResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , departmentsResult.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -70,7 +70,7 @@ public class EmployeeController : Controller
         var passwordResult = _employeeService.GeneratePassword(employee.LastName);
         if (!passwordResult.Ok)
         {
-            _logger.Error(passwordResult.Message);
+            _logger.Error(passwordResult.Exception, passwordResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, passwordResult.Message));
             return View(model);
         }
@@ -79,7 +79,7 @@ public class EmployeeController : Controller
         var addEmployeeResult = _employeeService.AddEmployee(employee);
         if (!addEmployeeResult.Ok)
         {
-            _logger.Error("Error adding user: " + addEmployeeResult.Exception);
+            _logger.Error(addEmployeeResult.Exception, "Error adding user: " + addEmployeeResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addEmployeeResult.Message));
             return View(model);
         }
@@ -92,7 +92,7 @@ public class EmployeeController : Controller
         var addPasswordResult = _employeeService.AddEmployeePassword(employeePassword);
         if (!addPasswordResult.Ok)
         {
-            _logger.Error("Error adding password: " + addPasswordResult.Exception);
+            _logger.Error(addPasswordResult.Exception, "Error adding password: " + addPasswordResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , addPasswordResult.Message));
             _employeeService.DeleteEmployee(employee.EmployeeID);
             return View(model);
@@ -135,7 +135,7 @@ public class EmployeeController : Controller
         }
         if (!employeesResult.Ok)
         {
-            _logger.Error("Error retrieving employees list: " + employeesResult.Exception);
+            _logger.Error(employeesResult.Exception, "Error retrieving employees list: " + employeesResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , employeesResult.Message));
             return RedirectToAction("Index", "Home");
         }

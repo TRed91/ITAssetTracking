@@ -62,7 +62,7 @@ public class SoftwareAssetController : Controller
         
         var errMsg = licenseTypes.Message ?? statuses.Message ?? manufacturers.Message ?? "Unknown Error";
         var ex = licenseTypes.Exception ?? statuses.Exception ?? manufacturers.Exception;
-        _logger.Error($"Filter failed to fetch data: {errMsg} => {ex}");
+        _logger.Error(ex, $"Filter failed to fetch data: {errMsg}");
         ViewData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
         return RedirectToAction("Index");
     }
@@ -75,7 +75,7 @@ public class SoftwareAssetController : Controller
         
         if (!assetsResult.Ok)
         {
-            _logger.Error("Error retrieving data: " + assetsResult.Exception);
+            _logger.Error(assetsResult.Exception, "Error retrieving data: " + assetsResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Index");
@@ -88,7 +88,7 @@ public class SoftwareAssetController : Controller
         {
             string errMsg = licenseTypes.Message ?? manufacturers.Message ?? statuses.Message ?? "Unknown Error";
             var ex = licenseTypes.Exception ?? statuses.Exception ?? manufacturers.Exception;
-            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
+            _logger.Error(ex, $"Error retrieving data: {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Index", "Home");
@@ -147,9 +147,8 @@ public class SoftwareAssetController : Controller
             var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
             if (!employeeResult.Ok)
             {
-                var errMsg = employeeResult.Message;
-                _logger.Error("Error retrieving data: " + errMsg);
-                TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
+                _logger.Error(employeeResult.Exception, "Error retrieving data: " + employeeResult.Message);
+                TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, employeeResult.Message));
                 return RedirectToAction("Index", "Asset");
             }
             departmentId = employeeResult.Data.DepartmentID;
@@ -177,7 +176,7 @@ public class SoftwareAssetController : Controller
             var ex = assetsResult.Exception ?? licenseTypesRes.Exception ?? 
                 manufacturersRes.Exception ?? statusesRes.Exception ?? departmentsRes.Exception;
             
-            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
+            _logger.Error(ex, $"Error retrieving data: {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("Index", "SoftwareAsset");
         }
@@ -251,7 +250,7 @@ public class SoftwareAssetController : Controller
         var software = _swaService.GetLicenseTypesByManufacturers();
         if (!software.Ok)
         {
-            _logger.Error($"Error retrieving data: {software.Message} => {software.Exception}");
+            _logger.Error(software.Exception, $"Error retrieving data: {software.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, software.Message));
             return RedirectToAction("Index", "SoftwareAsset");
         }
@@ -282,7 +281,7 @@ public class SoftwareAssetController : Controller
         var licenseType = _swaService.GetLicenseTypeById(licenseTypeId);
         if (!licenseType.Ok)
         {
-            _logger.Error($"Error retrieving data: {licenseType.Message} => {licenseType.Exception}");
+            _logger.Error(licenseType.Exception, $"Error retrieving data: {licenseType.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, licenseType.Message));
             return RedirectToAction("Index", "SoftwareAsset");
         }
@@ -316,7 +315,7 @@ public class SoftwareAssetController : Controller
         var addResult = _swaService.AddSoftwareAsset(softwareAsset);
         if (!addResult.Ok)
         {
-            _logger.Error($"Error adding software asset: {addResult.Message} => {addResult.Exception}");
+            _logger.Error(addResult.Exception, $"Error adding software asset: {addResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, addResult.Message));
             return RedirectToAction("Add", new { licenseTypeId = model.LicenseTypeId });
         }
@@ -334,7 +333,7 @@ public class SoftwareAssetController : Controller
         var asset = _swaService.GetSoftwareAsset(assetId);
         if (!asset.Ok)
         {
-            _logger.Error($"Error retrieving data: {asset.Message} => {asset.Exception}");
+            _logger.Error(asset.Exception, $"Error retrieving data: {asset.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, asset.Message));
             return RedirectToAction("Details", new  { assetId });
         }
@@ -363,7 +362,7 @@ public class SoftwareAssetController : Controller
         var updateResult = _swaService.UpdateSoftwareAsset(softwareAsset);
         if (!updateResult.Ok)
         {
-            _logger.Error($"Error updating software asset: {updateResult.Message} => {updateResult.Exception}");
+            _logger.Error(updateResult.Exception, $"Error updating software asset: {updateResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, updateResult.Message));
             return RedirectToAction("Details", new { assetId = softwareAsset.SoftwareAssetID });
         }
@@ -381,7 +380,7 @@ public class SoftwareAssetController : Controller
         var assetResult = _swaService.GetSoftwareAsset(assetId);
         if (!assetResult.Ok)
         {
-            _logger.Error($"Error retrieving asset: {assetResult.Message} => {assetResult.Exception}");
+            _logger.Error(assetResult.Exception, $"Error retrieving asset: {assetResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
             return RedirectToAction("Details", new { assetId });
         }
@@ -396,7 +395,7 @@ public class SoftwareAssetController : Controller
         var deleteResult = _swaService.DeleteSoftwareAsset(assetId);
         if (!deleteResult.Ok)
         {
-            _logger.Error($"Error deleting asset: {deleteResult.Message}  => {deleteResult.Exception}");
+            _logger.Error(deleteResult.Exception, $"Error deleting asset: {deleteResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, deleteResult.Message));
             return RedirectToAction("Details", new { assetId });
         }
@@ -413,7 +412,7 @@ public class SoftwareAssetController : Controller
         
         if (!assetResult.Ok)
         {
-            _logger.Error("Error retrieving data: " + assetResult.Message + " => " + assetResult.Exception);
+            _logger.Error(assetResult.Exception, "Error retrieving data: " + assetResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, assetResult.Message));
             return RedirectToAction("Index", "Asset");
         }

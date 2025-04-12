@@ -49,7 +49,8 @@ public class TicketController : Controller
         }
         if (!ticketsResult.Ok)
         {
-            _logger.Error($"There was an error retrieving tickets data: {ticketsResult.Message} => {ticketsResult.Exception}");
+            _logger.Error(ticketsResult.Exception, 
+                $"There was an error retrieving tickets data: {ticketsResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, $"There was an error retrieving tickets data: {ticketsResult.Message}"));
             return RedirectToAction("Index", "Home");
@@ -66,7 +67,7 @@ public class TicketController : Controller
             var errMsg = $"There was an error retrieving data: " +
                          $"{ ticketPriorities.Message ?? ticketTypes.Message ?? ticketStatuses.Message }";
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
-            _logger.Error(errMsg + " => " + ex);
+            _logger.Error(ex, errMsg);
             return RedirectToAction("Index", "Home");
         }
 
@@ -136,7 +137,7 @@ public class TicketController : Controller
             var ex = asset.Exception ?? employee.Exception ?? types.Exception ?? priorities.Exception;
             var errMsg = asset.Message ?? employee.Message ?? 
                 types.Message ?? priorities.Message ?? "Unknown Error";
-            _logger.Error(errMsg + " => " + ex);
+            _logger.Error(ex, errMsg);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("Index", "Home");
         }
@@ -170,7 +171,7 @@ public class TicketController : Controller
         var result = _ticketService.AddTicket(ticket);
         if (!result.Ok)
         {
-            _logger.Error($"There was an error adding ticket: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"There was an error adding ticket: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Add", new {assetId = model.AssetId});
         }
@@ -187,7 +188,7 @@ public class TicketController : Controller
         var ticket = _ticketService.GetTicket(ticketId);
         if (!ticket.Ok)
         {
-            _logger.Error($"There was an error retrieving ticket details: {ticket.Message} => {ticket.Exception}");
+            _logger.Error(ticket.Exception, $"There was an error retrieving ticket details: {ticket.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, ticket.Message));
             return RedirectToAction("Details", new { ticketId });
         }
@@ -222,13 +223,11 @@ public class TicketController : Controller
             return View(model);
         }
         var ticket = model.ToEntity();
-        Console.WriteLine("===model====> " + model.TicketTypeId);
-        Console.WriteLine("===entity===> " + ticket.TicketTypeID);
         
         var result = _ticketService.UpdateTicket(ticket);
         if (!result.Ok)
         {
-            _logger.Error($"There was an error editing ticket: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"There was an error editing ticket: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Edit", new { ticketId });
         }
@@ -274,7 +273,7 @@ public class TicketController : Controller
         }
         if (!employeesResult.Ok)
         {
-            _logger.Error("Error retrieving employees list: " + employeesResult.Exception);
+            _logger.Error(employeesResult.Exception, "Error retrieving employees list: " + employeesResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , employeesResult.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -310,7 +309,7 @@ public class TicketController : Controller
         var result = _ticketService.UpdateReportingEmployee(ticketId, employeeId);
         if (!result.Ok)
         {
-            _logger.Error($"There was an error updating reporting employee: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"There was an error updating reporting employee: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Details", new { ticketId });
         }
@@ -328,7 +327,7 @@ public class TicketController : Controller
         var result = _ticketService.UpdateAssignedEmployee(ticketId, employeeId);
         if (!result.Ok)
         {
-            _logger.Error($"There was an error updating ticket assignment: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"There was an error updating ticket assignment: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Details", new { ticketId });
         }
@@ -344,7 +343,7 @@ public class TicketController : Controller
         var ticket = _ticketService.GetTicket(ticketId);
         if (!ticket.Ok)
         {
-            _logger.Error($"There was an error getting ticket details: {ticket.Message} => {ticket.Exception}");
+            _logger.Error(ticket.Exception, $"There was an error getting ticket details: {ticket.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, ticket.Message));
             return RedirectToAction("Index", "Home");
         }

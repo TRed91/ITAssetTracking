@@ -45,7 +45,7 @@ public class TicketNotesController : Controller
         var result = _ticketService.AddTicketNotes(note);
         if (!result.Ok)
         {
-            _logger.Error($"Error adding ticket notes: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"Error adding ticket notes: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Details", "Ticket", new { ticketId = model.TicketId });
         }
@@ -61,7 +61,7 @@ public class TicketNotesController : Controller
         var ticket = _ticketService.GetTicketNotes(ticketNoteId);
         if (!ticket.Ok)
         {
-            _logger.Error($"Error editing ticket notes: {ticket.Message} => {ticket.Exception}");
+            _logger.Error(ticket.Exception, $"Error editing ticket notes: {ticket.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, ticket.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -86,7 +86,7 @@ public class TicketNotesController : Controller
         var result = _ticketService.UpdateTicketNotes(note);
         if (!result.Ok)
         {
-            _logger.Error($"Error updating ticket notes: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"Error updating ticket notes: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Details", "Ticket", new { ticketId = model.TicketId });
         }
@@ -102,7 +102,7 @@ public class TicketNotesController : Controller
         var ticket = _ticketService.GetTicketNotes(ticketNoteId);
         if (!ticket.Ok)
         {
-            _logger.Error($"Error deleting ticket notes: {ticket.Message} => {ticket.Exception}");
+            _logger.Error(ticket.Exception, $"Error deleting ticket notes: {ticket.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, ticket.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -117,7 +117,7 @@ public class TicketNotesController : Controller
         var result = _ticketService.DeleteTicketNotes((int)model.TicketNoteId);
         if (!result.Ok)
         {
-            _logger.Error($"Error deleting ticket notes: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"Error deleting ticket notes: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Details", "Ticket", new { ticketId = model.TicketId });
         }

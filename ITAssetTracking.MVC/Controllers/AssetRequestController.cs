@@ -50,7 +50,7 @@ public class AssetRequestController : Controller
         {
             var errMsg = requestsResult.Message ?? swRequestsResult.Message ?? "Unknown Error";
             var ex = requestsResult.Exception ?? swRequestsResult.Exception;
-            _logger.Error($"Failed to get open asset requests: {errMsg} => {ex}");
+            _logger.Error(ex, $"Failed to get open asset requests: {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("Index", "Home");
         }
@@ -76,7 +76,7 @@ public class AssetRequestController : Controller
         {
             var errMsg = requestResult.Message ?? openAssignmentsResult.Message ?? "Unknown Error";
             var ex = requestResult.Exception ?? openAssignmentsResult.Exception;
-            _logger.Error($"Failed to fetch Data: {requestId}:  {errMsg} => {ex}");
+            _logger.Error(ex, $"Failed to fetch Data: {requestId}:  {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("Index");
         }
@@ -107,7 +107,7 @@ public class AssetRequestController : Controller
         var result = _assetRequestService.ResolveRequest(model.AssetRequestId, RequestResultEnum.Confirmed, model.Note);
         if (!result.Ok)
         {
-            _logger.Error($"Failed to add asset assignment: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"Failed to add asset assignment: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Assign", new { requestId = model.AssetRequestId });
         }
@@ -127,7 +127,8 @@ public class AssetRequestController : Controller
         var requestResult = _assetRequestService.GetAssetRequestById(requestId);
         if (!requestResult.Ok)
         {
-            _logger.Error($"Failed to get asset request with id: {requestId}:  {requestResult.Message} => {requestResult.Exception}");
+            _logger.Error(requestResult.Exception, 
+                $"Failed to get asset request with id: {requestId}:  {requestResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, requestResult.Message));
             return RedirectToAction("Index");
         }
@@ -153,7 +154,7 @@ public class AssetRequestController : Controller
         var result = _assetRequestService.ResolveRequest(model.AssetRequestId, RequestResultEnum.Denied, model.Note);
         if (!result.Ok)
         {
-            _logger.Error($"Failed to deny request: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"Failed to deny request: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, result.Message));
             return RedirectToAction("Deny", new { requestId = model.AssetRequestId });
         }
@@ -172,7 +173,7 @@ public class AssetRequestController : Controller
         var assetsResult = _assetRequestService.GetAvailableAssets();
         if (!assetsResult.Ok)
         {
-            _logger.Error($"Failed to get available assets: {assetsResult.Message} => {assetsResult.Exception}");
+            _logger.Error(assetsResult.Exception, $"Failed to get available assets: {assetsResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, assetsResult.Message));
             return RedirectToAction("Index", "Asset");
@@ -209,7 +210,7 @@ public class AssetRequestController : Controller
             var ex = departmentResult.Exception ?? assetResult.Exception;
             string errMsg = "There was an error retrieving data: " + 
                             (departmentResult.Message ?? assetResult.Message ?? "Unknown Error");
-            _logger.Error($"Failed to get employees for department {departmentId}: {errMsg} => {ex}");
+            _logger.Error(ex, $"Failed to get employees for department {departmentId}: {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, errMsg));
             return RedirectToAction("AvailableAssets", new { departmentId });
         }
@@ -247,7 +248,7 @@ public class AssetRequestController : Controller
         var addRequestResult = _assetRequestService.AddAssetRequest(request);
         if (!addRequestResult.Ok)
         {
-            _logger.Error($"Failed to create asset request: {addRequestResult.Message} => {addRequestResult.Exception}");
+            _logger.Error(addRequestResult.Exception, $"Failed to create asset request: {addRequestResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, addRequestResult.Message));
             return RedirectToAction("AvailableAssets", new { departmentId = employeesModel.DepartmentID });
         }
@@ -265,7 +266,8 @@ public class AssetRequestController : Controller
         var employee = _employeeService.GetEmployeeById(user.EmployeeID);
         if (!employee.Ok)
         {
-            _logger.Error($"Failed to get employee with id {user.EmployeeID}: {employee.Message} => {employee.Exception}");
+            _logger.Error(employee.Exception, 
+                $"Failed to get employee with id {user.EmployeeID}: {employee.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, employee.Message));
             return RedirectToAction("Details", "Asset", new { assetId });
         }

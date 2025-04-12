@@ -48,7 +48,7 @@ public class SoftwareAssetAssignmentController : Controller
         }
         if (!employeesResult.Ok)
         {
-            _logger.Error("Error retrieving employees list: " + employeesResult.Exception);
+            _logger.Error(employeesResult.Exception, "Error retrieving employees list: " + employeesResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , employeesResult.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -71,7 +71,7 @@ public class SoftwareAssetAssignmentController : Controller
         var assetResult = _swService.GetSoftwareAsset((int)model.AssetID);
         if (!assetResult.Ok)
         {
-            _logger.Error("Error retrieving asset: " + assetResult.Exception);
+            _logger.Error(assetResult.Exception, "Error retrieving asset: " + assetResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false , assetResult.Message));
             return RedirectToAction("Index", "Home");
         }
@@ -90,7 +90,7 @@ public class SoftwareAssetAssignmentController : Controller
         var employeeResult = _employeeService.GetEmployeeById(model.EmployeeID);
         if (!employeeResult.Ok)
         {
-            _logger.Error("Error retrieving employee record: " + employeeResult.Exception);
+            _logger.Error(employeeResult.Exception, "Error retrieving employee record: " + employeeResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false , employeeResult.Message));
             return RedirectToAction("Index", "Home");
@@ -103,7 +103,7 @@ public class SoftwareAssetAssignmentController : Controller
         var assignmentResult = _swAssignmentService.AddSoftwareAssetAssignment(assetAssignment);
         if (!assignmentResult.Ok)
         {
-            _logger.Error($"Error assigning asset: {assignmentResult.Message} => {assignmentResult.Exception}");
+            _logger.Error(assignmentResult.Exception, $"Error assigning asset: {assignmentResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false , assignmentResult.Message));
             return RedirectToAction("AssignEmployee",  new { assetId = model.AssetID });
@@ -127,7 +127,7 @@ public class SoftwareAssetAssignmentController : Controller
                             locationsRes.Message ?? 
                             statusesRes.Message ?? "Unknown Error";
             var ex = assetTypesRes.Exception ?? manufacturersRes.Exception ?? locationsRes.Exception ?? statusesRes.Exception;
-            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
+            _logger.Error(ex, $"Error retrieving data: {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Details", "SoftwareAsset", new { assetId = softwareAssetId });
@@ -159,7 +159,7 @@ public class SoftwareAssetAssignmentController : Controller
         
         if (!assetsResult.Ok)
         {
-            _logger.Error("Error retrieving data: " + assetsResult.Exception);
+            _logger.Error(assetsResult.Exception, "Error retrieving data: " + assetsResult.Message);
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Details", "SoftwareAsset",  new { assetId = model.SoftwareAssetId });
@@ -176,7 +176,7 @@ public class SoftwareAssetAssignmentController : Controller
                             locationsRes.Message ?? 
                             statusesRes.Message ?? "Unknown Error";
             var ex = assetTypesRes.Exception ?? manufacturersRes.Exception ?? locationsRes.Exception ?? statusesRes.Exception;
-            _logger.Error($"Error retrieving data: {errMsg} => {ex}");
+            _logger.Error(ex, $"Error retrieving data: {errMsg}");
             TempData["msg"] = TempDataExtension.Serialize(
                 new TempDataMsg(false, "There was an error retrieving data"));
             return RedirectToAction("Details", "SoftwareAsset",  new { assetId = model.SoftwareAssetId });
@@ -245,7 +245,7 @@ public class SoftwareAssetAssignmentController : Controller
         var result = _swAssignmentService.AddSoftwareAssetAssignment(assignment);
         if (!result.Ok)
         {
-            _logger.Error($"Error assigning software asset: {result.Message} => {result.Exception}");
+            _logger.Error(result.Exception, $"Error assigning software asset: {result.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new  TempDataMsg(false, result.Message));
             return RedirectToAction("FilterAssets", new { softwareAssetId = model.SoftwareAssetId });
         }
@@ -275,7 +275,7 @@ public class SoftwareAssetAssignmentController : Controller
         var returnResult = _swAssignmentService.Return(assetId);
         if (!returnResult.Ok)
         {
-            _logger.Error($"Error returning asset: {returnResult.Message} => {returnResult.Exception}");
+            _logger.Error(returnResult.Exception, $"Error returning asset: {returnResult.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, returnResult.Message));
             return RedirectToAction("Details", "SoftwareAsset", new { assetId });
         }

@@ -45,7 +45,7 @@ public class ReportsController : Controller
 
         if (!reportData.Ok)
         {
-            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            _logger.Error(reportData.Exception, $"Failed to fetch report data: {reportData.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
             return RedirectToAction("Index");
         }
@@ -89,7 +89,7 @@ public class ReportsController : Controller
 
         if (!reportData.Ok)
         {
-            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            _logger.Error(reportData.Exception, $"Failed to fetch report data: {reportData.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
             return RedirectToAction("Index");
         }
@@ -141,7 +141,7 @@ public class ReportsController : Controller
 
         if (!reportData.Ok)
         {
-            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            _logger.Error(reportData.Exception, $"Failed to fetch report data: {reportData.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
             return RedirectToAction("Index");
         }
@@ -182,7 +182,7 @@ public class ReportsController : Controller
 
         if (!reportData.Ok)
         {
-            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            _logger.Error(reportData.Exception, $"Failed to fetch report data: {reportData.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
             return RedirectToAction("Index");
         }
@@ -226,7 +226,7 @@ public class ReportsController : Controller
 
         if (!reportData.Ok)
         {
-            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            _logger.Error(reportData.Exception, $"Failed to fetch report data: {reportData.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
             return RedirectToAction("Index");
         }
@@ -279,7 +279,7 @@ public class ReportsController : Controller
         
         if (!reportData.Ok)
         {
-            _logger.Error($"Failed to fetch report data: {reportData.Message} => {reportData.Exception}" );
+            _logger.Error(reportData.Exception, $"Failed to fetch report data: {reportData.Message}");
             TempData["msg"] = TempDataExtension.Serialize(new TempDataMsg(false, reportData.Message));
             return RedirectToAction("Index");
         }
