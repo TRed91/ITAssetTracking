@@ -8,6 +8,9 @@ public interface IAssetService
     Result<Asset> GetAssetById(long assetId);
     
     Result<List<Asset>> GetAllAssets(int assetTypeId, int locationId, int assetStatusId, int manufacturerId);
+    Result<List<Asset>> GetDepartmentAssets(int departmentId);
+    Result<List<Asset>> GetEmployeeAssets(int employeeId);
+    Result<List<Asset>> GetAvailableAssets();
     Result<List<Asset>> GetAssetsByType(int assetTypeId);
     Result<List<Asset>> GetAssetsByLocation(int locationId);
     Result<List<Asset>> GetAssetsByModel(int modelId);

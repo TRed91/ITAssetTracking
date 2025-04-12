@@ -47,6 +47,45 @@ public class AssetService : IAssetService
         }
     }
 
+    public Result<List<Asset>> GetDepartmentAssets(int departmentId)
+    {
+        try
+        {
+            var assets = _assetRepo.GetDepartmentAssets(departmentId);
+            return ResultFactory.Success(assets);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<Asset>>(ex.Message, ex);
+        }
+    }
+
+    public Result<List<Asset>> GetEmployeeAssets(int employeeId)
+    {
+        try
+        {
+            var assets = _assetRepo.GetEmployeeAssets(employeeId);
+            return ResultFactory.Success(assets);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<Asset>>(ex.Message, ex);
+        }
+    }
+
+    public Result<List<Asset>> GetAvailableAssets()
+    {
+        try
+        {
+            var assets = _assetRepo.GetAvailableAssets();
+            return ResultFactory.Success(assets);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<Asset>>(ex.Message, ex);
+        } 
+    }
+
     public Result<List<Asset>> GetAssetsByType(int assetTypeId)
     {
         try

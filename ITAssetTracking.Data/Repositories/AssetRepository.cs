@@ -41,11 +41,41 @@ public class AssetRepository : IAssetRepository
     {
         return _context.Asset
             .Include(a => a.Model)
+            .Include(a => a.AssetStatus)
+            .Include(a => a.AssetType)
+            .Include(a => a.Location)
+            .Include(a => a.Manufacturer)
             .Where(a => 
                 (assetTypeId != 0 ? a.AssetTypeID == assetTypeId : a.AssetTypeID > 0) &&
                 (locationId != 0 ? a.LocationID == locationId : a.LocationID > 0) &&
                 (assetStatusId != 0 ? a.AssetStatusID == assetStatusId : a.AssetStatusID > 0) &&
                 (manufacturerId != 0 ? a.ManufacturerID == manufacturerId : a.ManufacturerID > 0))
+            .ToList();
+    }
+
+    public List<Asset> GetDepartmentAssets(int departmentId)
+    {
+        return _context.Asset
+            .Include(a => a.AssetType)
+            .Include(a => a.AssetStatus)
+            .Include(a => a.Manufacturer)
+            .Include(a => a.Location)
+            .Include(a => a.Model)
+            .Where(a => a.AssetAssignments.
+                Any(a => a.DepartmentID == departmentId && a.ReturnDate == null))
+            .ToList();
+    }
+
+    public List<Asset> GetEmployeeAssets(int employeeId)
+    {
+        return _context.Asset
+            .Include(a => a.AssetType)
+            .Include(a => a.AssetStatus)
+            .Include(a => a.Manufacturer)
+            .Include(a => a.Location)
+            .Include(a => a.Model)
+            .Where(a => a.AssetAssignments.
+                Any(a => a.EmployeeID == employeeId && a.ReturnDate == null))
             .ToList();
     }
 
@@ -186,6 +216,8 @@ public class AssetRepository : IAssetRepository
             .Include(a => a.Model)
             .Include(a => a.AssetType)
             .Include(a => a.Manufacturer)
+            .Include(a => a.Location)
+            .Include(a => a.AssetStatus)
             .Where(a => a.AssetAssignments
                 .All(aa => aa.ReturnDate != null))
             .ToList();

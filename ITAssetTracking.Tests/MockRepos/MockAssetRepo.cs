@@ -32,6 +32,16 @@ public class MockAssetRepo : IAssetRepository
             .ToList();
     }
 
+    public List<Asset> GetDepartmentAssets(int departmentId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Asset> GetEmployeeAssets(int employeeId)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<Asset> GetAssetsByType(int assetTypeId)
     {
         return _db.Assets.Where(a => a.AssetTypeID == assetTypeId).ToList();
