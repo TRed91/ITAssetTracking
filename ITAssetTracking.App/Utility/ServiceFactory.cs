@@ -67,7 +67,8 @@ public class ServiceFactory
     {
         return new SoftwareAssetService(
             _appConfig.GetSoftwareAssetRepository(),
-            _appConfig.GetAssetRepository());
+            _appConfig.GetAssetRepository(),
+            _appConfig.GetEmployeeRepository());
     }
 
     public ISoftwareRequestService GetSoftwareRequestService()

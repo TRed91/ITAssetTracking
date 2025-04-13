@@ -73,6 +73,18 @@ public class SoftwareAssetRepository : ISoftwareAssetRepository
             .ToList();
     }
 
+    public List<SoftwareAsset> GetSoftwareAssetsByEmployeeId(int employeeId)
+    {
+        return _context.SoftwareAsset
+            .Include(s => s.LicenseType)
+            .Include(s => s.Manufacturer)
+            .Include(s => s.AssetStatus)
+            .Where(a => 
+                a.SoftwareAssetAssignments
+                    .Any(s => s.EmployeeID == employeeId && s.ReturnDate == null))
+            .ToList();
+    }
+
     public void AddSoftwareAsset(SoftwareAsset softwareAsset)
     {
         _context.SoftwareAsset.Add(softwareAsset);

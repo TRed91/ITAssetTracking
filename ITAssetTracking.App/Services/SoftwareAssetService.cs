@@ -9,11 +9,16 @@ public class SoftwareAssetService : ISoftwareAssetService
 {
     private readonly ISoftwareAssetRepository _softwareAssetRepo;
     private readonly IAssetRepository _assetRepo;
+    private readonly IEmployeeRepository _employeeRepo;
 
-    public SoftwareAssetService(ISoftwareAssetRepository softwareAssetRepository,  IAssetRepository assetRepository)
+    public SoftwareAssetService(
+        ISoftwareAssetRepository softwareAssetRepository,  
+        IAssetRepository assetRepository, 
+        IEmployeeRepository employeeRepository)
     {
         _softwareAssetRepo = softwareAssetRepository;        
         _assetRepo = assetRepository;
+        _employeeRepo = employeeRepository;
     }
     
     public Result<SoftwareAsset> GetSoftwareAsset(int softwareAssetId)
@@ -78,6 +83,24 @@ public class SoftwareAssetService : ISoftwareAssetService
         try
         {
             var assets = _softwareAssetRepo.GetSoftwareAssetsByStatus(statusId);
+            return ResultFactory.Success(assets);
+        }
+        catch (Exception ex)
+        {
+            return ResultFactory.Fail<List<SoftwareAsset>>(ex.Message, ex);
+        }
+    }
+
+    public Result<List<SoftwareAsset>> GetSoftwareAssetsByEmployeeId(int employeeId)
+    {
+        try
+        {
+            var employee = _employeeRepo.GetEmployee(employeeId);
+            if (employee == null)
+            {
+                return ResultFactory.Fail<List<SoftwareAsset>>("Employee not found");
+            }
+            var assets = _softwareAssetRepo.GetSoftwareAssetsByEmployeeId(employeeId);
             return ResultFactory.Success(assets);
         }
         catch (Exception ex)

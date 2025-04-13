@@ -56,6 +56,11 @@ public class MockSoftwareAssetRepo : ISoftwareAssetRepository
             .ToList();
     }
 
+    public List<SoftwareAsset> GetSoftwareAssetsByEmployeeId(int employeeId)
+    {
+        throw new NotImplementedException();
+    }
+
     public void AddSoftwareAsset(SoftwareAsset softwareAsset)
     {
         softwareAsset.SoftwareAssetID = _db.SoftwareAssets.Max(a => a.SoftwareAssetID) + 1;

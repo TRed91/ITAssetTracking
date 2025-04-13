@@ -102,6 +102,11 @@ public class AssetsController : ControllerBase
         return Ok(assets);
     }
 
+    /// <summary>
+    /// Retrieves a single asset for the provided asset ID
+    /// </summary>
+    /// <param name="assetId"></param>
+    /// <returns>Asset</returns>
     [HttpGet("{assetId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -143,4 +148,83 @@ public class AssetsController : ControllerBase
         
         return Ok(assets);
     }
+    
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public ActionResult AddAsset(AssetForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var asset = form.ToEntity();
+        var result = _assetService.AddAsset(asset);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error adding asset: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict(result.Message);
+        }
+
+        _logger.Information($"Asset added with id {asset.AssetID}");
+        return Created();
+    }
+
+    [HttpPut("{assetId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult UpdateAsset(int assetId, AssetForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var asset = form.ToEntity();
+        asset.AssetID = assetId;
+        
+        var result = _assetService.UpdateAsset(asset);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error updating asset: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        
+        _logger.Information($"Updated asset with id {assetId}");
+        return NoContent();
+    }
+
+    [HttpDelete("{assetId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult DeleteAsset(int assetId)
+    {
+        var result = _assetService.DeleteAsset(assetId);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error deleting asset: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        
+        _logger.Warning($"Deleted asset with id {assetId}");
+        return NoContent();
+    }
+    
+    
 }

@@ -10,6 +10,7 @@ public interface ISoftwareAssetRepository
     List<SoftwareAsset> GetSoftwareAssetsByManufacturer(int manufacturerId, bool includeExpired);
     List<SoftwareAsset> GetSoftwareAssetsByType(int licenseTypeId, bool includeExpired);
     List<SoftwareAsset> GetSoftwareAssetsByStatus(int assetStatusId);
+    List<SoftwareAsset> GetSoftwareAssetsByEmployeeId(int employeeId);
     
     void AddSoftwareAsset(SoftwareAsset softwareAsset);
     void UpdateSoftwareAsset(SoftwareAsset softwareAsset);

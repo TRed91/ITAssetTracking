@@ -11,6 +11,7 @@ public interface ISoftwareAssetService
     Result<List<SoftwareAsset>> GetSoftwareAssetsByManufacturer(int manufacturerId, bool includeExpired = true);
     Result<List<SoftwareAsset>> GetSoftwareAssetsByType(int licenseTypeId, bool includeExpired = true);
     Result<List<SoftwareAsset>> GetSoftwareAssetsByStatus(int statusId);
+    Result<List<SoftwareAsset>> GetSoftwareAssetsByEmployeeId(int employeeId);
     
     Result AddSoftwareAsset(SoftwareAsset softwareAsset);
     Result UpdateSoftwareAsset(SoftwareAsset softwareAsset);
