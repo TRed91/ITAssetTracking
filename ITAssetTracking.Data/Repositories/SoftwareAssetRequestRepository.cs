@@ -28,7 +28,13 @@ public class SoftwareAssetRequestRepository : ISoftwareAssetRequestRepository
 
     public List<SoftwareAssetRequest> GetSoftwareAssetRequests()
     {
-        return _context.SoftwareAssetRequest.ToList();
+        return _context.SoftwareAssetRequest
+            .Include(r => r.Asset)
+            .Include(r => r.SoftwareAsset)
+            .ThenInclude(s => s.LicenseType)
+            .Include(r => r.Employee)
+            .Include(r => r.RequestResult)
+            .ToList();
     }
 
     public List<SoftwareAssetRequest> GetOpenSoftwareAssetRequests()

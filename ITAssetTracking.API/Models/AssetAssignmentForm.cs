@@ -17,7 +17,7 @@ public class AssetAssignmentForm : IValidatableObject
     
     public DateTime? ReturnDate { get; set; }
 
-    public AssetAssignment ToEntity()
+    public AssetAssignment ToAssetAssignment()
     {
         return new AssetAssignment
         {
@@ -39,5 +39,24 @@ public class AssetAssignmentForm : IValidatableObject
         }
         
         return errors;
+    }
+}
+
+public class AssetRequestForm : AssetAssignmentForm
+{
+    public byte? RequestResultId { get; set; }
+    public string? RequestNote { get; set; }
+    
+    public AssetRequest ToAssetRequest()
+    {
+        return new AssetRequest
+        {
+            AssetID = AssetId,
+            DepartmentID = DepartmentId,
+            EmployeeID = EmployeeId,
+            RequestDate = DateTime.Today,
+            RequestResultID = RequestResultId,
+            RequestNote = RequestNote
+        };
     }
 }

@@ -272,7 +272,7 @@ public class AssetsController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var assignment = form.ToEntity();
+        var assignment = form.ToAssetAssignment();
         assignment.ReturnDate = null;
         
         var result = _assetAssignmentService.AddAssetAssignment(assignment);
@@ -299,7 +299,7 @@ public class AssetsController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var assignment = form.ToEntity();
+        var assignment = form.ToAssetAssignment();
         assignment.AssetAssignmentID = assetAssignmentId;
         
         var result = _assetAssignmentService.UpdateAssetAssignment(assignment);

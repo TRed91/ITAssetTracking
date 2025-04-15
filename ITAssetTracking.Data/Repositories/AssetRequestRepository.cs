@@ -20,7 +20,12 @@ public class AssetRequestRepository : IAssetRequestRepository
 
     public List<AssetRequest> GetAssetRequests()
     {
-        return _context.AssetRequest.ToList();
+        return _context.AssetRequest
+            .Include(r => r.Asset)
+            .Include(r => r.Employee)
+            .Include(r => r.Department)
+            .Include(r => r.RequestResult)
+            .ToList();
     }
 
     public List<AssetRequest> GetOpenAssetRequests()

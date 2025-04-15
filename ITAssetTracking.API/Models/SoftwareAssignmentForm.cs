@@ -13,7 +13,7 @@ public class SoftwareAssignmentForm : IValidatableObject
     public int? EmployeeId { get; set; }
     public DateTime? ReturnDate { get; set; }
 
-    public SoftwareAssetAssignment ToEntity()
+    public SoftwareAssetAssignment ToSoftwareAssetAssignment()
     {
         return new SoftwareAssetAssignment
         {
@@ -50,5 +50,23 @@ public class SoftwareAssignmentForm : IValidatableObject
         }
         
         return errors;
+    }
+}
+
+public class SoftwareRequestForm : SoftwareAssignmentForm
+{
+    public byte? RequestResultId { get; set; }
+    public string? RequestNote { get; set; }
+    public SoftwareAssetRequest ToSoftwareAssetRequest()
+    {
+        return new SoftwareAssetRequest
+        {
+            SoftwareAssetID = SoftwareAssetId,
+            AssetID = AssetId,
+            EmployeeID = EmployeeId,
+            RequestDate = DateTime.Today,
+            RequestResultID = RequestResultId,
+            RequestNote = RequestNote
+        };
     }
 }

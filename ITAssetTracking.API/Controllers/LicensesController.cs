@@ -233,7 +233,7 @@ public class LicensesController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var assignment = form.ToEntity();
+        var assignment = form.ToSoftwareAssetAssignment();
         assignment.ReturnDate = null;
         
         var result = _assignmentService.AddSoftwareAssetAssignment(assignment);
@@ -260,7 +260,7 @@ public class LicensesController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var assignment = form.ToEntity();
+        var assignment = form.ToSoftwareAssetAssignment();
         assignment.AssetAssignmentID = assetAssignmentId;
         
         var result = _assignmentService.UpdateSoftwareAssetAssignment(assignment);
