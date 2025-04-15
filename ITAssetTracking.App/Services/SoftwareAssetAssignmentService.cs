@@ -59,6 +59,11 @@ public class SoftwareAssetAssignmentService : ISoftwareAssetAssignmentService
     {
         try
         {
+            var swAsset = _softwareRepo.GetSoftwareAsset(softwareAssetId);
+            if (swAsset == null)
+            {
+                return ResultFactory.Fail<List<SoftwareAssetAssignment>>("Software asset not found");
+            }
             var assignments = _swaaRepository.GetAssignmentsBySoftwareAssetId(softwareAssetId, includeReturned);
             return ResultFactory.Success(assignments);
         }

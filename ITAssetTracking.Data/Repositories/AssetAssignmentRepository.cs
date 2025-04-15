@@ -24,61 +24,26 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
 
     public List<AssetAssignment> GetAllAssetAssignments(bool includeReturned)
     {
-        if (includeReturned)
-        {
-            return _context.AssetAssignment
-                .Include(a => a.Asset)
-                .Include(a => a.Department)
-                .Include(a => a.Employee)
-                .ToList();
-        }
         return _context.AssetAssignment
             .Include(a => a.Asset)
             .Include(a => a.Department)
             .Include(a => a.Employee)
-            .Where(a => a.ReturnDate == null)
+            .Where(a => includeReturned || a.ReturnDate == null)
             .ToList();
     }
 
     public List<AssetAssignment> GetAssetAssignmentsByAssetId(long assetId, bool includeReturned)
     {
-        if (includeReturned)
-        {
-            return _context.AssetAssignment
-                .Include(a => a.Asset)
-                .Include(a => a.Department)
-                .Include(a => a.Employee)
-                .Where(a => a.AssetID == assetId)
-                .ToList();
-        }
         return _context.AssetAssignment
             .Include(a => a.Asset)
             .Include(a => a.Department)
-            .Include(a => a.Employee)    
-            .Where(a => a.AssetID == assetId && a.ReturnDate == null)
+            .Include(a => a.Employee)
+            .Where(a => a.AssetID == assetId && (includeReturned || a.ReturnDate == null))
             .ToList();
     }
 
     public List<AssetAssignment> GetAssetAssignmentsByDepartmentId(int departmentId, bool includeReturned)
     {
-        if (includeReturned)
-        {
-            return _context.AssetAssignment
-                .Include(a => a.Asset)
-                .ThenInclude(a => a.AssetStatus)
-                .Include(a => a.Asset)
-                .ThenInclude(a => a.AssetType)
-                .Include(a => a.Asset)
-                .ThenInclude(a => a.Manufacturer)
-                .Include(a => a.Asset)
-                .ThenInclude(a => a.Model)
-                .Include(a => a.Asset)
-                .ThenInclude(a => a.Location)
-                .Include(a => a.Department)
-                .Include(a => a.Employee)
-                .Where(a => a.DepartmentID == departmentId)
-                .ToList();
-        }
         return _context.AssetAssignment
             .Include(a => a.Asset)
             .ThenInclude(a => a.AssetStatus)
@@ -92,26 +57,12 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
             .ThenInclude(a => a.Location)
             .Include(a => a.Department)
             .Include(a => a.Employee)
-            .Where(a => a.DepartmentID == departmentId && a.ReturnDate == null)
+            .Where(a => a.DepartmentID == departmentId && (includeReturned || a.ReturnDate == null))
             .ToList();
     }
 
     public List<AssetAssignment> GetAssetAssignmentsByEmployeeId(int employeeId, bool includeReturned)
     {
-        if (includeReturned)
-        {
-            return _context.AssetAssignment
-                .Include(a => a.Asset)
-                    .ThenInclude(a => a.Model)
-                .Include(a => a.Asset)
-                    .ThenInclude(a => a.AssetType)
-                .Include(a => a.Asset)
-                    .ThenInclude(a => a.AssetStatus)
-                .Include(a => a.Department)
-                .Include(a => a.Employee)
-                .Where(a => a.EmployeeID == employeeId)
-                .ToList();
-        }
         return _context.AssetAssignment
             .Include(a => a.Asset)
             .ThenInclude(a => a.Model)
@@ -121,7 +72,7 @@ public class AssetAssignmentRepository : IAssetAssignmentRepository
             .ThenInclude(a => a.AssetStatus)
             .Include(a => a.Department)
             .Include(a => a.Employee)
-            .Where(a => a.EmployeeID == employeeId && a.ReturnDate == null)
+            .Where(a => a.EmployeeID == employeeId && (includeReturned || a.ReturnDate == null))
             .ToList();
     }
 

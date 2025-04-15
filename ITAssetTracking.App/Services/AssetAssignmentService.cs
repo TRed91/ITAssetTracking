@@ -59,6 +59,11 @@ public class AssetAssignmentService : IAssetAssignmentService
     {
         try
         {
+            var asset = _assetRepo.GetAssetById(assetId);
+            if (asset == null)
+            {
+                return ResultFactory.Fail<List<AssetAssignment>>("Asset not found");
+            }
             var assignments = _assetAssignmentRepo
                 .GetAssetAssignmentsByAssetId(assetId, includeReturned);
             return ResultFactory.Success(assignments);

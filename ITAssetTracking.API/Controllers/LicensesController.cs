@@ -11,11 +11,13 @@ public class LicensesController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private readonly ISoftwareAssetService _service;
+    private readonly ISoftwareAssetAssignmentService _assignmentService;
 
-    public LicensesController(Serilog.ILogger logger, ISoftwareAssetService service)
+    public LicensesController(Serilog.ILogger logger, ISoftwareAssetService service, ISoftwareAssetAssignmentService assignmentService)
     {
         _logger = logger;
         _service = service;
+        _assignmentService = assignmentService;
     }
 
     /// <summary>
@@ -188,6 +190,89 @@ public class LicensesController : ControllerBase
         }
         
         _logger.Warning($"Software asset with id {assetId} deleted");
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Get a list of all assignment for a given software asset
+    /// </summary>
+    /// <param name="softwareAssetId"></param>
+    /// <returns>List of Software Assignments</returns>
+    [HttpGet("{softwareAssetId}/assignments")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<List<SoftwareAssignmentModel>> GetAssignmentsForLicenses(int softwareAssetId)
+    {
+        var result = _assignmentService.GetAssignmentsBySoftwareAssetId(softwareAssetId);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Failed to get software asset: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        
+        var assignments = result.Data
+            .Select(a => new SoftwareAssignmentModel(a))
+            .ToList();
+        
+        return Ok(assignments);
+    }
+
+    [HttpPost("assignments")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public ActionResult AddAssignment(SoftwareAssignmentForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var assignment = form.ToEntity();
+        assignment.ReturnDate = null;
+        
+        var result = _assignmentService.AddSoftwareAssetAssignment(assignment);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Failed to add software asset assignment: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict(result.Message);
+        }
+
+        return Created();
+    }
+    
+    [HttpPut("assignments/{assetAssignmentId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult UpdateAssetAssignment(int assetAssignmentId, SoftwareAssignmentForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var assignment = form.ToEntity();
+        assignment.AssetAssignmentID = assetAssignmentId;
+        
+        var result = _assignmentService.UpdateSoftwareAssetAssignment(assignment);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error updating asset assignment: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict(result.Message);
+        }
         return NoContent();
     }
 }

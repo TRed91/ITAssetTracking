@@ -1,4 +1,5 @@
 using ITAssetTracking.API.Models;
+using ITAssetTracking.App.Services;
 using ITAssetTracking.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,16 @@ public class AssetsController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private readonly IAssetService _assetService;
+    private readonly IAssetAssignmentService _assetAssignmentService;
 
-    public AssetsController(Serilog.ILogger logger, IAssetService assetService)
+    public AssetsController(
+        Serilog.ILogger logger, 
+        IAssetService assetService, 
+        IAssetAssignmentService assetAssignmentService)
     {
         _logger = logger;
         _assetService = assetService;
+        _assetAssignmentService = assetAssignmentService;
     }
 
     /// <summary>
@@ -225,6 +231,87 @@ public class AssetsController : ControllerBase
         _logger.Warning($"Deleted asset with id {assetId}");
         return NoContent();
     }
+
+    /// <summary>
+    /// Returns all assignments for a given Asset
+    /// </summary>
+    /// <param name="assetId"></param>
+    /// <returns>List of Asset Assignments</returns>
+    [HttpPut("{assetId}/assignments")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<List<AssetAssignmentModel>> GetAssignmentsForAsset(long assetId)
+    {
+        var result = _assetAssignmentService.GetAssetAssignmentsByAsset(assetId);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error retrieving asset assignments: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        
+        var assignments = result.Data
+            .Select(a => new AssetAssignmentModel(a))
+            .ToList();
+        
+        return Ok(assignments);
+    }
     
-    
+    [HttpPost("assignments")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult AddAssetAssignment(AssetAssignmentForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var assignment = form.ToEntity();
+        assignment.ReturnDate = null;
+        
+        var result = _assetAssignmentService.AddAssetAssignment(assignment);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error adding asset assignment: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict(result.Message);
+        }
+        
+        return Created();
+    }
+
+    [HttpPut("assignments/{assetAssignmentId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult UpdateAssetAssignment(int assetAssignmentId, AssetAssignmentForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var assignment = form.ToEntity();
+        assignment.AssetAssignmentID = assetAssignmentId;
+        
+        var result = _assetAssignmentService.UpdateAssetAssignment(assignment);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error updating asset assignment: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict(result.Message);
+        }
+        return NoContent();
+    }
 }
