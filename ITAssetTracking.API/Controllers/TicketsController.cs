@@ -1,0 +1,142 @@
+using ITAssetTracking.API.Models;
+using ITAssetTracking.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ITAssetTracking.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class TicketsController : ControllerBase
+{
+    private readonly ITicketService _service;
+    private readonly Serilog.ILogger _logger;
+
+    public TicketsController(ITicketService service, Serilog.ILogger logger)
+    {
+        _service = service;
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Gets the last 20 items of ticket history the starting from the provided page parameter.
+    /// Gets the most recent 20 entries by default.
+    /// </summary>
+    /// <param name="page">Page number. 1 = most recent 20 entries. 2 = next 20 entries and so on</param>
+    /// <returns>List of Tickets</returns>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<TicketModel>> GetTicketHistory(int page = 1)
+    {
+        var result = _service.GetTickets(page);
+        if (!result.Ok)
+        {
+            _logger.Error(result.Exception, $"Error retrieving ticket history: {result.Message}");
+            return StatusCode(500, result.Message);
+        }
+
+        var tickets = result.Data
+            .Select(t => new TicketModel(t))
+            .ToList();
+        
+        return Ok(tickets);
+    }
+
+    /// <summary>
+    /// Gets all tickets that have not yet a resolution assigned
+    /// </summary>
+    /// <returns>List of Tickets</returns>
+    [HttpGet("open")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<TicketModel>> GetOpenTickets()
+    {
+        var result = _service.GetOpenTickets();
+        if (!result.Ok)
+        {
+            _logger.Error(result.Exception, $"Error retrieving ticket history: {result.Message}");
+            return StatusCode(500, result.Message);
+        }
+
+        var tickets = result.Data
+            .Select(t => new TicketModel(t))
+            .ToList();
+        
+        return Ok(tickets);
+    }
+
+    /// <summary>
+    /// Gets all tickets that are not yet assigned to an employee
+    /// </summary>
+    /// <returns>List of Tickets</returns>
+    [HttpGet("unassigned")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<TicketModel>> GetUnassignedTickets()
+    {
+        var result = _service.GetUnassignedTickets();
+        if (!result.Ok)
+        {
+            _logger.Error(result.Exception, $"Error retrieving ticket history: {result.Message}");
+            return StatusCode(500, result.Message);
+        }
+
+        var tickets = result.Data
+            .Select(t => new TicketModel(t))
+            .ToList();
+        
+        return Ok(tickets);
+    }
+
+    /// <summary>
+    /// Retrieves data about a single tickets
+    /// </summary>
+    /// <param name="ticketId">Ticket Id</param>
+    /// <returns>Ticket</returns>
+    [HttpGet("{ticketId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<TicketDetailsModel> GetTicket(int ticketId)
+    {
+        var result = _service.GetTicket(ticketId);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error retrieving ticket: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound();
+        }
+        var ticket = new TicketDetailsModel(result.Data);
+        return Ok(ticket);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public ActionResult AddTicket(TicketForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        
+        var ticket = form.ToEntity();
+        var result = _service.AddTicket(ticket);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error adding ticket: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict();
+        }
+
+        return Created();
+    }
+}

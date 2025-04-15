@@ -41,6 +41,9 @@ public class TicketRepository : ITicketRepository
             .Include(t => t.TicketStatus)
             .Include(t => t.TicketPriority)
             .Include(t => t.TicketType)
+            .Include(t => t.TicketResolution)
+            .Include(t => t.ReportedByEmployee)
+            .Include(t => t.AssignedToEmployee)
             .OrderByDescending(t => t.DateReported)
             .Skip((page - 1) * 20)
             .Take(20)
@@ -55,6 +58,8 @@ public class TicketRepository : ITicketRepository
             .Include(t => t.TicketStatus)
             .Include(t => t.TicketPriority)
             .Include(t => t.TicketType)
+            .Include(t => t.TicketResolution)
+            .Include(t => t.ReportedByEmployee)
             .Where(t => t.AssignedToEmployeeID == null)
             .ToList();
     }
@@ -67,6 +72,8 @@ public class TicketRepository : ITicketRepository
             .Include(t => t.TicketStatus)
             .Include(t => t.TicketPriority)
             .Include(t => t.TicketType)
+            .Include(t => t.AssignedToEmployee)
+            .Include(t => t.ReportedByEmployee)
             .Where(t => t.DateClosed == null)
             .ToList();
     }
