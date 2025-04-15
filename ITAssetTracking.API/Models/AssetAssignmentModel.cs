@@ -20,7 +20,9 @@ public class AssetAssignmentModel
         AssetId = entity.AssetID;
         AssetSerialNumber = entity.Asset.SerialNumber;
         Department = entity.Department.DepartmentName;
-        Employee = entity.Employee.LastName + ", " + entity.Employee.FirstName;
+        Employee = entity.EmployeeID != null ? 
+            entity.Employee.LastName + ", " + entity.Employee.FirstName : 
+            string.Empty;
         AssignmentDate = entity.AssignmentDate;
         ReturnDate = entity.ReturnDate;
     }

@@ -43,6 +43,11 @@ public class SoftwareAssignmentForm : IValidatableObject
         {
             errors.Add(new ValidationResult("Either Asset Id or Employee Id must have a value.", ["AssetId", "EmployeeId"]));
         }
+
+        if (AssetId.HasValue && EmployeeId.HasValue)
+        {
+            errors.Add(new ValidationResult("Software can be assigned to either Asset or Employee only", ["AssetId", "EmployeeId"]));
+        }
         
         return errors;
     }
