@@ -1,5 +1,7 @@
 using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Interfaces.Services;
+using ITAssetTracking.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITAssetTracking.API.Controllers;
@@ -118,7 +120,7 @@ public class TicketsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public ActionResult AddTicket(TicketForm form)
+    public ActionResult CreateTicket(TicketForm form)
     {
         if (!ModelState.IsValid)
         {
@@ -134,9 +136,152 @@ public class TicketsController : ControllerBase
                 _logger.Error(result.Exception, $"Error adding ticket: {result.Message}");
                 return StatusCode(500, result.Message);
             }
-            return Conflict();
+            return Conflict(result.Message);
         }
 
         return Created();
+    }
+
+    [HttpPut("{ticketId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public ActionResult UpdateTicket(int ticketId, TicketUpdateForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var ticket = form.ToEntity();
+        ticket.TicketID = ticketId;
+        
+        var result = _service.UpdateTicket(ticket);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error updating ticket: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return Conflict(result.Message);
+        }
+        return NoContent();
+    }
+
+    [HttpDelete("{ticketId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult DeleteTicket(int ticketId)
+    {
+        var result = _service.DeleteTicket(ticketId);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error deleting ticket: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Gets the noted for a given ticket
+    /// </summary>
+    /// <param name="ticketId"></param>
+    /// <returns>List of Ticket Notes</returns>
+    [HttpGet("{ticketId}/notes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<TicketNotesModel>> GetTicketNotes(int ticketId)
+    {
+        var result = _service.GetTicketNotesByTicket(ticketId);
+        if (!result.Ok)
+        {
+            _logger.Error(result.Exception, $"Error retrieving ticket notes: {result.Message}");
+            return StatusCode(500, result.Message);
+        }
+        var notes = result.Data
+            .Select(t => new TicketNotesModel(t))
+            .ToList();
+        
+        return Ok(notes);
+    }
+
+    [HttpPost("{ticketId}/notes")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult CreateTicketNote(int ticketId, TicketNoteForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var ticketNote = form.ToEntity();
+        ticketNote.TicketID = ticketId;
+        
+        var result = _service.AddTicketNotes(ticketNote);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error adding ticket note: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        return Created();
+    }
+
+    [HttpPut("notes/{ticketNoteId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult UpdateTicketNote(int ticketNoteId, TicketNoteForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var ticketNote = form.ToEntity();
+        ticketNote.TicketNoteID = ticketNoteId;
+        
+        var result = _service.UpdateTicketNotes(ticketNote);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error updating ticket note: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        return NoContent();
+    }
+
+    [HttpDelete("notes/{ticketNoteId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult DeleteTicketNote(int ticketNoteId)
+    {
+        var result = _service.DeleteTicketNotes(ticketNoteId);
+        if (!result.Ok)
+        {
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error deleting ticket note: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
+        }
+        return NoContent();
     }
 }

@@ -8,7 +8,7 @@ public class TicketModel
     public string TicketStatus { get; set; }
     public string TicketType { get; set; }
     public string TicketPriority { get; set; }
-    public string TicketResolution { get; set; }
+    public string? TicketResolution { get; set; }
     public string ReportedBy { get; set; }
     public string? AssignedTo { get; set; }
     public long AssetId { get; set; }
@@ -25,7 +25,9 @@ public class TicketModel
         TicketStatus = entity.TicketStatus.TicketStatusName;
         TicketType = entity.TicketType.TicketTypeName;
         TicketPriority = entity.TicketPriority.TicketPriorityName;
-        TicketResolution = entity.TicketResolution.TicketResolutionName;
+        TicketResolution = entity.TicketResolutionID != null ? 
+            entity.TicketResolution.TicketResolutionName :
+            null;
         ReportedBy = entity.ReportedByEmployee.LastName + ", " + entity.ReportedByEmployee.FirstName;
         AssignedTo = entity.AssignedToEmployeeID != null ?
                 entity.AssignedToEmployee.LastName + ", " + entity.AssignedToEmployee.FirstName : 

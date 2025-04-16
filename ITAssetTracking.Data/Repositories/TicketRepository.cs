@@ -182,6 +182,7 @@ public class TicketRepository : ITicketRepository
     public List<TicketNotes> GetTicketNotes(int ticketId)
     {
         return _context.TicketNotes
+            .Include(t => t.Employee)
             .Where(t => t.TicketID == ticketId)
             .ToList();
     }
@@ -199,6 +200,7 @@ public class TicketRepository : ITicketRepository
         {
             note.EmployeeID = ticketNote.EmployeeID;
             note.Note = ticketNote.Note;
+            note.TicketID = ticketNote.TicketID;
             _context.SaveChanges();
         }
     }
