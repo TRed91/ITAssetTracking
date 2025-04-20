@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ITAssetTracking.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class HomeController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;

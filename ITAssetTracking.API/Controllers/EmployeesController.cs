@@ -2,6 +2,7 @@ using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace ITAssetTracking.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Roles = "Admin")]
 public class EmployeesController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;

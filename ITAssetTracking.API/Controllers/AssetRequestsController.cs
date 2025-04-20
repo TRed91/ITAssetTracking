@@ -1,5 +1,6 @@
 using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ public class AssetRequestsController : ControllerBase
     /// </summary>
     /// <returns>List of Asset Requests</returns>
     [HttpGet]
+    [Authorize(Roles = "Admin, AssetManager, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<RequestsModel> GetRequests()
@@ -63,6 +65,7 @@ public class AssetRequestsController : ControllerBase
     /// </summary>
     /// <returns>List of Asset Requests</returns>
     [HttpGet("open")]
+    [Authorize(Roles = "Admin, AssetManager, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<RequestsModel> GetOpenRequests()
@@ -97,6 +100,7 @@ public class AssetRequestsController : ControllerBase
     }
 
     [HttpPost("assets")]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -124,6 +128,7 @@ public class AssetRequestsController : ControllerBase
     }
     
     [HttpPost("licences")]
+    [Authorize(Roles = "Admin, DepartmentManager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -151,6 +156,7 @@ public class AssetRequestsController : ControllerBase
     }
 
     [HttpPut("assets/{assetRequestId}")]
+    [Authorize(Roles = "Admin, AssetManager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -180,6 +186,7 @@ public class AssetRequestsController : ControllerBase
     }
     
     [HttpPut("licences/{assetRequestId}")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

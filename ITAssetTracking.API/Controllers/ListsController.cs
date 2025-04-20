@@ -1,12 +1,14 @@
 using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITAssetTracking.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class ListsController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;

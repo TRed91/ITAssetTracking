@@ -1,6 +1,9 @@
 using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Entities;
 using ITAssetTracking.Core.Interfaces.Services;
+using ITAssetTracking.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITAssetTracking.API.Controllers;
@@ -12,12 +15,21 @@ public class LicensesController : ControllerBase
     private readonly Serilog.ILogger _logger;
     private readonly ISoftwareAssetService _service;
     private readonly ISoftwareAssetAssignmentService _assignmentService;
+    private readonly IEmployeeService _employeeService;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public LicensesController(Serilog.ILogger logger, ISoftwareAssetService service, ISoftwareAssetAssignmentService assignmentService)
+    public LicensesController(
+        Serilog.ILogger logger, 
+        ISoftwareAssetService service, 
+        ISoftwareAssetAssignmentService assignmentService,
+        IEmployeeService employeeService,
+        UserManager<ApplicationUser> userManager)
     {
         _logger = logger;
         _service = service;
         _assignmentService = assignmentService;
+        _employeeService = employeeService;
+        _userManager = userManager;
     }
 
     /// <summary>
@@ -29,6 +41,7 @@ public class LicensesController : ControllerBase
     /// <param name="includeExpired"></param>
     /// <returns>List of software assets / licenses</returns>
     [HttpGet]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<SoftwareAssetModel>> GetLicenses(
@@ -62,11 +75,24 @@ public class LicensesController : ControllerBase
     /// <param name="employeeId"></param>
     /// <returns>List of software assets / licenses</returns>
     [HttpGet("employee/{employeeId}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<List<SoftwareAssetModel>> GetLicensesByEmployee(int employeeId)
+    public async Task<ActionResult<List<SoftwareAssetModel>>> GetLicensesByEmployee(int employeeId)
     {
+        // ensure everyone except for Admins, Software License Managers and Auditors can only view their own assets    
+        var user  = await _userManager.GetUserAsync(User);
+        var roles = await _userManager.GetRolesAsync(user);
+        if (!roles.Any(r => r == "Admin" || r == "Auditor" || r == "SoftwareLicenseManager"))
+        {
+            var employeeResult = _employeeService.GetEmployeeById(user.EmployeeID);
+            if (!employeeResult.Ok || employeeResult.Data.EmployeeID != employeeId)
+            {
+                return Unauthorized();
+            }
+        }
+        
         var assetsResult = _service.GetSoftwareAssetsByEmployeeId(employeeId);
         if (!assetsResult.Ok)
         {
@@ -91,10 +117,11 @@ public class LicensesController : ControllerBase
     /// <param name="assetId">Software Asset ID</param>
     /// <returns>Software Asset / License</returns>
     [HttpGet("{assetId}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<SoftwareAssetModel> GetLicense(int assetId)
+    public async Task<ActionResult<SoftwareAssetModel>> GetLicense(int assetId)
     {
         var assetResult = _service.GetSoftwareAsset(assetId);
         if (!assetResult.Ok)
@@ -106,11 +133,53 @@ public class LicensesController : ControllerBase
             }
             return NotFound(assetResult.Message);
         }
+        
+        // ensure Department Managers can only get assets assigned to their department
+        // and everyone else can only get assets assigned to them
+        var user  = await _userManager.GetUserAsync(User);
+        var roles = await _userManager.GetRolesAsync(user);
+        if (!roles.Any(r => r == "Admin" || r == "SoftwareLicenseManager" || r == "Auditor"))
+        {
+            var employee = _employeeService.GetEmployeeById(user.EmployeeID).Data;
+            var assignments = assetResult.Data.SoftwareAssetAssignments;
+
+            if (roles.Contains("DepartmentManager"))
+            {
+                var isAssignedToDepartment = assignments.Any(a =>
+                {
+                    if (a.EmployeeID != null)
+                    {
+                        return a.Employee.DepartmentID == employee.DepartmentID && a.ReturnDate == null;
+                    }
+
+                    if (a.AssetID != null)
+                    {
+                        return a.Asset.AssetAssignments.Any(aa => 
+                            aa.DepartmentID == employee.DepartmentID && aa.ReturnDate == null);
+                    }
+                    return false;
+                });
+                if (!isAssignedToDepartment)
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                if (!assignments.Any(a =>
+                        a.EmployeeID == employee.EmployeeID && a.ReturnDate == null))
+                {
+                    return Unauthorized();
+                }
+            }
+        }
+        
         var asset = new SoftwareAssetModel(assetResult.Data);
         return Ok(asset);
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -139,6 +208,7 @@ public class LicensesController : ControllerBase
     }
 
     [HttpPut("{assetId}")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -173,6 +243,7 @@ public class LicensesController : ControllerBase
     }
 
     [HttpDelete("{assetId}")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -199,6 +270,7 @@ public class LicensesController : ControllerBase
     /// <param name="softwareAssetId"></param>
     /// <returns>List of Software Assignments</returns>
     [HttpGet("{softwareAssetId}/assignments")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -223,6 +295,7 @@ public class LicensesController : ControllerBase
     }
 
     [HttpPost("assignments")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -251,6 +324,7 @@ public class LicensesController : ControllerBase
     }
     
     [HttpPut("assignments/{assetAssignmentId}")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

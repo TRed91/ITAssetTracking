@@ -7,13 +7,13 @@ namespace ITAssetTracking.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthenticationController : ControllerBase
+public class AccountController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly Serilog.ILogger _logger;
 
-    public AuthenticationController(
+    public AccountController(
         UserManager<ApplicationUser> userManager, 
         SignInManager<ApplicationUser> signInManager, 
         Serilog.ILogger logger)
@@ -37,5 +37,11 @@ public class AuthenticationController : ControllerBase
             return BadRequest(ModelState);
         }
         return Ok();
+    }
+
+    [HttpGet("AccessDenied")]
+    public ActionResult AccessDenied()
+    {
+        return Unauthorized();
     }
 }

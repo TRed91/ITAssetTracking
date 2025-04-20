@@ -1,6 +1,7 @@
 using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,7 @@ public class TicketsController : ControllerBase
     /// <param name="page">Page number. 1 = most recent 20 entries. 2 = next 20 entries and so on</param>
     /// <returns>List of Tickets</returns>
     [HttpGet]
+    [Authorize(Roles = "Admin, Auditor, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<TicketModel>> GetTicketHistory(int page = 1)
@@ -49,6 +51,7 @@ public class TicketsController : ControllerBase
     /// </summary>
     /// <returns>List of Tickets</returns>
     [HttpGet("open")]
+    [Authorize(Roles = "Admin, Auditor, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<TicketModel>> GetOpenTickets()
@@ -72,6 +75,7 @@ public class TicketsController : ControllerBase
     /// </summary>
     /// <returns>List of Tickets</returns>
     [HttpGet("unassigned")]
+    [Authorize(Roles = "Admin, Auditor, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<TicketModel>> GetUnassignedTickets()
@@ -96,6 +100,7 @@ public class TicketsController : ControllerBase
     /// <param name="ticketId">Ticket Id</param>
     /// <returns>Ticket</returns>
     [HttpGet("{ticketId}")]
+    [Authorize(Roles = "Admin, Auditor, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -116,6 +121,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -143,6 +149,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPut("{ticketId}")]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -170,6 +177,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpDelete("{ticketId}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -194,6 +202,7 @@ public class TicketsController : ControllerBase
     /// <param name="ticketId"></param>
     /// <returns>List of Ticket Notes</returns>
     [HttpGet("{ticketId}/notes")]
+    [Authorize(Roles = "Admin, Auditor, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<TicketNotesModel>> GetTicketNotes(int ticketId)
@@ -212,6 +221,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPost("{ticketId}/notes")]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -240,6 +250,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPut("notes/{ticketNoteId}")]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -267,6 +278,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpDelete("notes/{ticketNoteId}")]
+    [Authorize(Roles = "Admin, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

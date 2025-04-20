@@ -1,6 +1,7 @@
 using ITAssetTracking.API.Models;
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITAssetTracking.API.Controllers;
@@ -27,10 +28,11 @@ public class ReportsController : ControllerBase
     /// <param name="departmentId">default: 0(all)</param>
     /// <returns>A list Asset Distribution and Status Reports, Value Report</returns>
     [HttpGet("assets")]
+    [Authorize(Roles = "Admin, AssetManager, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<AssetReportsModel> GenerateReport(
+    public ActionResult<AssetReportsModel> GenerateAssetReports(
         DateTime? fromDate, DateTime? toDate,
         byte assetTypeId = 0,
         byte departmentId = 0)
@@ -73,6 +75,7 @@ public class ReportsController : ControllerBase
     /// <param name="departmentId">Default: 0(all)</param>
     /// <returns>List of Software Asset / License Distribution and Status reports</returns>
     [HttpGet("licenses")]
+    [Authorize(Roles = "Admin, SoftwareLicenseManager, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -115,6 +118,7 @@ public class ReportsController : ControllerBase
     /// <param name="ticketTypeId">Default 0(all)</param>
     /// <returns></returns>
     [HttpGet("tickets")]
+    [Authorize(Roles = "Admin, Auditor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
