@@ -1,6 +1,7 @@
 using ITAssetTracking.Core.Interfaces.Services;
 using ITAssetTracking.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ITAssetTracking.MVC.Middleware;
 
@@ -19,6 +20,8 @@ public class FetchRequestsMiddleware
     
     public async Task InvokeAsync(HttpContext context)
     {
+        ITempDataDictionaryFactory tempDataFactory = context.RequestServices.GetRequiredService<ITempDataDictionaryFactory>();
+        ITempDataDictionary tempData = tempDataFactory.GetTempData(context);
         var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
         var assetRequestService = context.RequestServices.GetRequiredService<IAssetRequestService>();
         var softwareRequestService = context.RequestServices.GetRequiredService<ISoftwareRequestService>();
@@ -45,6 +48,11 @@ public class FetchRequestsMiddleware
                 logger.Error($"Error retrieving asset requests: {softwareRequests.Message} => {softwareRequests.Exception}");
             }
             context.Items.Add("Requests", assetRequests.Data.Count + softwareRequests.Data.Count);
+        }
+
+        if (roles.Contains("Admin"))
+        {
+            tempData["IsAdmin"] = "true";
         }
     
         await _next(context);
