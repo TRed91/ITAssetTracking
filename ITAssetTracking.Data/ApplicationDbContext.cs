@@ -15,3 +15,12 @@ public class ApplicationUser : IdentityUser
 {
     public int EmployeeID { get; set; }
 }
+
+public static class UserManagerExtension
+{
+    public static Task<ApplicationUser?> FindByEmployeeIdAsync(this UserManager<ApplicationUser> userManager, int emplyoeeId)
+    {
+        return userManager.Users
+            .FirstOrDefaultAsync(u => u.EmployeeID == emplyoeeId);
+    }
+}
