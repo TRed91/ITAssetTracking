@@ -38,8 +38,8 @@ public class ReportsController : ControllerBase
         var from  = fromDate ?? DateTime.Today.AddMonths(-3);
         var to = toDate ?? DateTime.Today;
         
-        var distributionReport = _service.GetAssetDistributionReport(from, to, assetTypeId, departmentId);
-        var statusReport = _service.GetAssetStatusReport(from, to, assetTypeId, departmentId);
+        var distributionReport = _service.GetAssetDistributionReport(from, to, departmentId, assetTypeId);
+        var statusReport = _service.GetAssetStatusReport(from, to, departmentId, assetTypeId);
         var valueReport = _service.GetAssetValuesReport(from, to);
         if (!distributionReport.Ok || !statusReport.Ok || !valueReport.Ok)
         {
