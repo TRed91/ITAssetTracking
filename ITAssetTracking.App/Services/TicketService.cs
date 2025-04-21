@@ -330,6 +330,11 @@ public class TicketService : ITicketService
     {
         try
         {
+            var ticket = _ticketRepo.GetTicketById(ticketId);
+            if (ticket == null)
+            {
+                return ResultFactory.Fail<List<TicketNotes>>("Ticket not found");
+            }
             var ticketNotes = _ticketRepo.GetTicketNotes(ticketId);
             return ResultFactory.Success(ticketNotes);
         }

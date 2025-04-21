@@ -205,13 +205,18 @@ public class TicketsController : ControllerBase
     [Authorize(Roles = "Admin, Auditor, HelpDescTechnician")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<List<TicketNotesModel>> GetTicketNotes(int ticketId)
     {
         var result = _service.GetTicketNotesByTicket(ticketId);
         if (!result.Ok)
         {
-            _logger.Error(result.Exception, $"Error retrieving ticket notes: {result.Message}");
-            return StatusCode(500, result.Message);
+            if (result.Exception != null)
+            {
+                _logger.Error(result.Exception, $"Error retrieving ticket notes: {result.Message}");
+                return StatusCode(500, result.Message);
+            }
+            return NotFound(result.Message);
         }
         var notes = result.Data
             .Select(t => new TicketNotesModel(t))
