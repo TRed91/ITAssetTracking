@@ -34,6 +34,11 @@ public class AppConfig : IAppConfig
             default: return LogEventLevel.Information;
         }
     }
+
+    public string[] AllowedOrigins()
+    {
+        return _config.GetSection("AllowedOrigins").Get<string[]>();
+    }
     public IAssetAssignmentRepository GetAssetAssignmentRepository()
     {
         return new AssetAssignmentRepository(GetContext());

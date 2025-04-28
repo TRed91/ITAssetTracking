@@ -90,6 +90,10 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyOrigin();
     });
+    options.AddPolicy("AllowedOrigins", policy =>
+    {
+        policy.WithOrigins(appConfig.AllowedOrigins());
+    });
 });
 
 builder.Services.AddControllers();
@@ -102,11 +106,15 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseCors("AnyOrigins");
 }
+else
+{
+    app.UseCors("AllowedOrigins");
+}
 
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

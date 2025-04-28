@@ -4,6 +4,7 @@ namespace ITAssetTracking.Core.Interfaces;
 
 public interface IAppConfig
 {
+    string[] AllowedOrigins();
     IAssetAssignmentRepository GetAssetAssignmentRepository();
     IAssetRepository GetAssetRepository();
     IAssetRequestRepository GetAssetRequestRepository();
