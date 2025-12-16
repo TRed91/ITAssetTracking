@@ -20,39 +20,50 @@ public class FetchRequestsMiddleware
     
     public async Task InvokeAsync(HttpContext context)
     {
-        ITempDataDictionaryFactory tempDataFactory = context.RequestServices.GetRequiredService<ITempDataDictionaryFactory>();
-        ITempDataDictionary tempData = tempDataFactory.GetTempData(context);
-        var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
-        var assetRequestService = context.RequestServices.GetRequiredService<IAssetRequestService>();
-        var softwareRequestService = context.RequestServices.GetRequiredService<ISoftwareRequestService>();
+        
         var logger = context.RequestServices.GetRequiredService<Serilog.ILogger>();
-        var user = await userManager.GetUserAsync(context.User);
-        IList<string> roles = new List<string>();
-        if (user != null)
+        try
         {
-            roles = await userManager.GetRolesAsync(user);
-        }
-
-        if (roles.Contains("Admin") ||
-            roles.Contains("AssetManager") ||
-            roles.Contains("SoftwareLicenseManager"))
-        {
-            var assetRequests = assetRequestService.GetOpenAssetRequests();
-            if (!assetRequests.Ok)
+            ITempDataDictionaryFactory tempDataFactory = context.RequestServices.GetRequiredService<ITempDataDictionaryFactory>();
+            ITempDataDictionary tempData = tempDataFactory.GetTempData(context);
+            var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
+            var assetRequestService = context.RequestServices.GetRequiredService<IAssetRequestService>();
+            var softwareRequestService = context.RequestServices.GetRequiredService<ISoftwareRequestService>();
+            var user = await userManager.GetUserAsync(context.User);
+            IList<string> roles = new List<string>();
+            if (user != null)
             {
-                logger.Error($"Error retrieving asset requests: {assetRequests.Message} => {assetRequests.Exception}");
+                roles = await userManager.GetRolesAsync(user);
             }
-            var softwareRequests = softwareRequestService.GetOpenSoftwareRequests();
-            if (!softwareRequests.Ok)
-            {
-                logger.Error($"Error retrieving asset requests: {softwareRequests.Message} => {softwareRequests.Exception}");
-            }
-            context.Items.Add("Requests", assetRequests.Data.Count + softwareRequests.Data.Count);
-        }
 
-        if (roles.Contains("Admin"))
+            if (roles.Contains("Admin") ||
+                roles.Contains("AssetManager") ||
+                roles.Contains("SoftwareLicenseManager"))
+            {
+                var assetRequests = assetRequestService.GetOpenAssetRequests();
+                if (!assetRequests.Ok)
+                {
+                    logger.Error(
+                        $"Error retrieving asset requests: {assetRequests.Message} => {assetRequests.Exception}");
+                }
+
+                var softwareRequests = softwareRequestService.GetOpenSoftwareRequests();
+                if (!softwareRequests.Ok)
+                {
+                    logger.Error(
+                        $"Error retrieving asset requests: {softwareRequests.Message} => {softwareRequests.Exception}");
+                }
+
+                context.Items.Add("Requests", assetRequests.Data.Count + softwareRequests.Data.Count);
+            }
+            if (roles.Contains("Admin"))
+            {
+                tempData["IsAdmin"] = "true";
+            }
+        }
+        catch (Exception ex)
         {
-            tempData["IsAdmin"] = "true";
+            logger.Error(ex, "Error retrieving asset requests");
         }
     
         await _next(context);

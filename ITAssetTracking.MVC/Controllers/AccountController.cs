@@ -36,22 +36,36 @@ public class AccountController : Controller
         {
             return View(model);
         }
-        var user = _userManager.Users.SingleOrDefault(u => u.UserName == model.UserName);
-        if (user == null)
+
+        try
         {
-            var errMsg = new TempDataMsg(false,"Username incorrect.");
+            var user = _userManager.Users.SingleOrDefault(u => u.UserName == model.UserName);
+            if (user == null)
+            {
+                var errMsg = new TempDataMsg(false, "Username incorrect.");
+                TempData["msg"] = TempDataExtension.Serialize(errMsg);
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                var errMsg = new TempDataMsg(false, "Password incorrect.");
+                TempData["msg"] = TempDataExtension.Serialize(errMsg);
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Login failed");
+            ModelState.AddModelError(string.Empty, "Login failed.");
+            var errMsg = new TempDataMsg(false, "Internal error.");
             TempData["msg"] = TempDataExtension.Serialize(errMsg);
             return View(model);
         }
-        var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
-        if (!result.Succeeded)
-        {
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            var errMsg = new TempDataMsg(false,"Password incorrect.");
-            TempData["msg"] = TempDataExtension.Serialize(errMsg);
-            return View(model);
-        }
-        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]

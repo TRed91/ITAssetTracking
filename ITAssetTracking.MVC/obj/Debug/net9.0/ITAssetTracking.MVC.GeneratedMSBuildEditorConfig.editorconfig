@@ -17,257 +17,257 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ITAssetTracking.MVC
 build_property.RootNamespace = ITAssetTracking.MVC
-build_property.ProjectDir = /Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/
+build_property.ProjectDir = C:\Users\thoma\source\repos\CS400\ITAssetTracking\ITAssetTracking.MVC\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC
+build_property.MSBuildProjectDirectory = C:\Users\thoma\source\repos\CS400\ITAssetTracking\ITAssetTracking.MVC
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Account/AccessDenied.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvQWRkLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetAssignment/AssignDepartment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRBc3NpZ25tZW50XEFzc2lnbkRlcGFydG1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/All.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvQWxsLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetAssignment/AssignEmployee.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRBc3NpZ25tZW50XEFzc2lnbkVtcGxveWVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvRGVsZXRlLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/Assign.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRSZXF1ZXN0XEFzc2lnbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/DepartmentAssets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvRGVwYXJ0bWVudEFzc2V0cy5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/AvailableAssets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRSZXF1ZXN0XEF2YWlsYWJsZUFzc2V0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvRGV0YWlscy5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/Deny.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRSZXF1ZXN0XERlbnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvRWRpdC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRSZXF1ZXN0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Filter.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvRmlsdGVyLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/RequestAsset.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRSZXF1ZXN0XFJlcXVlc3RBc3NldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvSW5kZXguY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Manufacturers.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvTWFudWZhY3R1cmVycy5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/All.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQWxsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/MyAssets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXQvTXlBc3NldHMuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetAssignment/AssignDepartment.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRBc3NpZ25tZW50L0Fzc2lnbkRlcGFydG1lbnQuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/DepartmentAssets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGVwYXJ0bWVudEFzc2V0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetAssignment/AssignEmployee.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRBc3NpZ25tZW50L0Fzc2lnbkVtcGxveWVlLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/Assign.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L0Fzc2lnbi5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/AvailableAssets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L0F2YWlsYWJsZUFzc2V0cy5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Filter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRmlsdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/Deny.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L0RlbnkuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L0luZGV4LmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/Manufacturers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcTWFudWZhY3R1cmVycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/AssetRequest/RequestAsset.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXRSZXF1ZXN0L1JlcXVlc3RBc3NldC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Asset/MyAssets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcTXlBc3NldHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Employee/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvSW5kZXguY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Employee/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Employee/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvUmVnaXN0ZXIuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Employee/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/Assign.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZVJlcXVlc3QvQXNzaWduLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/Assign.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljZW5zZVJlcXVlc3RcQXNzaWduLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/AvailableLicenses.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZVJlcXVlc3QvQXZhaWxhYmxlTGljZW5zZXMuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/AvailableLicenses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljZW5zZVJlcXVlc3RcQXZhaWxhYmxlTGljZW5zZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/Deny.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZVJlcXVlc3QvRGVueS5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/Deny.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljZW5zZVJlcXVlc3RcRGVueS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZVJlcXVlc3QvSW5kZXguY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljZW5zZVJlcXVlc3RcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/RequestLicense.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZVJlcXVlc3QvUmVxdWVzdExpY2Vuc2UuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/LicenseRequest/RequestLicense.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljZW5zZVJlcXVlc3RcUmVxdWVzdExpY2Vuc2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/HardwareDistribution.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9IYXJkd2FyZURpc3RyaWJ1dGlvbi5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/HardwareDistribution.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xIYXJkd2FyZURpc3RyaWJ1dGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/HardwareStatus.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9IYXJkd2FyZVN0YXR1cy5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/HardwareStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xIYXJkd2FyZVN0YXR1cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/HardwareValue.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9IYXJkd2FyZVZhbHVlLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/HardwareValue.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xIYXJkd2FyZVZhbHVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9JbmRleC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/SoftwareDistribution.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Tb2Z0d2FyZURpc3RyaWJ1dGlvbi5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/SoftwareDistribution.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xTb2Z0d2FyZURpc3RyaWJ1dGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/SoftwareStatus.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Tb2Z0d2FyZVN0YXR1cy5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/SoftwareStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xTb2Z0d2FyZVN0YXR1cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/Tickets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9UaWNrZXRzLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Reports/Tickets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xUaWNrZXRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9BZGQuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAssetAssignment/AssignAsset.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldEFzc2lnbm1lbnRcQXNzaWduQXNzZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/All.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9BbGwuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAssetAssignment/AssignEmployee.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldEFzc2lnbm1lbnRcQXNzaWduRW1wbG95ZWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9EZWxldGUuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAssetAssignment/FilterAssets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldEFzc2lnbm1lbnRcRmlsdGVyQXNzZXRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/DepartmentAssets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9EZXBhcnRtZW50QXNzZXRzLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9EZXRhaWxzLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/All.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxBbGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9FZGl0LmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Filter.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9GaWx0ZXIuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/DepartmentAssets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxEZXBhcnRtZW50QXNzZXRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9JbmRleC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/SoftwareSelect.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldC9Tb2Z0d2FyZVNlbGVjdC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAssetAssignment/AssignAsset.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldEFzc2lnbm1lbnQvQXNzaWduQXNzZXQuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Filter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxGaWx0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAssetAssignment/AssignEmployee.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldEFzc2lnbm1lbnQvQXNzaWduRW1wbG95ZWUuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAssetAssignment/FilterAssets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU29mdHdhcmVBc3NldEFzc2lnbm1lbnQvRmlsdGVyQXNzZXRzLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/SoftwareAsset/SoftwareSelect.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVBc3NldFxTb2Z0d2FyZVNlbGVjdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0FkZC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/TicketNotes/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0Tm90ZXNcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/ChangeAssignedEmployee.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0NoYW5nZUFzc2lnbmVkRW1wbG95ZWUuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/TicketNotes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0Tm90ZXNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/ChangeReportingEmployee.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0NoYW5nZVJlcG9ydGluZ0VtcGxveWVlLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/TicketNotes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0Tm90ZXNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0RldGFpbHMuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0XEFkZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0VkaXQuY3NodG1s
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/ChangeAssignedEmployee.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0XENoYW5nZUFzc2lnbmVkRW1wbG95ZWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0L0luZGV4LmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/ChangeReportingEmployee.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0XENoYW5nZVJlcG9ydGluZ0VtcGxveWVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/TicketNotes/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0Tm90ZXMvQWRkLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0XERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/TicketNotes/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0Tm90ZXMvRGVsZXRlLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0XEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/TicketNotes/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGlja2V0Tm90ZXMvRWRpdC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Ticket/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/thomasroth/RiderProjects/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-s9xjasdqeq
+[C:/Users/thoma/source/repos/CS400/ITAssetTracking/ITAssetTracking.MVC/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-5qyoxyjxgz
